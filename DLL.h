@@ -24,6 +24,11 @@ public:
 	void insertAtTheMiddle(int index, int value);
 	void insertNode(int index, int value, bool head = true);
 
+	void eraseAtTheFront(bool head);
+	void eraseAtTheBack();
+	void eraseAtTheMiddle(int index);
+	void eraseNode(int index, bool head = true);
+
 	void run();
 
 private:

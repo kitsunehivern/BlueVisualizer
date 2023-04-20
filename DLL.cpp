@@ -679,9 +679,9 @@ void DLL::insertAtTheFront(int value, bool head) {
 
 	// Description
 	if (nodes.size() == 1) {
-		description.addDescription({ "Check if 'head' is not NULL. Since it is false,", "the statement is ignored" });
+		description.addDescription({ "Check if 'head' is not NULL. Since it is false,", "the statement is ignored." });
 	} else {
-		description.addDescription({ "Check if 'head' is not NULL. Since it is true,", "set the prev pointer of 'head' to 'add'" });
+		description.addDescription({ "Check if 'head' is not NULL. Since it is true,", "set the prev pointer of 'head' to 'add'." });
 	}
 
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
@@ -721,7 +721,7 @@ void DLL::insertAtTheFront(int value, bool head) {
 
 	// Node
 	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR );
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
 	action.drawChange(&labels.front(), &LABEL_COLOR, "add", "head/add");
@@ -746,7 +746,7 @@ void DLL::insertAtTheFront(int value, bool head) {
 
 	// Node
 	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -160));
-	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR );
+	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	for (int i = 1; i < nodes.size(); i++) {
 		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
@@ -759,15 +759,1287 @@ void DLL::insertAtTheFront(int value, bool head) {
 	action.drawFadeOut(&code, 3);
 }
 
+void DLL::insertAtTheBack(int value) {
+	nodes.pushBack(Node(value, sf::Vector2f(50 + nodes.size() * 160, 100)));
+	labels.pushBack(Label(&nodes.back()));
+	edges.pushBack(DoublyEdge(&nodes.rbegin()->prev()->data, &nodes.rbegin()->data));
+	code.update({
+		"Node* pre = head;                ",
+		"for (int k = 0; k <= n - 2; k++) ",
+		"    pre = pre->next;             ",
+		"Node* add = new Node(v);         ",
+		"pre->next = add; add->prev = pre;"
+		});
+
+	description.newOperation("Insert " + std::to_string(value) + " at the back");
+
+	// New step: Node* pre = head
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'pre' and set it to 'head'." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = 0; i < edges.size(); i++) {
+		// New step: for (int k = 0; k < n - 1; k++)
+		action.addNewStep();
+
+		// Description
+		if (nodes.size() == 2) {
+			description.addDescription({ "Iterate k from 0 to n - 2 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to n - 2 = " + std::to_string(nodes.size() - 3) + ", k is now 0.", "Since k <= " + std::to_string(nodes.size() - 3) + ", the loop continues." });
+			} else if (i < edges.size() - 1) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(nodes.size() - 3) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(nodes.size() - 3) + ", the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 1, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		// New step: pre = pre->next
+		if (i == edges.size() - 1) {
+			break;
+		}
+
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set 'pre' to the pointer of the next node." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 2, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+		} else {
+			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+		}
+
+		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: Node* add = new Node(v)
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'add' that points to a new", "node with value " + std::to_string(value) + "." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, nodes.size() - 2, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (nodes.size() == 2) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawChange(&labels, labels.size() - 2, &LABEL_COLOR, std::to_string(labels.size() - 2) + "/pre", "pre");
+	}
+
+	action.drawFadeIn(&labels.back(), &LABEL_COLOR, "add");
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: pre->next = add
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the next pointer of 'pre' to 'add' and set", "the prev pointer of 'add' to 'pre'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawSlideIn(&edges.back(), &INSERTED_EDGE_COLOR, &INSERTED_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, nodes.size() - 2, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (nodes.size() == 2) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, labels.size() - 2, &LABEL_COLOR, "pre");
+	}
+
+	action.draw(&labels.back(), &LABEL_COLOR, "add");
+
+	// Code
+	action.drawMove(&code, 3, 4);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.drawChange(&edges, 0, edges.size() - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges.back(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes, 0, nodes.size() - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, nodes.size() - 2, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (nodes.size() == 2) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeOut(&labels, labels.size() - 2, &LABEL_COLOR, "pre");
+	}
+
+	action.drawFadeOut(&labels.back(), &LABEL_COLOR, "add");
+
+	// Code
+	action.drawFadeOut(&code, 4);
+}
+
+void DLL::insertAtTheMiddle(int index, int value) {
+	nodes.insert(index, Node(value, sf::Vector2f(50 + index * 160, 260)));
+	labels.insert(index, Label(&nodes.begin()->next(index)->data));
+	edges.insert(index, DoublyEdge(&nodes.begin()->next(index)->data, &nodes.begin()->next(index + 1)->data));
+	edges.begin()->next(index - 1)->data.right = &nodes.begin()->next(index)->data;
+	code.update({
+		"Node* pre = head;                ",
+		"for (int k = 0; k <= i - 2; k++) ",
+		"    pre = pre->next;             ",
+		"Node* nxt = pre->next;           ",
+		"Node* add = new Node(v);         ",
+		"add->next = nxt; nxt->prev = add;",
+		"pre->next = add; add->prev = pre;"
+		});
+
+	description.newOperation("Insert " + std::to_string(value) + " at index " + std::to_string(index));
+
+	randomNode1.position = nodes.begin()->next(index + 1)->data.position;
+	randomLabel1.node = &randomNode1;
+	randomEdge1.left = &nodes.begin()->next(index - 1)->data;
+	randomEdge1.right = &randomNode1;
+
+	randomNode2.position = nodes.begin()->next(index - 1)->data.position;
+	randomLabel2.node = &randomNode2;
+	randomEdge2.left = &randomNode2;
+	randomEdge2.right = &nodes.begin()->next(index + 1)->data;
+
+	// New step: Node* pre = head
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'pre' and set it to 'head'." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 1, index - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = 0; i < index; i++) {
+		// New step: for (int k = 0; k <= i - 2; k++)
+		action.addNewStep();
+
+		// Description
+		if (index == 1) {
+			description.addDescription({ "Iterate k from 0 to i - 2 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to i - 2 = " + std::to_string(index - 2) + ", k is now 0.", "Since k <= " + std::to_string(index - 2) + ", the loop continues." });
+			} else if (i <= index - 2) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(index - 2) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(index - 2) + ", the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 1, index - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		if (i == index - 1) {
+			break;
+		}
+
+		// New step: pre = pre->next
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set 'pre' to the pointer of the next node." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 2, index - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+		} else {
+			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+		}
+
+		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: Node* nxt = pre->next
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'nxt' that points to the next", "node of 'pre'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawSlideIn(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes, index + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawChange(&labels, index - 1, &LABEL_COLOR, std::to_string(index - 1) + "/pre", "pre");
+	}
+
+	action.drawFadeIn(&labels, index + 1, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: Node* add = new Node(v)
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'add' that points to a new", "node with value " + std::to_string(value) + "." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.drawFadeIn(&labels, index, &LABEL_COLOR, "add");
+	action.draw(&labels, index + 1, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 3, 4);
+
+	// New step: add->next = nxt
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the next pointer of 'add' to 'nxt' and set", "the prev pointer of 'nxt' to 'add'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge:
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+	action.drawChange(&randomEdge2, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
+	action.drawSlideIn(&edges, index, &INSERTED_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode2.position, randomNode2.position + sf::Vector2f(160, 160));
+	action.draw(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.draw(&labels, index, &LABEL_COLOR, "add");
+	action.draw(&labels, index + 1, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 4, 5);
+
+	// New step: pre->next = add
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the next pointer of 'pre' to 'add'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&randomEdge2, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+	action.drawSlideIn(&edges, index - 1, &BLANK_COLOR, &INSERTED_EDGE_COLOR);
+	action.draw(&edges, index, &INSERTED_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
+	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawMove(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode1.position, randomNode1.position + sf::Vector2f(0, 160));
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.draw(&labels, index, &LABEL_COLOR, "add");
+	action.draw(&labels, index + 1, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 5, 6);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Re-layout the list for visualization.", "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.drawChange(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, index, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -160));
+	action.drawChange(&nodes, 0, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes, index, HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&nodes, index + 1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f(160, 0));
+	action.drawChange(&nodes, index + 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	for (int i = index + 2; i < nodes.size(); i++) {
+		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
+	}
+
+	// Label
+	if (index == 1) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeOut(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.drawFadeOut(&labels, index, &LABEL_COLOR, "add");
+	action.drawFadeOut(&labels, index + 1, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawFadeOut(&code, 6);
+}
+
 void DLL::insertNode(int index, int value, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
 		insertAtTheFront(value, head);
 	} else if (index == nodes.size()) {
-		//insertAtTheBack(value);
+		insertAtTheBack(value);
 	} else {
-		//insertAtTheMiddle(index, value);
+		insertAtTheMiddle(index, value);
+	}
+
+	maxPosition1 = nodes.size() - 1;
+	maxPosition2 = nodes.size() - 2;
+}
+
+void DLL::eraseAtTheFront(bool head) {
+	deletedNode = nodes.popFront();
+	deletedEdge = edges.popFront();
+	deletedEdge.left = &deletedNode;
+	deletedLabel = labels.popFront();
+	deletedLabel.node = &deletedNode;
+	code.update({
+		"Node* del = head;                   ",
+		"head = head->next;                  ",
+		"if (head != NULL) head->prev = NULL;",
+		"delete del;                         "
+		});
+
+	if (head) {
+		description.newOperation("Erase value at the front");
+	} else {
+		description.newOperation("Erase value at the back");
+	}
+
+	// New step: Node* del = head
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'del' and set it to 'head'." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	if (deletedEdge.right != nullptr) {
+		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	}
+
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	}
+
+	// Node
+	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	if (nodes.size() > 0) {
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	action.drawChange(&deletedLabel, &LABEL_COLOR, "head", "head/del");
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	// New step: head = head->next
+	action.addNewStep();
+
+	// Description
+	if (nodes.size() == 0) {
+		description.addDescription({ "Set 'head' to the pointer of the next node (NULL)." });
+	} else {
+		description.addDescription({ "Set 'head' to the pointer of the next node." });
+	}
+
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	if (deletedEdge.right != nullptr) {
+		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+		action.drawChange(&deletedEdge, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &ERASED_EDGE_COLOR);
+	}
+
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	}
+
+	// Node
+	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	if (nodes.size() > 0) {
+		action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	action.drawChange(&deletedLabel, &LABEL_COLOR, "head/del", "del");
+	if (labels.size() > 0) {
+		action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+	}
+
+	// Code
+	action.drawMove(&code, 0, 1);
+
+	// New step: if (head != NULL) head->prev = NULL;
+	action.addNewStep();
+
+	// Description
+	if (nodes.size() == 1) {
+		description.addDescription({ "Check if 'head' is not NULL. Since it is false,", "the statement is ignored." });
+	} else {
+		description.addDescription({ "Check if 'head' is not NULL. Since it is true,", "set the prev pointer of 'head' to NULL." });
+	}
+
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	if (deletedEdge.right != nullptr) {
+		action.draw(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+		action.drawSlideOut(&deletedEdge, &BLANK_COLOR, &ERASED_EDGE_COLOR);
+	}
+
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	}
+
+	// Node
+	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	if (nodes.size() > 0) {
+		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	action.draw(&deletedLabel, &LABEL_COLOR, "del");
+	if (labels.size() > 0) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+	}
+
+	// Code
+	action.drawMove(&code, 1, 2);
+
+	// New step: delete add
+	action.addNewStep();
+
+	// Description
+	if (nodes.size() > 0) {
+		description.addDescription({ "Erase 'del'." });
+	} else {
+		description.addDescription({ "Erase 'del'.", "Now the list is empty." });
+	}
+
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	if (deletedEdge.right != nullptr) {
+		action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+	}
+
+	if  (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_EDGE_COLOR);
+	}
+
+	// Node
+	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	if (nodes.size() > 0) {
+		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+	if (labels.size() > 0) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+	}
+
+	// Code
+	action.drawMove(&code, 2, 3);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	if (nodes.size() > 0) {
+		description.addDescription({ "Re-layout the list for visualization.", "The whole process is O(1)." });
+	} else {
+		description.addDescription({ "The whole process is O(1)." });
+	}
+
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	}
+
+	// Node
+	if (nodes.size() > 0) {
+		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-160, 0));
+		action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+		action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		for (int i = 1; i < nodes.size(); i++) {
+			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-160, 0));
+		}
+	}
+
+	// Label
+	if (labels.size() > 0) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+	}
+
+	// Code
+	action.drawFadeOut(&code, 3);
+}
+
+void DLL::eraseAtTheBack() {
+	deletedNode = nodes.popBack();
+	deletedEdge = edges.popBack();
+	deletedEdge.right = &deletedNode;
+	deletedLabel = labels.popBack();
+	deletedLabel = &deletedNode;
+
+	code.update({
+		"Node* pre = head;               ",
+		"for (int k = 0; k <= n - 3; k++)",
+		"    pre = pre->next;            ",
+		"Node* del = pre->next;          ",
+		"delete del; pre->next = NULL;   "
+		});
+
+	description.newOperation("Erase value at the back");
+
+	// New step: Node* pre = head
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'pre' and set it to 'head'." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = 0; i <= edges.size(); i++) {
+		// New step: for (int k = 0; k <= n - 3; k++)
+		action.addNewStep();
+
+		if (nodes.size() == 2) {
+			description.addDescription({ "Iterate k from 0 to n - 3 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to n - 3 = " + std::to_string(nodes.size() - 2) + ", k is now 0.", "Since k <= " + std::to_string(nodes.size() - 2) + ", the loop continues." });
+			} else if (i <= nodes.size() - 2) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(nodes.size() - 2) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(nodes.size() - 2) + ", the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		// New step: pre = pre->next
+		if (i == edges.size()) {
+			break;
+		}
+
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set 'pre' to the pointer of the next node." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+		} else {
+			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+		}
+
+		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: Node* del = pre->next
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'del' that points to the next", "node of 'pre'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+	action.drawChange(&deletedEdge, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &ERASED_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (nodes.size() == 1) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawChange(&labels.back(), &LABEL_COLOR, std::to_string(labels.size() - 1) + "/pre", "pre");
+	}
+
+	action.drawFadeIn(&deletedLabel, &LABEL_COLOR, "del");
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: delete del; pre->next = NULL
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Erase 'del'.", "Set the next pointer of 'pre' to NULL." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR, &ERASED_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (nodes.size() == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.back(), &LABEL_COLOR, "pre");
+	}
+
+	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+
+	// Code
+	action.drawMove(&code, 3, 4);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.drawChange(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (nodes.size() == 1) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeOut(&labels.back(), &LABEL_COLOR, "pre");
+	}
+
+	// Code
+	action.drawFadeOut(&code, 4);
+}
+
+void DLL::eraseAtTheMiddle(int index) {
+	deletedNode = nodes.erase(index);
+	deletedEdge = edges.erase(index);
+	deletedEdge.left = &deletedNode;
+	deletedLabel = labels.erase(index);
+	deletedLabel.node = &deletedNode;
+	edges.begin()->next(index - 1)->data.right = &nodes.begin()->next(index)->data;
+	if (index != edges.size()) {
+		edges.begin()->next(index)->data.left = &nodes.begin()->next(index)->data;
+	}
+
+	code.update({
+		"Node* pre = head;                ",
+		"for (int k = 0; k <= i - 2; k++) ",
+		"    pre = pre->next;             ",
+		"Node* del = pre->next;           ",
+		"Node* nxt = del->next;           ",
+		"pre->next = nxt; nxt->prev = pre;",
+		"delete del;                      "
+		});
+
+	description.newOperation("Erase value at index " + std::to_string(index));
+
+	randomNode1.position = deletedNode.position;
+	randomLabel1.node = &randomNode1;
+	randomEdge1.left = &nodes.begin()->next(index - 1)->data;
+	randomEdge1.right = &randomNode1;
+
+	randomNode2.position = deletedNode.position;
+	randomLabel2.node = &randomNode2;
+	randomEdge2.left = &randomNode2;
+	randomEdge2.right = &nodes.begin()->next(index)->data;
+
+	randomEdge.left = &nodes.begin()->next(index - 1)->data;
+	randomEdge.right = &deletedNode;
+
+	// New step: Node* pre = head
+	action.addNewStep();
+
+	description.addDescription({ "Create a pointer 'pre' that points to 'head'." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = 0; i < index; i++) {
+		// New step: for (int k = 0; k <= i - 2; k++)
+		action.addNewStep();
+
+		// Description
+		if (index == 1) {
+			description.addDescription({ "Iterate k from 0 to i - 2 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to i - 2 = " + std::to_string(index - 2) + ", k is now 0.", "Since k <= " + std::to_string(index - 2) + ", the loop continues." });
+			} else if (i <= index - 2) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(index - 2) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(index - 2) + ", the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		// New step: pre = pre->next
+		if (i == index - 1) {
+			break;
+		}
+
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set 'pre' to the pointer of the next node." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+		} else {
+			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+		}
+
+		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: Node* del = pre->next
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'del' that points to the next", "node of 'pre'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawSlideIn(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawChange(&labels, index - 1, &LABEL_COLOR, std::to_string(index - 1) + "/pre", "pre");
+	}
+
+	action.drawFadeIn(&deletedLabel, &LABEL_COLOR, "del");
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: Node* nxt = add->next
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'nxt' that points to the next", "node of 'del'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes, index, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.draw(&deletedLabel, &LABEL_COLOR, "del");
+	action.drawFadeIn(&labels, index, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 3, 4);
+
+	// New step: pre->next = nxt
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the next pointer of 'pre' to 'nxt' and set", "the prev pointer of 'nxt' to 'prev'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&randomEdge2, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
+	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+	action.drawChange(&randomEdge, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &ERASED_EDGE_COLOR);
+	action.draw(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, deletedNode.position, deletedNode.position + sf::Vector2f(0, 160));
+	action.drawSlide(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, &deletedNode, &nodes.begin()->next(index)->data);
+	action.drawSlide(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, &deletedNode, &nodes.begin()->next(index - 1)->data);
+	action.draw(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.draw(&deletedLabel, &LABEL_COLOR, "del");
+	action.draw(&labels, index, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 4, 5);
+
+	// New step: delete del
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Erase 'del'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index - 1, &HIGHLIGHT_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
+	action.drawSlideOut(&randomEdge, &BLANK_COLOR, &ERASED_EDGE_COLOR);
+	action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+	action.draw(&labels, index, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawMove(&code, 5, 6);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Re-layout the list for visualization.", "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.drawChange(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-160, 0));
+	action.drawChange(&nodes, index, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	for (int i = index + 1; i < nodes.size(); i++) {
+		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-160, 0));
+	}
+
+	// Label
+	if (index == 1) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeOut(&labels, index - 1, &LABEL_COLOR, "pre");
+	}
+
+	action.drawFadeOut(&labels, index, &LABEL_COLOR, "nxt");
+
+	// Code
+	action.drawFadeOut(&code, 6);
+}
+
+void DLL::eraseNode(int index, bool head) {
+	action.clearAllSteps();
+
+	if (index == 0) {
+		eraseAtTheFront(head);
+	} else if (index == nodes.size() - 1) {
+		eraseAtTheBack(); 
+	} else {
+		eraseAtTheMiddle(index);
 	}
 
 	maxPosition1 = nodes.size() - 1;
@@ -1004,28 +2276,28 @@ void DLL::run() {
 					break;
 
 				case 1: // Back
-					//insertNode(nodes.size(), std::stoi(std::get <2>(current)[0]), false);
+					insertNode(nodes.size(), std::stoi(std::get <2>(current)[0]), false);
 					break;
 
 				case 2: // Middle
-					//insertNode(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					insertNode(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
-				}
+				}	
 
 				break;
 
 			case 4: // Erase
 				switch (std::get <1> (current)) {
 				case 0: // Front
-					//eraseNode(0);
+					eraseNode(0);
 					break;
 
 				case 1: // Back
-					//eraseNode(nodes.size() - 1, false);
+					eraseNode(nodes.size() - 1, false);
 					break;
 
 				case 2: // Middle
-					//eraseNode(std::stoi(std::get <2> (current)[0]));
+					eraseNode(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 

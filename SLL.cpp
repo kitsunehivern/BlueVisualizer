@@ -691,7 +691,7 @@ void SLL::insertAtTheFront(int value, bool head) {
 
 	// Node
 	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR );
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
 	action.drawChange(&labels.front(), &LABEL_COLOR, "add", "head/add");
@@ -716,7 +716,7 @@ void SLL::insertAtTheFront(int value, bool head) {
 
 	// Node
 	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -160));
-	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR );
+	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	for (int i = 1; i < nodes.size(); i++) {
 		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
@@ -1037,7 +1037,7 @@ void SLL::insertAtTheMiddle(int index, int value) {
 
 		// Edge
 		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR);
-		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR );
+		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR);
 		action.draw(&randomEdge, &NORMAL_EDGE_COLOR);
 		action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
 		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR);
