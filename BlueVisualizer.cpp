@@ -1,5 +1,7 @@
-#include <iostream>
+#include "Core.h"
 
 int main() {
-	std::cout << "Cai chet\n";
+	Core::run();
+
+	return 0;
 }

@@ -1,0 +1,249 @@
+#include "OptionBox.h"
+
+OptionBox::OptionBox() {
+}
+
+OptionBox::OptionBox(Assets* assets, sf::Vector2f position) {
+	this->position = position;
+	this->assets = assets;
+	currentOption = -1;
+}
+
+void OptionBox::addOption(std::string optionName) {
+	this->optionName.push_back(optionName);
+	this->suboptionName.push_back(std::vector <std::string> ());
+	this->suboptionCondition.push_back(std::vector <std::function <bool()> > ());
+	this->suboptionInput.push_back(std::vector <std::vector <InputBox> > ());
+	currentSuboption.push_back(0);
+}
+
+void OptionBox::addSuboption(std::string suboptionName, std::function <bool()> suboptionCondition) {
+	this->suboptionName.back().push_back(suboptionName);
+	this->suboptionCondition.back().push_back(suboptionCondition);
+	this->suboptionInput.back().push_back(std::vector <InputBox> ());
+}
+
+void OptionBox::addSuboptionInput(std::string valueName, std::vector <char> validCharacters, std::function <std::string(std::string, std::string)> validator, std::function <std::string()> generator) {
+	this->suboptionInput.back().back().push_back(InputBox());
+	if (valueName == "File browser") {
+		this->suboptionInput.back().back().back().setSprite(&assets->skewBox560x60Sprite);
+	} else {
+		this->suboptionInput.back().back().back().setSprite(&assets->skewBox400x60Sprite);
+	}
+
+	this->suboptionInput.back().back().back().setText(&assets->consolasBoldText, valueName, 30);
+	this->suboptionInput.back().back().back().setValidCharacters(validCharacters);
+	this->suboptionInput.back().back().back().setValidator(validator);
+	this->suboptionInput.back().back().back().setGenerator(generator);
+	this->suboptionInput.back().back().back().setFillColor(&BOX_COLOR_3, &BOX_TEXT_COLOR);
+	for (int i = 0; i < this->suboptionInput.back().back().size(); i++) {
+		this->suboptionInput.back().back()[i].setPosition(position + sf::Vector2f(300, 200 - 40 * this->suboptionInput.back().back().size() + 80 * i));
+	}
+}
+
+void OptionBox::updateMessage() {
+	message.clear();
+	if (currentOption != -1) {
+		for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+			if (message.empty()) {
+				message = suboptionInput[currentOption][currentSuboption[currentOption]][i].getErrorMessage();
+			}
+		}
+
+		if (!suboptionCondition[currentOption][currentSuboption[currentOption]]()) {
+			message = "Unavailable";
+		}
+	}
+}
+
+bool OptionBox::isFocus() {
+	if (currentOption != -1) {
+		for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+			if (suboptionInput[currentOption][currentSuboption[currentOption]][i].isFocus()) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void OptionBox::draw(sf::RenderTarget &target, sf::RenderStates state) const {
+	sf::Sprite* boxSprite = &assets->box880x380Sprite;
+	sf::Text* optionText = &assets->consolasBoldText;
+	sf::Sprite* suboptionBoxSprite = &assets->skewBox400x60Sprite;
+	sf::Text* suboptionText = &assets->consolasBoldText;
+
+	boxSprite->setTextureRect(sf::IntRect(0, 0, 280, 380));
+	boxSprite->setColor(BOX_COLOR_1);
+	boxSprite->setPosition(position);
+	target.draw(*boxSprite, state);
+
+	boxSprite->setTextureRect(sf::IntRect(280, 0, 600, 380));
+	boxSprite->setColor(BOX_COLOR_2);
+	boxSprite->setPosition(position + sf::Vector2f(280, 0));
+	target.draw(*boxSprite, state);
+
+	int lastHeight = 0;
+	for (int i = 0; i < optionName.size(); i++) {
+		int height;
+		if (i == optionName.size() - 1) {
+			height = 380 - lastHeight;
+		} else {
+			height = 380 / optionName.size();
+
+			sf::RectangleShape seperatorLine(sf::Vector2f(200, 2));
+			seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_1);
+			seperatorLine.setOrigin(0, seperatorLine.getSize().y / 2);
+			seperatorLine.setPosition(position.x + 40, position.y + lastHeight + height);
+			target.draw(seperatorLine, state);
+		}
+
+		boxSprite->setTextureRect(sf::IntRect(0, lastHeight + 5, 280, height - 10));
+		boxSprite->setPosition(position.x, position.y + lastHeight + 5);
+		if (i == currentOption) {
+			boxSprite->setColor(BOX_COLOR_2);
+		} else {
+			boxSprite->setColor(BOX_COLOR_1);
+		}
+
+		target.draw(*boxSprite, state);
+
+		optionText->setString(optionName[i]);
+		optionText->setFillColor(BOX_TEXT_COLOR);
+		optionText->setCharacterSize(30);
+		optionText->setOrigin(optionText->getLocalBounds().left + optionText->getLocalBounds().width / 2, optionText->getLocalBounds().top + optionText->getLocalBounds().height / 2);
+		optionText->setPosition(boxSprite->getGlobalBounds().left + boxSprite->getGlobalBounds().width / 2, boxSprite->getGlobalBounds().top + boxSprite->getGlobalBounds().height / 2);
+		target.draw(*optionText, state);
+
+		lastHeight += height;
+	}
+
+	if (currentOption != -1) {
+		assets->prevButtonSprite.setPosition(position + sf::Vector2f(300, 20));
+		assets->prevButtonSprite.setColor(BOX_COLOR_3);
+		target.draw(assets->prevButtonSprite, state);
+
+		assets->nextButtonSprite.setPosition(position + sf::Vector2f(800, 20));
+		assets->nextButtonSprite.setColor(BOX_COLOR_3);
+		target.draw(assets->nextButtonSprite, state);
+
+		suboptionBoxSprite->setPosition(position + sf::Vector2f(380, 20));
+		suboptionBoxSprite->setColor(BOX_COLOR_3);
+		target.draw(*suboptionBoxSprite, state);
+
+		suboptionText->setString(suboptionName[currentOption][currentSuboption[currentOption]]);
+		suboptionText->setFillColor(BOX_TEXT_COLOR);
+		suboptionText->setCharacterSize(30);
+		suboptionText->setOrigin(suboptionText->getLocalBounds().left + suboptionText->getLocalBounds().width / 2, 0);
+		suboptionText->setPosition(position + sf::Vector2f(580, 30));
+		target.draw(*suboptionText, state);
+
+		for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+			target.draw(suboptionInput[currentOption][currentSuboption[currentOption]][i], state);
+
+			if (suboptionName[currentOption][currentSuboption[currentOption]] != "Manual" || i != 1) {
+				Button randomButton;
+				randomButton.setSprite(&assets->skewBox160x60Sprite);
+				randomButton.setText(&assets->consolasBoldText, "Random", 30);
+				randomButton.setFillColor(&BOX_COLOR_3, &BOX_TEXT_COLOR);
+				randomButton.setPosition(position + sf::Vector2f(700, 200 - 40 * suboptionInput[currentOption][currentSuboption[currentOption]].size() + 80 * i));
+				target.draw(randomButton, state);
+			}
+		}
+
+		Button messageButton;
+		messageButton.setSprite(&assets->skewBox560x60Sprite);
+		messageButton.setText(&assets->consolasBoldText, message.empty() ? "GO" : message, 30);
+		messageButton.setFillColor(&BOX_COLOR_3, &BOX_TEXT_COLOR);
+		messageButton.setPosition(position + sf::Vector2f(300, 300));
+		target.draw(messageButton, state);
+
+		sf::RectangleShape seperatorLine(sf::Vector2f(500, 2));
+		seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_2);
+		seperatorLine.setOrigin(0, seperatorLine.getSize().y / 2);
+		seperatorLine.setPosition(position.x + 330, position.y + 100);
+		target.draw(seperatorLine, state);
+
+		seperatorLine.setPosition(position.x + 330, position.y + 280);
+		target.draw(seperatorLine, state);
+	}
+}
+
+std::tuple <int, int, std::vector <std::string> > OptionBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
+	if (currentOption != -1) {
+		for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+			suboptionInput[currentOption][currentSuboption[currentOption]][i].handleEvent(window, event);
+		}
+
+		if (suboptionName[currentOption][currentSuboption[currentOption]] == "Manual") {
+			if (!suboptionInput[currentOption][currentSuboption[currentOption]][1].getValue().empty()) {
+				suboptionInput[currentOption][currentSuboption[currentOption]][0].setValue(suboptionInput[currentOption][currentSuboption[currentOption]][1].getValue());
+				suboptionInput[currentOption][currentSuboption[currentOption]][1].setValue("");
+			}
+		}
+	}
+
+	if (event->type == sf::Event::MouseButtonReleased) {
+		int lastHeight = 0;
+		for (int i = 0; i < optionName.size(); i++) {
+			int height;
+			if (i == optionName.size() - 1) {
+				height = 380 - lastHeight;
+			} else {
+				height = 380 / optionName.size();
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x, position.y + lastHeight + 5, 280, height - 10))) {
+				currentOption = i;
+			}
+
+			lastHeight += height;
+		}
+
+		if (currentOption != -1) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 300, position.y + 20, 60, 60))) {
+				currentSuboption[currentOption]--;
+				if (currentSuboption[currentOption] < 0) {
+					currentSuboption[currentOption] = suboptionName[currentOption].size() - 1;
+				}
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 800, position.y + 20, 60, 60))) {
+				currentSuboption[currentOption]++;
+				if (currentSuboption[currentOption] > suboptionName[currentOption].size() - 1) {
+					currentSuboption[currentOption] = 0;
+				}
+			}
+
+			for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+				if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 700, position.y + 200 - 40 * suboptionInput[currentOption][currentSuboption[currentOption]].size() + 80 * i, 160, 60))) {
+					suboptionInput[currentOption][currentSuboption[currentOption]][i].setRandomValue();
+				}
+			}
+
+			if (message.empty() && positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 300, position.y + 300, 560, 60))) {
+				std::vector <std::string> values;
+				for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+					values.push_back(suboptionInput[currentOption][currentSuboption[currentOption]][i].getValue());
+				}
+
+				return { currentOption, currentSuboption[currentOption], values };
+			}
+		}
+	} else if (event->type == sf::Event::KeyPressed) {
+		if (currentOption != -1 && message.empty() && event->key.code == sf::Keyboard::Enter) {
+			std::vector <std::string> values;
+			for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
+				values.push_back(suboptionInput[currentOption][currentSuboption[currentOption]][i].getValue());
+				suboptionInput[currentOption][currentSuboption[currentOption]][i].setFocus(false);
+			}
+
+			return { currentOption, currentSuboption[currentOption], values };
+		}
+	}
+
+	updateMessage();
+
+	return { -1, -1, {} };
+}

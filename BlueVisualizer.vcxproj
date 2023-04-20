@@ -104,10 +104,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-main-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,7 +131,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionBox.cpp" />
+    <ClCompile Include="Assets.cpp" />
     <ClCompile Include="BlueVisualizer.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CodeBox.cpp" />
+    <ClCompile Include="DescriptionBox.cpp" />
+    <ClCompile Include="DLL.cpp" />
+    <ClCompile Include="DoublyEdge.cpp" />
+    <ClCompile Include="Edge.cpp" />
+    <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="Motion.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="OptionBox.cpp" />
+    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="SLL.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ActionBox.h" />
+    <ClInclude Include="Assets.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CodeBox.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="DescriptionBox.h" />
+    <ClInclude Include="DLL.h" />
+    <ClInclude Include="DoublyEdge.h" />
+    <ClInclude Include="Edge.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="Motion.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="OptionBox.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="SLL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
