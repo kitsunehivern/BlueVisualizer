@@ -69,6 +69,9 @@
     <ClCompile Include="StackVisualizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QueueVisualizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionBox.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StackVisualizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueVisualizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

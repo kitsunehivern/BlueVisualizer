@@ -146,6 +146,7 @@
     <ClCompile Include="Motion.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="OptionBox.cpp" />
+    <ClCompile Include="QueueVisualizer.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="SLLVisualizer.cpp" />
     <ClCompile Include="StackVisualizer.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Motion.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="OptionBox.h" />
+    <ClInclude Include="QueueVisualizer.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="SLLVisualizer.h" />
     <ClInclude Include="StackVisualizer.h" />

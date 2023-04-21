@@ -6,6 +6,7 @@
 #include "SLLVisualizer.h"
 #include "DLLVisualizer.h"
 #include "StackVisualizer.h"
+#include "QueueVisualizer.h"
 
 namespace Core {
 
@@ -26,8 +27,11 @@ namespace Core {
         //DLLVisualizer dll(&window, &assets);
         //dll.run();
 
-        StackVisualizer stack(&window, &assets);
-        stack.run();
+        //StackVisualizer stack(&window, &assets);
+        //stack.run();
+
+        QueueVisualizer queue(&window, &assets);
+        queue.run();
     }
 
 } // namespace Core

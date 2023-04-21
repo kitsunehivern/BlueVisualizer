@@ -1,5 +1,5 @@
-#ifndef STACK_VISUALIZER
-#define STACK_VISUALIZER
+#ifndef QUEUE_VISUALIZER_H
+#define QUEUE_VISUALIZER_H
 
 #include "Global.h"
 #include "Assets.h"
@@ -7,19 +7,20 @@
 #include "OptionBox.h"
 #include "DescriptionBox.h"
 
-class StackVisualizer {
+class QueueVisualizer {
 public:
-	StackVisualizer(sf::RenderWindow* window, Assets* assets);
+	QueueVisualizer(sf::RenderWindow* window, Assets* assets);
 
-	void randomStack(int size);
-	void manualStack(std::string listOfValues);
-	void createStack();
+	void randomQueue(int size);
+	void manualQueue(std::string listOfValues);
+	void createQueue();
 
-	void peek();
-	
-	void push(int value);
-	
-	void pop();
+	void peekAtTheFront();
+	void peekAtTheBack();
+
+	void enqueue(int value);
+
+	void dequeue();
 
 	void run();
 
@@ -31,7 +32,7 @@ private:
 	CodeBox code;
 	OptionBox option;
 	DescriptionBox description;
-	
+
 	List <Node> nodes;
 	List <Label> labels;
 	List <Edge> edges;

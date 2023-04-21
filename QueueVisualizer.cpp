@@ -1,7 +1,7 @@
-#include "StackVisualizer.h"
+#include "QueueVisualizer.h"
 #include "Random.h"
 
-StackVisualizer::StackVisualizer(sf::RenderWindow* window, Assets* assets) {
+QueueVisualizer::QueueVisualizer(sf::RenderWindow* window, Assets* assets) {
 	this->window = window;
 	this->assets = assets;
 
@@ -11,14 +11,14 @@ StackVisualizer::StackVisualizer(sf::RenderWindow* window, Assets* assets) {
 	description = DescriptionBox(sf::Vector2f(910, 430));
 }
 
-void StackVisualizer::randomStack(int size) {
+void QueueVisualizer::randomQueue(int size) {
 	nodes.clear();
 	for (int i = 0; i < size; i++) {
 		nodes.pushBack(Node(randInt(1, 99), sf::Vector2f()));
 	}
 }
 
-void StackVisualizer::manualStack(std::string listOfValues) {
+void QueueVisualizer::manualQueue(std::string listOfValues) {
 	nodes.clear();
 	for (int i = 0; i < listOfValues.size(); i++) {
 		if ('0' > listOfValues[i] || listOfValues[i] > '9') {
@@ -39,16 +39,16 @@ void StackVisualizer::manualStack(std::string listOfValues) {
 	}
 }
 
-void StackVisualizer::createStack() {
+void QueueVisualizer::createQueue() {
 	action.clearAllSteps();
 
 	labels.clear();
 	edges.clear();
 	code.update({});
 	if (nodes.empty()) {
-		description.newOperation("Create an empty stack");
+		description.newOperation("Create an empty queue");
 	} else {
-		description.newOperation("Create a stack of size " + std::to_string(nodes.size()));
+		description.newOperation("Create a queue of size " + std::to_string(nodes.size()));
 	}
 
 	if (!nodes.empty()) {
@@ -68,9 +68,9 @@ void StackVisualizer::createStack() {
 
 		// Description
 		if (nodes.size() == 1) {
-			description.addDescription({ "Create only 1 node.", "'head' points to that node." });
+			description.addDescription({ "Create only 1 node. Both 'head' and 'tail'", "point to that node." });
 		} else {
-			description.addDescription({ "Create " + std::to_string(nodes.size()) + " nodes.", "'head' points to the first node." });
+			description.addDescription({ "Create " + std::to_string(nodes.size()) + " nodes. 'head' points to the first", "node and 'tail' points to the last node." });
 		}
 
 		action.drawFadeIn(&description, description.size() - 1);
@@ -81,8 +81,11 @@ void StackVisualizer::createStack() {
 		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 
 		// Label
-		if (!labels.empty()) {
+		if (labels.size() == 1) {
+			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
 			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeIn(&labels.back(), &LABEL_COLOR, "tail");
 		}
 
 		// Code
@@ -94,7 +97,7 @@ void StackVisualizer::createStack() {
 		action.addNewStep();
 
 		// Description
-		description.addDescription({ "Create next pointers for every nodes.", "Next pointer of the last node points to NULL."});
+		description.addDescription({ "Create next pointers for every nodes.", "Next pointer of 'tail' points to NULL."});
 
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
@@ -105,7 +108,12 @@ void StackVisualizer::createStack() {
 		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 
 		// Label
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		if (labels.size() == 1) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
 
 		// Code
 		action.draw(&code);
@@ -116,10 +124,10 @@ void StackVisualizer::createStack() {
 
 	// Description
 	if (nodes.empty()) {
-		description.addDescription({ "An empty stack is created." });
+		description.addDescription({ "An empty queue is created." });
 		action.drawFadeIn(&description, description.size() - 1);
 	} else {
-		description.addDescription({ "A stack of size " + std::to_string(nodes.size()) + " is created." });
+		description.addDescription({ "A queue of size " + std::to_string(nodes.size()) + " is created." });
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 	}
 
@@ -135,20 +143,25 @@ void StackVisualizer::createStack() {
 	}
 
 	// Label
-	if (!labels.empty()) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+	if (labels.size() > 0) {
+		if (labels.size() == 1) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
 	}
 
 	// Code
 	action.draw(&code);
 }
 
-void StackVisualizer::peek() {
+void QueueVisualizer::peekAtTheFront() {
 	action.clearAllSteps();
 
 	code.update({
-	"if (n == 0) return NOTHING;",
-	"return head->data;"
+		"if (n == 0) return NOTHING;",
+		"return head->data;"
 		});
 
 	description.newOperation("Peek front");
@@ -176,7 +189,12 @@ void StackVisualizer::peek() {
 
 	// Label
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		if (labels.size() == 1) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
 	}
 
 	// Code
@@ -217,7 +235,12 @@ void StackVisualizer::peek() {
 	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	if (labels.size() == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+	}
 
 	// Code
 	action.drawMove(&code, 0, 1);
@@ -239,137 +262,330 @@ void StackVisualizer::peek() {
 	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	if (labels.size() == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+	}
 
 	// Code
 	action.drawFadeOut(&code, 1);
 }
 
-void StackVisualizer::push(int value) {
+void QueueVisualizer::peekAtTheBack() {
 	action.clearAllSteps();
 
-	nodes.pushFront(Node(value, sf::Vector2f(50, 260)));
-	labels.pushFront(Label(&nodes.front()));
-	if (nodes.size() > 1) {
-		edges.pushFront(Edge(&nodes.begin()->data, &nodes.begin()->next()->data));
-	}
-
 	code.update({
-		"Node* add = new Node(v);",
-		"add->next = head;       ",
-		"head = add;             "
+		"if (n == 0) return NOTHING;",
+		"return tail->data;"
 		});
 
-	description.newOperation("Push " + std::to_string(value));
+	description.newOperation("Peek back");
 
-	// New step: Node* add = new Node(v)
+	// New step: if (n == 0) return NOTHING
 	action.addNewStep();
 
-	// Description
-	description.addDescription({ "Create a pointer 'add' that points to a new", "node with value " + std::to_string(value) + "." });
+	if (nodes.size() == 0) {
+		description.addDescription({ "Check if the stack is empty.", "Since n = 0, NOT_FOUND is returned." });
+	} else {
+		description.addDescription({ "Check if the stack is empty.", "Since n > 0, the statement is ignored." });
+	}
+
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	}
 
 	// Node
-	action.drawFadeIn(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	if (nodes.size() > 0) {
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
 
 	// Label
-	action.drawFadeIn(&labels.front(), &LABEL_COLOR, "add");
-	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+	if (labels.size() > 0) {
+		if (labels.size() == 1) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
 	}
 
 	// Code
 	action.drawFadeIn(&code, 0);
 
-	// New step: add->next = head
-	action.addNewStep();
+	if (nodes.size() == 0) {
+		// New step: Re-layout
+		action.addNewStep();
 
-	// Description
-	if (nodes.size() > 1) {
-		description.addDescription({ "Set the next pointer of 'add' to 'head'." });
-	} else {
-		description.addDescription({ "Set the next pointer of 'add' to 'head' (NULL)." });
+		// Description
+		description.addDescription({ "So there is no value.", "The whole process is O(1)."});
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+
+		// Node
+
+		// Label
+
+		// Code
+		action.drawFadeOut(&code, 0);
+
+		return;
 	}
 
+	// New step: return head->data
+	description.addDescription({ "Return the value of 'tail', which is " + std::to_string(nodes.back().value) + "." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
 	if (edges.size() > 0) {
-		action.drawSlideIn(&edges.front(), &INSERTED_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.back(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, (int)nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "add");
-	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+	if (labels.size() == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.back(), &LABEL_COLOR, "tail");
 	}
 
 	// Code
 	action.drawMove(&code, 0, 1);
 
-	// New step: head = add
+	// New step: Re-layout
 	action.addNewStep();
 
-	// Description
-	description.addDescription({ "Set 'head' to 'add'." });
+	description.addDescription({ "So the value at the back is " + std::to_string(nodes.back().value) + ".", "The whole process is O(1)." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges.front(), &INSERTED_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.back(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, (int)nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "add", "head/add");
-	if (labels.size() > 1) {
-		action.drawFadeOut(&labels, 1, &LABEL_COLOR, "head");
+	if (labels.size() == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.back(), &LABEL_COLOR, "tail");
 	}
 
 	// Code
-	action.drawMove(&code, 1, 2);
+	action.drawFadeOut(&code, 1);
+}
+
+void QueueVisualizer::enqueue(int value) {
+	action.clearAllSteps();
+
+	nodes.pushBack(Node(value, sf::Vector2f(50 + nodes.size() * 160, 100)));
+	labels.pushBack(Label(&nodes.back()));
+	if (nodes.size() > 1) {
+		edges.pushBack(Edge(&nodes.rbegin()->prev()->data, &nodes.rbegin()->data));
+	}
+
+	code.update({
+	"if (n == 0) head = tail = new Node(v);",
+	"else {                                ",
+	"    Node* add = new Node(v);          ",
+	"    tail->next = add;                 ",
+	"    tail = add;                       ",
+	"}                                     "
+		});
+
+	description.newOperation("Enqueue " + std::to_string(value));
+
+	// New step: if (n == 0) head = tail = new Node(v)
+	action.addNewStep();
+
+	// Description
+	if (nodes.size() == 1) {
+		description.addDescription({ "Check if the queue is empty. Since n = 0, both", "'head' and 'tail' point to a new node." });
+	} else {
+		description.addDescription({ "Check if the queue is empty. Since n > 0, the", "statement is ignored." });
+	}
+
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+
+	// Node
+	if (nodes.size() == 1) {
+		action.drawFadeIn(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	} else {
+		action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	if (labels.size() == 1) {
+			action.drawFadeIn(&labels.back(), &LABEL_COLOR, "head/tail");
+	} else {
+		if (labels.size() == 2) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+		}
+	}
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	if (nodes.size() == 1) {
+		// New step: Re-layout
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "The whole process is O(1)." });
+		
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+
+		// Node
+		action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+		action.drawFadeOut(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+		// Label
+		action.draw(&labels.back(), &LABEL_COLOR, "head/tail");
+
+		// Code
+		action.drawFadeOut(&code, 0);
+
+		return;
+	}
+
+	// New step: if (n == 0) head = tail = new Node(v)
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'add' that points to a new", "node with value " + std::to_string(value) + "." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeIn(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (labels.size() == 2) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+	}
+
+	action.drawFadeIn(&labels.back(), &LABEL_COLOR, "add");
+
+	// Code
+	action.drawMove(&code, 0, 2);
+
+	// New step: tail->next = add
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the next pointer of 'tail' to 'add'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.drawSlideIn(&edges.back(), &INSERTED_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, (int)nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (labels.size() == 2) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+	}
+
+	action.draw(&labels.back(), &LABEL_COLOR, "add");
+
+	// Code
+	action.drawMove(&code, 2, 3);
+
+	// New step: tail = add
+
+	// New step: tail->next = add
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set 'tail' to 'add'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges.back(), &INSERTED_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, (int)nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+
+	// Label
+	if (labels.size() == 2) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "head/tail", "head");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawChange(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail", "");
+	}
+
+	action.drawChange(&labels.back(), &LABEL_COLOR, "add", "tail/add");
+
+	// Code
+	action.drawMove(&code, 3, 4);
 
 	// New step: Re-layout
 	action.addNewStep();
 
-	description.addDescription({ "Re-layout the stack for visualization.", "The whole process is O(1)." });
+	// Description
+	description.addDescription({ "The whole process is O(1)." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	if (edges.size() > 0) {
-		action.drawChange(&edges.front(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
-	}
+	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges.back(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -160));
-	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
-	}
+	action.draw(&nodes, 0, (int)nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head/add", "head");
+	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	action.drawChange(&labels.back(), &LABEL_COLOR, "tail/add", "tail");
 
 	// Code
-	action.drawFadeOut(&code, 2);
+	action.drawFadeOut(&code, 4);
 }
 
-void StackVisualizer::pop() {
+void QueueVisualizer::dequeue() {
 	action.clearAllSteps();
 
 	deletedNode = nodes.popFront();
@@ -378,12 +594,13 @@ void StackVisualizer::pop() {
 	deletedLabel = labels.popFront();
 	deletedLabel.node = &deletedNode;
 	code.update({
-		"Node* del = head; ",
-		"head = head->next;",
-		"delete del;       "
+		"Node* del = head;             ",
+		"head = head->next;            ",
+		"if (head == NULL) tail = NULL;",
+		"delete del;                   "
 		});
 
-	description.newOperation("Pop");
+	description.newOperation("Dequeue");
 
 	// New step: Node* del = head
 	action.addNewStep();
@@ -409,7 +626,12 @@ void StackVisualizer::pop() {
 	}
 
 	// Label
-	action.drawChange(&deletedLabel, &LABEL_COLOR, "head", "head/del");
+	if (nodes.size() == 0) {
+		action.drawChange(&deletedLabel, &LABEL_COLOR, "head/tail", "head/tail/del");
+	} else {
+		action.drawChange(&deletedLabel, &LABEL_COLOR, "head", "head/del");
+		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+	}
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -445,13 +667,59 @@ void StackVisualizer::pop() {
 	}
 
 	// Label
-	action.drawChange(&deletedLabel, &LABEL_COLOR, "head/del", "del");
-	if (labels.size() > 0) {
-		action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+	if (labels.size() == 0) {
+		action.drawChange(&deletedLabel, &LABEL_COLOR, "head/tail/del", "tail/del");
+	} else {
+		action.drawChange(&deletedLabel, &LABEL_COLOR, "head/del", "del");
+		if (labels.size() == 1) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "tail", "head/tail");
+		} else {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "", "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
 	}
 
 	// Code
 	action.drawMove(&code, 0, 1);
+
+	// New step: if (head == NULL) tail = NULL
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "if 'head' is NULL then 'tail' is also NULL." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	if (deletedEdge.right != nullptr) {
+		action.draw(&deletedEdge, &ERASED_EDGE_COLOR);
+	}
+
+	if  (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_NODE_CIRCLE_COLOR);
+	}
+
+	// Node
+	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	if (nodes.size() > 0) {
+		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	if (labels.size() == 0) {
+		action.drawChange(&deletedLabel, &LABEL_COLOR, "tail/del", "del");
+	} else {
+		action.draw(&deletedLabel, &LABEL_COLOR, "del");
+		if (labels.size() == 1) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
+	}
+
+	// Code
+	action.drawMove(&code, 1, 2);
 
 	// New step: delete add
 	action.addNewStep();
@@ -460,7 +728,7 @@ void StackVisualizer::pop() {
 	if (nodes.size() > 0) {
 		description.addDescription({ "Erase 'del'." });
 	} else {
-		description.addDescription({ "Erase 'del'. Now the stack is empty." });
+		description.addDescription({ "Erase 'del'. Now the queue is empty." });
 	}
 
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
@@ -482,19 +750,26 @@ void StackVisualizer::pop() {
 	}
 
 	// Label
-	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
-	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+	if (labels.size() == 0) {
+		action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+	} else {
+		action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+		if (labels.size() == 1) {
+			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		}
 	}
 
 	// Code
-	action.drawMove(&code, 1, 2);
+	action.drawMove(&code, 2, 3);
 
 	// New step: Re-layout
 	action.addNewStep();
 
 	if (nodes.size() > 0) {
-		description.addDescription({ "Re-layout the stack for visualization.", "The whole process is O(1)." });
+		description.addDescription({ "Re-layout the queue for visualization.", "The whole process is O(1)." });
 	} else {
 		description.addDescription({ "The whole process is O(1)." });
 	}
@@ -517,15 +792,18 @@ void StackVisualizer::pop() {
 	}
 
 	// Label
-	if (labels.size() > 0) {
+	if (labels.size() == 1) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+	} else if (labels.size() >= 2) {
 		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.back(), &LABEL_COLOR, "tail");
 	}
 
 	// Code
-	action.drawFadeOut(&code, 2);
+	action.drawFadeOut(&code, 3);
 }
 
-void StackVisualizer::run() {
+void QueueVisualizer::run() {
 	std::vector <char> numbersCharacter;
 	for (int i = 0; i <= 9; i++) {
 		numbersCharacter.push_back(i + '0');
@@ -662,17 +940,18 @@ void StackVisualizer::run() {
 	option.addSuboptionInput("File browser", numbersCommaSpaceCharacter, std::bind(validatorListOfIntegers, std::placeholders::_1, std::placeholders::_2, &minSize, &maxSize, &minValue, &maxValue), generatorNone);
 
 	option.addOption("Peek");
-	option.addSuboption("", conditionNone);
+	option.addSuboption("Front", conditionNone);
+	option.addSuboption("Back", conditionNone);
 
-	option.addOption("Push");
+	option.addOption("Enqueue");
 	option.addSuboption("", conditionListNotLarge);
 	option.addSuboptionInput("v", numbersCharacter, std::bind(validatorInteger, std::placeholders::_1, std::placeholders::_2, &minValue, &maxValue), std::bind(generatorInteger, &minValue, &maxValue));
 
-	option.addOption("Pop");
+	option.addOption("Dequeue");
 	option.addSuboption("", conditionListNotEmpty);
 
-	randomStack(7);
-	createStack();
+	randomQueue(7);
+	createQueue();
 
 	while (window->isOpen()) {
 		window->clear(sf::Color(190, 230, 240));
@@ -701,42 +980,46 @@ void StackVisualizer::run() {
 			case 0: // Create
 				switch (std::get <1> (current)) {
 				case 0: // Empty
-					randomStack(0);
+					randomQueue(0);
 					break;
 
 				case 1: // Random
-					randomStack(std::stoi(std::get <2> (current)[0]));
+					randomQueue(std::stoi(std::get <2> (current)[0]));
 					break;
 
 				case 2: // Manual
-					manualStack(std::get <2> (current)[0]);
+					manualQueue(std::get <2> (current)[0]);
 				}
 
-				createStack();
+				createQueue();
 				break;
 
 			case 1: // Peek
 				switch (std::get <1> (current)) {
-				case 0: // 
-					peek();
+				case 0: // Front
+					peekAtTheFront();
+					break;
+
+				case 1: // Back
+					peekAtTheBack();
 					break;
 				}
 
 				break;
 
-			case 2: // Push
+			case 2: // Enqueue
 				switch (std::get <1> (current)) {
 				case 0: //
-					push(std::stoi(std::get <2> (current)[0]));
+					enqueue(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 
 				break;
 
-			case 3: // Pop
+			case 3: // Dequeue
 				switch (std::get <1> (current)) {
 				case 0: //
-					pop();
+					dequeue();
 					break;
 				}
 

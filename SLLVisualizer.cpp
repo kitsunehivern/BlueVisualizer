@@ -359,7 +359,7 @@ void SLLVisualizer::searchValue(int value) {
 		if (i < nodes.size()) {
 			description.addDescription({ "Set 'cur' to the pointer of the next node." });
 		} else {
-			description.addDescription({ "Set 'cur' to the pointer of the next node (NULL)." });
+			description.addDescription({ "Set 'cur' to the pointer of the next node", "(NULL)." });
 		}
 
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
@@ -1307,7 +1307,7 @@ void SLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Description
 	if (nodes.size() == 0) {
-		description.addDescription({ "Set 'head' to the pointer of the next node (NULL)." });
+		description.addDescription({ "Set 'head' to the pointer of the next node", "(NULL)." });
 	} else {
 		description.addDescription({ "Set 'head' to the pointer of the next node." });
 	}
@@ -1348,7 +1348,7 @@ void SLLVisualizer::eraseAtTheFront(bool head) {
 	if (nodes.size() > 0) {
 		description.addDescription({ "Erase 'del'." });
 	} else {
-		description.addDescription({ "Erase 'del'.", "Now the list is empty." });
+		description.addDescription({ "Erase 'del'. Now the list is empty." });
 	}
 
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
@@ -2057,7 +2057,7 @@ void SLLVisualizer::run() {
 		for (int i = 0; i < size; i++) {
 			listOfValues += std::to_string(randInt(*lowerBound, *upperBound));
 			if (i < size - 1) {
-				listOfValues.push_back(',');
+				listOfValues += ", ";
 			}
 		}
 
