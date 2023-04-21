@@ -1,7 +1,7 @@
-#include "DLL.h"
+#include "DLLVisualizer.h"
 #include "Random.h"
 
-DLL::DLL(sf::RenderWindow* window, Assets* assets) {
+DLLVisualizer::DLLVisualizer(sf::RenderWindow* window, Assets* assets) {
 	this->window = window;
 	this->assets = assets;
 
@@ -11,14 +11,14 @@ DLL::DLL(sf::RenderWindow* window, Assets* assets) {
 	description = DescriptionBox(sf::Vector2f(910, 430));
 }
 
-void DLL::randomList(int size) {
+void DLLVisualizer::randomList(int size) {
 	nodes.clear();
 	for (int i = 0; i < size; i++) {
 		nodes.pushBack(Node(randInt(1, 99), sf::Vector2f()));
 	}
 }
 
-void DLL::manualList(std::string listOfValues) {
+void DLLVisualizer::manualList(std::string listOfValues) {
 	nodes.clear();
 	for (int i = 0; i < listOfValues.size(); i++) {
 		if ('0' > listOfValues[i] || listOfValues[i] > '9') {
@@ -39,16 +39,16 @@ void DLL::manualList(std::string listOfValues) {
 	}
 }
 
-void DLL::createList() {
+void DLLVisualizer::createList() {
 	action.clearAllSteps();
 
 	labels.clear();
 	edges.clear();
 	code.update({});
 	if (nodes.empty()) {
-		description.newOperation("Create an empty doubly linked list");
+		description.newOperation("Create an empty list");
 	} else {
-		description.newOperation("Create a doubly linked list of size " + std::to_string(nodes.size()));
+		description.newOperation("Create a list of size " + std::to_string(nodes.size()));
 	}
 
 	maxPosition1 = nodes.size() - 1;
@@ -119,10 +119,10 @@ void DLL::createList() {
 
 	// Description
 	if (nodes.empty()) {
-		description.addDescription({ "An empty doubly linked list is created." });
+		description.addDescription({ "An empty list is created." });
 		action.drawFadeIn(&description, description.size() - 1);
 	} else {
-		description.addDescription({ "A doubly linked list of size " + std::to_string(nodes.size()) + " is created." });
+		description.addDescription({ "A list of size " + std::to_string(nodes.size()) + " is created." });
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 	}
 
@@ -146,7 +146,7 @@ void DLL::createList() {
 	action.draw(&code);
 }
 
-void DLL::searchValue(int value) {
+void DLLVisualizer::searchValue(int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -432,7 +432,7 @@ void DLL::searchValue(int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void DLL::updateValue(int index, int value) {
+void DLLVisualizer::updateValue(int index, int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -600,7 +600,7 @@ void DLL::updateValue(int index, int value) {
 	action.drawFadeOut(&code, 3);
 }
 
-void DLL::insertAtTheFront(int value, bool head) {
+void DLLVisualizer::insertAtTheFront(int value, bool head) {
 	nodes.pushFront(Node(value, sf::Vector2f(50, 260)));
 	labels.pushFront(Label(&nodes.front()));
 	if (nodes.size() > 1) {
@@ -759,7 +759,7 @@ void DLL::insertAtTheFront(int value, bool head) {
 	action.drawFadeOut(&code, 3);
 }
 
-void DLL::insertAtTheBack(int value) {
+void DLLVisualizer::insertAtTheBack(int value) {
 	nodes.pushBack(Node(value, sf::Vector2f(50 + nodes.size() * 160, 100)));
 	labels.pushBack(Label(&nodes.back()));
 	edges.pushBack(DoublyEdge(&nodes.rbegin()->prev()->data, &nodes.rbegin()->data));
@@ -962,7 +962,7 @@ void DLL::insertAtTheBack(int value) {
 	action.drawFadeOut(&code, 4);
 }
 
-void DLL::insertAtTheMiddle(int index, int value) {
+void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	nodes.insert(index, Node(value, sf::Vector2f(50 + index * 160, 260)));
 	labels.insert(index, Label(&nodes.begin()->next(index)->data));
 	edges.insert(index, DoublyEdge(&nodes.begin()->next(index)->data, &nodes.begin()->next(index + 1)->data));
@@ -1205,7 +1205,7 @@ void DLL::insertAtTheMiddle(int index, int value) {
 	action.addNewStep();
 
 	// Description
-	description.addDescription({ "Set the next pointer of 'pre' to 'add'." });
+	description.addDescription({ "Set the next pointer of 'pre' to 'add' and set", "the prev pointer of 'add' to 'pre'." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
@@ -1280,7 +1280,7 @@ void DLL::insertAtTheMiddle(int index, int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void DLL::insertNode(int index, int value, bool head) {
+void DLLVisualizer::insertNode(int index, int value, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -1295,7 +1295,7 @@ void DLL::insertNode(int index, int value, bool head) {
 	maxPosition2 = nodes.size() - 2;
 }
 
-void DLL::eraseAtTheFront(bool head) {
+void DLLVisualizer::eraseAtTheFront(bool head) {
 	deletedNode = nodes.popFront();
 	deletedEdge = edges.popFront();
 	deletedEdge.left = &deletedNode;
@@ -1493,7 +1493,7 @@ void DLL::eraseAtTheFront(bool head) {
 	action.drawFadeOut(&code, 3);
 }
 
-void DLL::eraseAtTheBack() {
+void DLLVisualizer::eraseAtTheBack() {
 	deletedNode = nodes.popBack();
 	deletedEdge = edges.popBack();
 	deletedEdge.right = &deletedNode;
@@ -1703,7 +1703,7 @@ void DLL::eraseAtTheBack() {
 	action.drawFadeOut(&code, 4);
 }
 
-void DLL::eraseAtTheMiddle(int index) {
+void DLLVisualizer::eraseAtTheMiddle(int index) {
 	deletedNode = nodes.erase(index);
 	deletedEdge = edges.erase(index);
 	deletedEdge.left = &deletedNode;
@@ -2031,7 +2031,7 @@ void DLL::eraseAtTheMiddle(int index) {
 	action.drawFadeOut(&code, 6);
 }
 
-void DLL::eraseNode(int index, bool head) {
+void DLLVisualizer::eraseNode(int index, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -2046,7 +2046,7 @@ void DLL::eraseNode(int index, bool head) {
 	maxPosition2 = nodes.size() - 2;
 }
 
-void DLL::run() {
+void DLLVisualizer::run() {
 	std::vector <char> numbersCharacter;
 	for (int i = 0; i <= 9; i++) {
 		numbersCharacter.push_back(i + '0');

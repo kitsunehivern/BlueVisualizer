@@ -1,5 +1,5 @@
-#ifndef DLL_H
-#define DLL_H
+#ifndef SLL_VISUALIZER_H
+#define SLL_VISUALIZER_H
 
 #include "Global.h"
 #include "Assets.h"
@@ -7,9 +7,9 @@
 #include "OptionBox.h"
 #include "DescriptionBox.h"
 
-class DLL {
+class SLLVisualizer {
 public:
-	DLL(sf::RenderWindow* window, Assets* assets);
+	SLLVisualizer(sf::RenderWindow* window, Assets* assets);
 
 	void randomList(int size);
 	void manualList(std::string listOfValues);
@@ -43,21 +43,15 @@ private:
 	int maxPosition1, maxPosition2;
 	List <Node> nodes;
 	List <Label> labels;
-	List <DoublyEdge> edges;
+	List <Edge> edges;
 
-	Node randomNode1;
-	Label randomLabel1;
-	DoublyEdge randomEdge1;
-
-	Node randomNode2;
-	Label randomLabel2;
-	DoublyEdge randomEdge2;
-
-	DoublyEdge randomEdge;
+	Node randomNode;
+	Edge randomEdge;
+	Label randomLabel;
 
 	Node deletedNode;
 	Label deletedLabel;
-	DoublyEdge deletedEdge;
+	Edge deletedEdge;
 };
 
 #endif

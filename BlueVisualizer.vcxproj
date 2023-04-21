@@ -135,9 +135,10 @@
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="BlueVisualizer.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CircularEdge.cpp" />
     <ClCompile Include="CodeBox.cpp" />
     <ClCompile Include="DescriptionBox.cpp" />
-    <ClCompile Include="DLL.cpp" />
+    <ClCompile Include="DLLVisualizer.cpp" />
     <ClCompile Include="DoublyEdge.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="InputBox.cpp" />
@@ -146,16 +147,18 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="OptionBox.cpp" />
     <ClCompile Include="Random.cpp" />
-    <ClCompile Include="SLL.cpp" />
+    <ClCompile Include="SLLVisualizer.cpp" />
+    <ClCompile Include="StackVisualizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionBox.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CircularEdge.h" />
     <ClInclude Include="CodeBox.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DescriptionBox.h" />
-    <ClInclude Include="DLL.h" />
+    <ClInclude Include="DLLVisualizer.h" />
     <ClInclude Include="DoublyEdge.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Global.h" />
@@ -166,7 +169,8 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="OptionBox.h" />
     <ClInclude Include="Random.h" />
-    <ClInclude Include="SLL.h" />
+    <ClInclude Include="SLLVisualizer.h" />
+    <ClInclude Include="StackVisualizer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

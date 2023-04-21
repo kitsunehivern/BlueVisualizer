@@ -1,10 +1,10 @@
-#include "SLL.h"
+#include "SLLVisualizer.h"
 #include "Random.h"
 #include "Button.h"
 #include "InputBox.h"
 #include "ActionBox.h"
 
-SLL::SLL(sf::RenderWindow* window, Assets* assets) {
+SLLVisualizer::SLLVisualizer(sf::RenderWindow* window, Assets* assets) {
 	this->window = window;
 	this->assets = assets;
 
@@ -14,14 +14,14 @@ SLL::SLL(sf::RenderWindow* window, Assets* assets) {
 	description = DescriptionBox(sf::Vector2f(910, 430));
 }
 
-void SLL::randomList(int size) {
+void SLLVisualizer::randomList(int size) {
 	nodes.clear();
 	for (int i = 0; i < size; i++) {
 		nodes.pushBack(Node(randInt(1, 99), sf::Vector2f()));
 	}
 }
 
-void SLL::manualList(std::string listOfValues) {
+void SLLVisualizer::manualList(std::string listOfValues) {
 	nodes.clear();
 	for (int i = 0; i < listOfValues.size(); i++) {
 		if ('0' > listOfValues[i] || listOfValues[i] > '9') {
@@ -42,7 +42,7 @@ void SLL::manualList(std::string listOfValues) {
 	}
 }
 
-void SLL::createList() {
+void SLLVisualizer::createList() {
 	action.clearAllSteps();
 
 	labels.clear();
@@ -149,7 +149,7 @@ void SLL::createList() {
 	action.draw(&code);
 }
 
-void SLL::searchValue(int value) {
+void SLLVisualizer::searchValue(int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -187,7 +187,7 @@ void SLL::searchValue(int value) {
 	}
 
 	// Label
-	if (nodes.size()  > 0) {
+	if (nodes.size() > 0) {
 		action.draw(&labels.front(), &LABEL_COLOR, "head");
 	}
 
@@ -435,7 +435,7 @@ void SLL::searchValue(int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void SLL::updateValue(int index, int value) {
+void SLLVisualizer::updateValue(int index, int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -603,7 +603,7 @@ void SLL::updateValue(int index, int value) {
 	action.drawFadeOut(&code, 3);
 }
 
-void SLL::insertAtTheFront(int value, bool head) {
+void SLLVisualizer::insertAtTheFront(int value, bool head) {
 	nodes.pushFront(Node(value, sf::Vector2f(50, 260)));
 	labels.pushFront(Label(&nodes.front()));
 	if (nodes.size() > 1) {
@@ -729,7 +729,7 @@ void SLL::insertAtTheFront(int value, bool head) {
 	action.drawFadeOut(&code, 2);
 }
 
-void SLL::insertAtTheBack(int value) {
+void SLLVisualizer::insertAtTheBack(int value) {
 	nodes.pushBack(Node(value, sf::Vector2f(50 + nodes.size() * 160, 100)));
 	labels.pushBack(Label(&nodes.back()));
 	edges.pushBack(Edge(&nodes.rbegin()->prev()->data, &nodes.rbegin()->data));
@@ -932,7 +932,7 @@ void SLL::insertAtTheBack(int value) {
 	action.drawFadeOut(&code, 4);
 }
 
-void SLL::insertAtTheMiddle(int index, int value) {
+void SLLVisualizer::insertAtTheMiddle(int index, int value) {
 	nodes.insert(index, Node(value, sf::Vector2f(50 + index * 160, 260)));
 	labels.insert(index, Label(&nodes.begin()->next(index)->data));
 	edges.insert(index, Edge(&nodes.begin()->next(index)->data, &nodes.begin()->next(index + 1)->data));
@@ -1240,7 +1240,7 @@ void SLL::insertAtTheMiddle(int index, int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void SLL::insertNode(int index, int value, bool head) {
+void SLLVisualizer::insertNode(int index, int value, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -1255,7 +1255,7 @@ void SLL::insertNode(int index, int value, bool head) {
 	maxPosition2 = nodes.size() - 2;
 }
 
-void SLL::eraseAtTheFront(bool head) {
+void SLLVisualizer::eraseAtTheFront(bool head) {
 	deletedNode = nodes.popFront();
 	deletedEdge = edges.popFront();
 	deletedEdge.left = &deletedNode;
@@ -1413,7 +1413,7 @@ void SLL::eraseAtTheFront(bool head) {
 	action.drawFadeOut(&code, 2);
 }
 
-void SLL::eraseAtTheBack() {
+void SLLVisualizer::eraseAtTheBack() {
 	deletedNode = nodes.popBack();
 	deletedEdge = edges.popBack();
 	deletedEdge.right = &deletedNode;
@@ -1622,7 +1622,7 @@ void SLL::eraseAtTheBack() {
 	action.drawFadeOut(&code, 4);
 }
 
-void SLL::eraseAtTheMiddle(int index) {
+void SLLVisualizer::eraseAtTheMiddle(int index) {
 	deletedNode = nodes.erase(index);
 	deletedEdge = edges.erase(index);
 	deletedEdge.left = &deletedNode;
@@ -1936,7 +1936,7 @@ void SLL::eraseAtTheMiddle(int index) {
 	action.drawFadeOut(&code, 6);
 }
 
-void SLL::eraseNode(int index, bool head) {
+void SLLVisualizer::eraseNode(int index, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -1951,7 +1951,7 @@ void SLL::eraseNode(int index, bool head) {
 	maxPosition2 = nodes.size() - 2;
 }
 
-void SLL::run() {
+void SLLVisualizer::run() {
 	std::vector <char> numbersCharacter;
 	for (int i = 0; i <= 9; i++) {
 		numbersCharacter.push_back(i + '0');

@@ -2,8 +2,10 @@
 #define CORE_H
 
 #include "Global.h"
-#include "SLL.h"
-#include "Dll.h"
+#include "Assets.h"
+#include "SLLVisualizer.h"
+#include "DLLVisualizer.h"
+#include "StackVisualizer.h"
 
 namespace Core {
 
@@ -18,11 +20,14 @@ namespace Core {
 
         Assets assets;
         
-        //SLL sll(&window, &assets);
+        //SLLVisualizer sll(&window, &assets);
         //sll.run();
 
-        DLL dll(&window, &assets);
-        dll.run();
+        //DLLVisualizer dll(&window, &assets);
+        //dll.run();
+
+        StackVisualizer stack(&window, &assets);
+        stack.run();
     }
 
 } // namespace Core

@@ -33,7 +33,7 @@
     <ClCompile Include="DescriptionBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DLL.cpp">
+    <ClCompile Include="DLLVisualizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DoublyEdge.cpp">
@@ -60,7 +60,13 @@
     <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SLL.cpp">
+    <ClCompile Include="SLLVisualizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularEdge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StackVisualizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +89,7 @@
     <ClInclude Include="DescriptionBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DLL.h">
+    <ClInclude Include="DLLVisualizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DoublyEdge.h">
@@ -116,7 +122,13 @@
     <ClInclude Include="Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SLL.h">
+    <ClInclude Include="SLLVisualizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularEdge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackVisualizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
