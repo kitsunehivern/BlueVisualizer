@@ -13,8 +13,8 @@ void DoublyEdge::calculate() {
 	length = distance - 58;
 	angle = std::atan2(rightCenter.y - leftCenter.y, rightCenter.x - leftCenter.x);
 
-	position.x = leftCenter.x + 27 * std::cos(angle);
-	position.y = leftCenter.y + 27 * std::sin(angle);
+	position.x = leftCenter.x + 25 * std::cos(angle);
+	position.y = leftCenter.y + 25 * std::sin(angle);
 }
 
 void DoublyEdge:: draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* leftColor, sf::Color* rightColor, float dummy, bool isDrawn) {
@@ -25,7 +25,7 @@ void DoublyEdge:: draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sp
 	auto drawEdge = [&](sf::Color* color) -> void {
 		calculate();
 
-		stickSprite->setScale(length / 100, 1);
+		stickSprite->setScale(length / DEDGE_INIT_LENGTH, 1);
 		stickSprite->setRotation(angle / std::acos(-1) * 180);
 		stickSprite->setPosition(position + sf::Vector2f(7.5f * std::sin(angle), -7.5f * std::cos(angle)));
 		stickSprite->setColor(*color);
@@ -33,7 +33,7 @@ void DoublyEdge:: draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sp
 		int width = std::max(0, (int)std::round(20 - length));
 		arrowSprite->setTextureRect(sf::IntRect(width, 0, 20 - width, 15));
 		arrowSprite->setRotation(angle / std::acos(-1) * 180);
-		arrowSprite->setPosition(stickSprite->getPosition() + sf::Vector2f((length - 15 + width) * std::cos(angle), (length - 15 + width) * std::sin(angle)));
+		arrowSprite->setPosition(stickSprite->getPosition() + sf::Vector2f((length - 13 + width) * std::cos(angle), (length - 13 + width) * std::sin(angle)));
 		arrowSprite->setColor(*color);
 
 
@@ -57,7 +57,7 @@ void DoublyEdge::drawSlideIn(sf::RenderWindow* window, sf::Sprite* stickSprite, 
 
 		length *= Motion::Bezier(ratio);
 
-		stickSprite->setScale(length / 100, 1);
+		stickSprite->setScale(length / DEDGE_INIT_LENGTH, 1);
 		stickSprite->setRotation(angle / std::acos(-1) * 180);
 		stickSprite->setPosition(position + sf::Vector2f(7.5f * std::sin(angle), -7.5f * std::cos(angle)));
 		stickSprite->setColor(*color);
@@ -65,7 +65,7 @@ void DoublyEdge::drawSlideIn(sf::RenderWindow* window, sf::Sprite* stickSprite, 
 		int width = std::max(0, (int)std::round(20 - length));
 		arrowSprite->setTextureRect(sf::IntRect(width, 0, 20 - width, 15));
 		arrowSprite->setRotation(angle / std::acos(-1) * 180);
-		arrowSprite->setPosition(stickSprite->getPosition() + sf::Vector2f((length - 15 + width) * std::cos(angle), (length - 15 + width) * std::sin(angle)));
+		arrowSprite->setPosition(stickSprite->getPosition() + sf::Vector2f((length - 13 + width) * std::cos(angle), (length - 13 + width) * std::sin(angle)));
 		arrowSprite->setColor(*color);
 
 

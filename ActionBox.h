@@ -9,6 +9,7 @@
 #include "Label.h"
 #include "Edge.h"
 #include "DoublyEdge.h"
+#include "CircularEdge.h"
 #include "CodeBox.h"
 #include "DescriptionBox.h"
 #include "OptionBox.h"
@@ -97,6 +98,16 @@ public:
 	void drawChange(DoublyEdge* edge, sf::Color* fromLeftColor, sf::Color* toLeftColor, sf::Color* fromRIghtColor, sf::Color* toRightColor);
 	void drawChange(List <DoublyEdge>* edges, int index, sf::Color* fromLeftColor, sf::Color* toLeftColor, sf::Color* fromRIghtColor, sf::Color* toRightColor);
 	void drawChange(List <DoublyEdge>* edges, int fromIndex, int toIndex, sf::Color* fromLeftColor, sf::Color* toLeftColor, sf::Color* fromRIghtColor, sf::Color* toRightColor);
+
+	// CircularEdge animation
+
+	void draw(CircularEdge* edge, sf::Color* color);
+
+	void drawSlideIn(CircularEdge* edge, sf::Color* color);
+
+	void drawSlideOut(CircularEdge* edge, sf::Color* color);
+
+	void drawChange(CircularEdge* edge, sf::Color* fromColor, sf::Color* toColor);
 
 	// Code animation
 	void draw(CodeBox* code);

@@ -13,8 +13,8 @@ void Edge::calculate() {
 	length = distance - 60;
 	angle = std::atan2(rightCenter.y - leftCenter.y, rightCenter.x - leftCenter.x);
 
-	position.x = leftCenter.x + 27 * std::cos(angle);
-	position.y = leftCenter.y + 27 * std::sin(angle);
+	position.x = leftCenter.x + 25 * std::cos(angle);
+	position.y = leftCenter.y + 25 * std::sin(angle);
 }
 
 void Edge::draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* color, float dummy, bool isDrawn) {
@@ -24,7 +24,7 @@ void Edge::draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* a
 
 	calculate();
 
-	stickSprite->setScale(length / 100, 1);
+	stickSprite->setScale(length / EDGE_INIT_LENGTH, 1);
 	stickSprite->setRotation(angle / std::acos(-1) * 180);
 	stickSprite->setPosition(position);
 	stickSprite->setColor(*color);
@@ -32,8 +32,8 @@ void Edge::draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* a
 	int width = std::max(0, (int)std::round(20 - length));
 	arrowSprite->setTextureRect(sf::IntRect(width, 0, 20 - width, 15));
 	arrowSprite->setRotation(angle / std::acos(-1) * 180);
-	arrowSprite->setPosition(position.x + (length - 15 + width) * std::cos(angle), position.y + (length - 15 + width) * std::sin(angle));
-	arrowSprite->setColor(*color);	
+	arrowSprite->setPosition(position.x + (length - 13 + width) * std::cos(angle), position.y + (length - 13 + width) * std::sin(angle));
+	arrowSprite->setColor(*color);
 
 	window->draw(*stickSprite);
 	window->draw(*arrowSprite);
@@ -48,7 +48,7 @@ void Edge::drawSlideIn(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sp
 
 	length *= Motion::Bezier(ratio);
 
-	stickSprite->setScale(length / 100, 1);
+	stickSprite->setScale(length / EDGE_INIT_LENGTH, 1);
 	stickSprite->setRotation(angle / std::acos(-1) * 180);
 	stickSprite->setPosition(position);
 	stickSprite->setColor(*color);
@@ -56,7 +56,7 @@ void Edge::drawSlideIn(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sp
 	int width = std::max(0, (int)std::round(20 - length));
 	arrowSprite->setTextureRect(sf::IntRect(width, 0, 20 - width, 15));
 	arrowSprite->setRotation(angle / std::acos(-1) * 180);
-	arrowSprite->setPosition(position.x + (length - 15 + width) * std::cos(angle), position.y + (length - 15 + width) * std::sin(angle));
+	arrowSprite->setPosition(position.x + (length - 13 + width) * std::cos(angle), position.y + (length - 13 + width) * std::sin(angle));
 	arrowSprite->setColor(*color);	
 
 	window->draw(*stickSprite);

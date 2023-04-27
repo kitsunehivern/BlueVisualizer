@@ -55,10 +55,10 @@ void DLLVisualizer::createList() {
 	maxPosition2 = nodes.size() - 2;
 
 	if (!nodes.empty()) {
-		nodes.front().position = sf::Vector2f(50, 100);
+		nodes.front().position = sf::Vector2f(NODE_POSITION_X, NODE_POSITION_Y);
 		labels.pushBack(Label(&nodes.front()));
 		for (ListNode <Node>* iterator = nodes.begin()->next(); iterator != nodes.end(); iterator = iterator->next()) {
-			iterator->data.position.x = iterator->prev()->data.position.x + 160;
+			iterator->data.position.x = iterator->prev()->data.position.x + 60 + NODE_DISTANCE;
 			iterator->data.position.y = iterator ->prev()->data.position.y;
 			labels.pushBack(Label(&iterator->data));
 			edges.pushBack(DoublyEdge(&iterator->prev()->data, &iterator->data));
@@ -184,7 +184,7 @@ void DLLVisualizer::searchValue(int value) {
 	}
 
 	// Label
-	if (nodes.size()  > 0) {
+	if (nodes.size() > 0) {
 		action.draw(&labels.front(), &LABEL_COLOR, "head");
 	}
 
@@ -601,7 +601,7 @@ void DLLVisualizer::updateValue(int index, int value) {
 }
 
 void DLLVisualizer::insertAtTheFront(int value, bool head) {
-	nodes.pushFront(Node(value, sf::Vector2f(50, 260)));
+	nodes.pushFront(Node(value, sf::Vector2f(NODE_POSITION_X, NODE_POSITION_Y + 60 + NODE_DISTANCE)));
 	labels.pushFront(Label(&nodes.front()));
 	if (nodes.size() > 1) {
 		edges.pushFront(DoublyEdge(&nodes.begin()->data, &nodes.begin()->next()->data));
@@ -745,11 +745,11 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 	}
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -160));
+	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
 	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
+		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
@@ -760,7 +760,7 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 }
 
 void DLLVisualizer::insertAtTheBack(int value) {
-	nodes.pushBack(Node(value, sf::Vector2f(50 + nodes.size() * 160, 100)));
+	nodes.pushBack(Node(value, sf::Vector2f(NODE_POSITION_X + nodes.size() * (60 + NODE_DISTANCE), NODE_POSITION_Y)));
 	labels.pushBack(Label(&nodes.back()));
 	edges.pushBack(DoublyEdge(&nodes.rbegin()->prev()->data, &nodes.rbegin()->data));
 	code.update({
@@ -963,7 +963,7 @@ void DLLVisualizer::insertAtTheBack(int value) {
 }
 
 void DLLVisualizer::insertAtTheMiddle(int index, int value) {
-	nodes.insert(index, Node(value, sf::Vector2f(50 + index * 160, 260)));
+	nodes.insert(index, Node(value, sf::Vector2f(NODE_POSITION_X + index * (60 + NODE_DISTANCE), NODE_POSITION_Y + 60 + NODE_DISTANCE)));
 	labels.insert(index, Label(&nodes.begin()->next(index)->data));
 	edges.insert(index, DoublyEdge(&nodes.begin()->next(index)->data, &nodes.begin()->next(index + 1)->data));
 	edges.begin()->next(index - 1)->data.right = &nodes.begin()->next(index)->data;
@@ -1182,7 +1182,7 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	// Node
 	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
 	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode2.position, randomNode2.position + sf::Vector2f(160, 160));
+	action.drawMove(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode2.position, randomNode2.position + sf::Vector2f((60 + NODE_DISTANCE), (60 + NODE_DISTANCE)));
 	action.draw(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
@@ -1217,7 +1217,7 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
 
 	// Node
-	action.drawMove(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode1.position, randomNode1.position + sf::Vector2f(0, 160));
+	action.drawMove(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode1.position, randomNode1.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
 	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.draw(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
@@ -1252,17 +1252,17 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
 
 	// Node
-	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -160));
+	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
 	action.drawChange(&nodes, 0, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.drawChange(&nodes, index, HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&nodes, index + 1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f(160, 0));
+	action.drawMove(&nodes, index + 1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	action.drawChange(&nodes, index + 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 
 	for (int i = index + 2; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
+		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
@@ -1476,11 +1476,11 @@ void DLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Node
 	if (nodes.size() > 0) {
-		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-160, 0));
+		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 		action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 		action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 		for (int i = 1; i < nodes.size(); i++) {
-			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-160, 0));
+			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 		}
 	}
 
@@ -1939,7 +1939,7 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	// Node
 	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
 	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, deletedNode.position, deletedNode.position + sf::Vector2f(0, 160));
+	action.drawMove(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, deletedNode.position, deletedNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
 	action.drawSlide(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, &deletedNode, &nodes.begin()->next(index)->data);
 	action.drawSlide(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, &deletedNode, &nodes.begin()->next(index - 1)->data);
 	action.draw(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
@@ -2010,11 +2010,11 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawChange(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
 	action.drawChange(&nodes, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-160, 0));
+	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 	action.drawChange(&nodes, index, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	for (int i = index + 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-160, 0));
+		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 	}
 
 	// Label

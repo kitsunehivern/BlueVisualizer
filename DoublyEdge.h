@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "Node.h"
 
+static const float DEDGE_INIT_LENGTH = 50;
+
 struct DoublyEdge {
 	Node* left;
 	Node* right;

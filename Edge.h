@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "Node.h"
 
+static const float EDGE_INIT_LENGTH = 50;
+
 struct Edge {
 	Node* left;
 	Node* right;
@@ -14,8 +16,7 @@ struct Edge {
 
 	void calculate();
 
-	void draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* color, float dummy = 1, bool isDrawn = true);
-	void drawFadeOut(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* color, float ratio, bool isDrawn);
+	void draw(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* color, float ratio = 1, bool isDrawn = true);
 	void drawSlideIn(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* color, float ratio, bool isDrawn);
 	void drawSlideOut(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* color, float ratio, bool isDrawn);
 	void drawChange(sf::RenderWindow* window, sf::Sprite* stickSprite, sf::Sprite* arrowSprite, sf::Color* fromColor, sf::Color* toColor, float ratio, bool isDrawn);

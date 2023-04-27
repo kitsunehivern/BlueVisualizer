@@ -5,34 +5,38 @@
 #include "Assets.h"
 #include "SLLVisualizer.h"
 #include "DLLVisualizer.h"
+#include "CLLVisualizer.h"
 #include "StackVisualizer.h"
 #include "QueueVisualizer.h"
 
 namespace Core {
 
-    sf::RenderWindow window;
+sf::RenderWindow window;
 
-    void run() {
-        sf::ContextSettings settings;
-        settings.antialiasingLevel = 16;
+void run() {
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 16;
 
-        window.create(sf::VideoMode(1600, 900), "BlueVisualizer", sf::Style::Close, settings);
-        window.setFramerateLimit(60);
+    window.create(sf::VideoMode(1600, 900), "BlueVisualizer", sf::Style::Close, settings);
+    window.setFramerateLimit(60);
 
-        Assets assets;
+    Assets assets;
         
-        //SLLVisualizer sll(&window, &assets);
-        //sll.run();
+    //SLLVisualizer sll(&window, &assets);
+    //sll.run();
 
-        //DLLVisualizer dll(&window, &assets);
-        //dll.run();
+    //DLLVisualizer dll(&window, &assets);
+    //dll.run();
 
-        //StackVisualizer stack(&window, &assets);
-        //stack.run();
+    CLLVisualizer cll(&window, &assets);
+    cll.run();
 
-        QueueVisualizer queue(&window, &assets);
-        queue.run();
-    }
+    //StackVisualizer stack(&window, &assets);
+    //stack.run();
+
+    //QueueVisualizer queue(&window, &assets);
+    //queue.run();
+}
 
 } // namespace Core
 

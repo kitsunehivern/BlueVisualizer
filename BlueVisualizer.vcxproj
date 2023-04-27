@@ -136,6 +136,7 @@
     <ClCompile Include="BlueVisualizer.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CircularEdge.cpp" />
+    <ClCompile Include="CLLVisualizer.cpp" />
     <ClCompile Include="CodeBox.cpp" />
     <ClCompile Include="DescriptionBox.cpp" />
     <ClCompile Include="DLLVisualizer.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CircularEdge.h" />
+    <ClInclude Include="CLLVisualizer.h" />
     <ClInclude Include="CodeBox.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DescriptionBox.h" />

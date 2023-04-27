@@ -52,10 +52,10 @@ void StackVisualizer::createStack() {
 	}
 
 	if (!nodes.empty()) {
-		nodes.front().position = sf::Vector2f(50, 100);
+		nodes.front().position = sf::Vector2f(NODE_POSITION_X, NODE_POSITION_Y);
 		labels.pushBack(Label(&nodes.front()));
 		for (ListNode <Node>* iterator = nodes.begin()->next(); iterator != nodes.end(); iterator = iterator->next()) {
-			iterator->data.position.x = iterator->prev()->data.position.x + 160;
+			iterator->data.position.x = iterator->prev()->data.position.x + 60 + NODE_DISTANCE;
 			iterator->data.position.y = iterator ->prev()->data.position.y;
 			labels.pushBack(Label(&iterator->data));
 			edges.pushBack(Edge(&iterator->prev()->data, &iterator->data));
@@ -248,7 +248,7 @@ void StackVisualizer::peek() {
 void StackVisualizer::push(int value) {
 	action.clearAllSteps();
 
-	nodes.pushFront(Node(value, sf::Vector2f(50, 260)));
+	nodes.pushFront(Node(value, sf::Vector2f(NODE_POSITION_X, NODE_POSITION_Y + 60 + NODE_DISTANCE)));
 	labels.pushFront(Label(&nodes.front()));
 	if (nodes.size() > 1) {
 		edges.pushFront(Edge(&nodes.begin()->data, &nodes.begin()->next()->data));
@@ -336,7 +336,7 @@ void StackVisualizer::push(int value) {
 	// Label
 	action.drawChange(&labels.front(), &LABEL_COLOR, "add", "head/add");
 	if (labels.size() > 1) {
-		action.drawFadeOut(&labels, 1, &LABEL_COLOR, "head");
+		action.drawChange(&labels, 1, &LABEL_COLOR, "head", "");
 	}
 
 	// Code
@@ -355,11 +355,11 @@ void StackVisualizer::push(int value) {
 	}
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -160));
+	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -60 - NODE_DISTANCE));
 	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(160, 0));
+		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(60 + NODE_DISTANCE, 0));
 	}
 
 	// Label
@@ -508,11 +508,11 @@ void StackVisualizer::pop() {
 
 	// Node
 	if (nodes.size() > 0) {
-		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-160, 0));
+		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
 		action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 		action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 		for (int i = 1; i < nodes.size(); i++) {
-			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-160, 0));
+			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
 		}
 	}
 

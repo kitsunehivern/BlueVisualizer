@@ -258,6 +258,24 @@ void ActionBox::drawChange(List <DoublyEdge>* edges, int fromIndex, int toIndex,
 	}
 }
 
+// CircularEdge animation
+
+void ActionBox::draw(CircularEdge* edge, sf::Color* color) {
+	drawFunction.back().push_back(std::bind(&CircularEdge::draw, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawSlideIn(CircularEdge* edge, sf::Color* color) {
+	drawFunction.back().push_back(std::bind(&CircularEdge::drawSlideIn, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawSlideOut(CircularEdge* edge, sf::Color* color) {
+	drawFunction.back().push_back(std::bind(&CircularEdge::drawSlideOut, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawChange(CircularEdge* edge, sf::Color* fromColor, sf::Color* toColor) {
+	drawFunction.back().push_back(std::bind(&CircularEdge::drawChange, edge, window, &assets->stickSprite, &assets->arrowSprite, fromColor, toColor, std::placeholders::_1,  std::placeholders::_2));
+}
+
 // Code animtion
 void ActionBox::draw(CodeBox* code) {
 	drawFunction.back().push_back(std::bind(&CodeBox::draw, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, true, std::placeholders::_1,  std::placeholders::_2));
@@ -458,7 +476,7 @@ void ActionBox::goToNextStep() {
 		assert(direction == FORWARD);
 
 		if (direction == FORWARD) {
-			go();
+			status = PAUSED;
 		}
 	}
 }
@@ -493,7 +511,8 @@ void ActionBox::goToPrevStep() {
 		assert(direction == FORWARD);
 
 		if (direction == FORWARD) {
-			go();
+			status = PAUSED;
+			direction = BACKWARD;
 		}
 	}
 }

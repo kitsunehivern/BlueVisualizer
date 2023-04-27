@@ -15,6 +15,7 @@
 #include <functional>
 #include <algorithm>
 #include <vector>
+#include <array>
 #include <tuple>
 #include <string>
 #include <math.h>
@@ -26,11 +27,11 @@
 static sf::Color BLANK_COLOR                   = sf::Color(  0,   0,   0,   0);
 
 static sf::Color NORMAL_NODE_CIRCLE_COLOR      = sf::Color(  0,   0,   0, 255);
-static sf::Color HIGHLIGHT_NODE_CIRCLE_COLOR_1 = sf::Color(255, 140,  40, 255); // orange
-static sf::Color HIGHLIGHT_NODE_CIRCLE_COLOR_2 = sf::Color( 45, 185, 210, 255); // blue
+static sf::Color HIGHLIGHT_NODE_CIRCLE_COLOR_1 = sf::Color(255, 140,  40, 255);
+static sf::Color HIGHLIGHT_NODE_CIRCLE_COLOR_2 = sf::Color( 45, 185, 210, 255);
 static sf::Color NORMAL_NODE_TEXT_COLOR        = sf::Color(  0,   0,   0, 255);
-static sf::Color HIGHLIGHT_NODE_TEXT_COLOR_1   = sf::Color(255, 255, 255, 255); // white
-static sf::Color HIGHLIGHT_NODE_TEXT_COLOR_2   = sf::Color(255, 140,  40, 255); // orange
+static sf::Color HIGHLIGHT_NODE_TEXT_COLOR_1   = sf::Color(255, 255, 255, 255);
+static sf::Color HIGHLIGHT_NODE_TEXT_COLOR_2   = sf::Color(255, 140,  40, 255);
 static sf::Color INSERTED_NODE_CIRCLE_COLOR    = sf::Color( 80, 190, 105, 255);
 static sf::Color ERASED_NODE_CIRCLE_COLOR      = sf::Color(215,  80,  60, 255);
 
