@@ -349,7 +349,7 @@ void QueueVisualizer::peekAtTheBack() {
 	// Node
 	action.drawChange(&nodes.back(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.drawFadeIn(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 0, (int)nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
 	if (labels.size() == 1) {
@@ -376,7 +376,7 @@ void QueueVisualizer::peekAtTheBack() {
 	// Node
 	action.drawChange(&nodes.back(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 0, (int)nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 
 	// Label
 	if (labels.size() == 1) {
@@ -423,7 +423,7 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
 
 	// Node
 	if (nodes.size() == 1) {
@@ -479,7 +479,7 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
 
 	// Node
 	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
@@ -506,11 +506,11 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
 	action.drawSlideIn(&edges.back(), &INSERTED_EDGE_COLOR);
 
 	// Node
-	action.draw(&nodes, 0, (int)nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.drawFadeIn(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
@@ -538,11 +538,11 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
 	action.draw(&edges.back(), &INSERTED_EDGE_COLOR);
 
 	// Node
-	action.draw(&nodes, 0, (int)nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 	action.draw(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 
@@ -567,11 +567,11 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, (int)edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
 	action.drawChange(&edges.back(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
 
 	// Node
-	action.draw(&nodes, 0, (int)nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
 	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
 	action.drawFadeOut(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
 	action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);

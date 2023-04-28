@@ -39,7 +39,7 @@ void DLLVisualizer::manualList(std::string listOfValues) {
 	}
 }
 
-void DLLVisualizer::createList() {
+void DLLVisualizer::create() {
 	action.clearAllSteps();
 
 	labels.clear();
@@ -146,7 +146,7 @@ void DLLVisualizer::createList() {
 	action.draw(&code);
 }
 
-void DLLVisualizer::searchValue(int value) {
+void DLLVisualizer::search(int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -432,7 +432,7 @@ void DLLVisualizer::searchValue(int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void DLLVisualizer::updateValue(int index, int value) {
+void DLLVisualizer::update(int index, int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -1280,7 +1280,7 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void DLLVisualizer::insertNode(int index, int value, bool head) {
+void DLLVisualizer::insert(int index, int value, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -2031,7 +2031,7 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawFadeOut(&code, 6);
 }
 
-void DLLVisualizer::eraseNode(int index, bool head) {
+void DLLVisualizer::erase(int index, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -2208,7 +2208,7 @@ void DLLVisualizer::run() {
 	option.addSuboptionInput("i", numbersCharacter, std::bind(validatorInteger, std::placeholders::_1, std::placeholders::_2, &minPosition2, &maxPosition2), std::bind(generatorInteger, &minPosition2, &maxPosition2));
 
 	randomList(7);
-	createList();
+	create();
 
 	while (window->isOpen()) {
 		window->clear(sf::Color(190, 230, 240));
@@ -2248,13 +2248,13 @@ void DLLVisualizer::run() {
 					manualList(std::get <2> (current)[0]);
 				}
 
-				createList();
+				create();
 				break;
 
 			case 1: // Search
 				switch (std::get <1> (current)) {
 				case 0: // 
-					searchValue(std::stoi(std::get <2> (current)[0]));
+					search(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 
@@ -2263,7 +2263,7 @@ void DLLVisualizer::run() {
 			case 2: // Update
 				switch (std::get <1> (current)) {
 				case 0: // 
-					updateValue(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					update(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
 				}
 
@@ -2272,15 +2272,15 @@ void DLLVisualizer::run() {
 			case 3: // Insert
 				switch (std::get <1> (current)) {
 				case 0: // Front
-					insertNode(0, std::stoi(std::get <2> (current)[0]));
+					insert(0, std::stoi(std::get <2> (current)[0]));
 					break;
 
 				case 1: // Back
-					insertNode(nodes.size(), std::stoi(std::get <2>(current)[0]), false);
+					insert(nodes.size(), std::stoi(std::get <2>(current)[0]), false);
 					break;
 
 				case 2: // Middle
-					insertNode(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					insert(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
 				}	
 
@@ -2289,15 +2289,15 @@ void DLLVisualizer::run() {
 			case 4: // Erase
 				switch (std::get <1> (current)) {
 				case 0: // Front
-					eraseNode(0);
+					erase(0);
 					break;
 
 				case 1: // Back
-					eraseNode(nodes.size() - 1, false);
+					erase(nodes.size() - 1, false);
 					break;
 
 				case 2: // Middle
-					eraseNode(std::stoi(std::get <2> (current)[0]));
+					erase(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 

@@ -39,7 +39,7 @@ void SLLVisualizer::manualList(std::string listOfValues) {
 	}
 }
 
-void SLLVisualizer::createList() {
+void SLLVisualizer::create() {
 	action.clearAllSteps();
 
 	labels.clear();
@@ -146,7 +146,7 @@ void SLLVisualizer::createList() {
 	action.draw(&code);
 }
 
-void SLLVisualizer::searchValue(int value) {
+void SLLVisualizer::search(int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -432,7 +432,7 @@ void SLLVisualizer::searchValue(int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void SLLVisualizer::updateValue(int index, int value) {
+void SLLVisualizer::update(int index, int value) {
 	action.clearAllSteps();
 
 	code.update({
@@ -1237,7 +1237,7 @@ void SLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawFadeOut(&code, 6);
 }
 
-void SLLVisualizer::insertNode(int index, int value, bool head) {
+void SLLVisualizer::insert(int index, int value, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -1933,7 +1933,7 @@ void SLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawFadeOut(&code, 6);
 }
 
-void SLLVisualizer::eraseNode(int index, bool head) {
+void SLLVisualizer::erase(int index, bool head) {
 	action.clearAllSteps();
 
 	if (index == 0) {
@@ -2110,7 +2110,7 @@ void SLLVisualizer::run() {
 	option.addSuboptionInput("i", numbersCharacter, std::bind(validatorInteger, std::placeholders::_1, std::placeholders::_2, &minPosition2, &maxPosition2), std::bind(generatorInteger, &minPosition2, &maxPosition2));
 
 	randomList(7);
-	createList();
+	create();
 
 	sf::Texture background;
 	background.loadFromFile("Images/LightBackground.png");
@@ -2156,13 +2156,13 @@ void SLLVisualizer::run() {
 					manualList(std::get <2> (current)[0]);
 				}
 
-				createList();
+				create();
 				break;
 
 			case 1: // Search
 				switch (std::get <1> (current)) {
 				case 0: // 
-					searchValue(std::stoi(std::get <2> (current)[0]));
+					search(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 
@@ -2171,7 +2171,7 @@ void SLLVisualizer::run() {
 			case 2: // Update
 				switch (std::get <1> (current)) {
 				case 0: // 
-					updateValue(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					update(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
 				}
 
@@ -2180,15 +2180,15 @@ void SLLVisualizer::run() {
 			case 3: // Insert
 				switch (std::get <1> (current)) {
 				case 0: // Front
-					insertNode(0, std::stoi(std::get <2> (current)[0]));
+					insert(0, std::stoi(std::get <2> (current)[0]));
 					break;
 
 				case 1: // Back
-					insertNode(nodes.size(), std::stoi(std::get <2>(current)[0]), false);
+					insert(nodes.size(), std::stoi(std::get <2>(current)[0]), false);
 					break;
 
 				case 2: // Middle
-					insertNode(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					insert(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
 				}
 
@@ -2197,15 +2197,15 @@ void SLLVisualizer::run() {
 			case 4: // Erase
 				switch (std::get <1> (current)) {
 				case 0: // Front
-					eraseNode(0);
+					erase(0);
 					break;
 
 				case 1: // Back
-					eraseNode(nodes.size() - 1, false);
+					erase(nodes.size() - 1, false);
 					break;
 
 				case 2: // Middle
-					eraseNode(std::stoi(std::get <2> (current)[0]));
+					erase(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 

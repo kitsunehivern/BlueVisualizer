@@ -13,21 +13,21 @@ public:
 
 	void randomList(int size);
 	void manualList(std::string listOfValues);
-	void createList();
+	void create();
 
-	void searchValue(int value);
+	void search(int value);
 
-	void updateValue(int index, int value);
+	void update(int index, int value);
 
 	void insertAtTheFront(int value, bool head);
 	void insertAtTheBack(int value);
 	void insertAtTheMiddle(int index, int value);
-	void insertNode(int index, int value, bool head = true);
+	void insert(int index, int value, bool head = true);
 
 	void eraseAtTheFront(bool head);
 	void eraseAtTheBack();
 	void eraseAtTheMiddle(int index);
-	void eraseNode(int index, bool head = true);
+	void erase(int index, bool head = true);
 
 	void run();
 

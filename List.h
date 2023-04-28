@@ -28,7 +28,7 @@ public:
 	ListNode <T>* rend();
 
 	bool empty() const;
-	unsigned int size() const;
+	int size() const;
 
 	void clear();
 	void insert(unsigned int index, ListNode <T>* node);
@@ -125,8 +125,8 @@ bool List <T>::empty() const {
 }
 
 template <class T>
-unsigned int List <T>::size() const {
-	return mSize;
+int List <T>::size() const {
+	return (int)mSize;
 }
 
 template <class T>
