@@ -154,6 +154,478 @@ void CLLVisualizer::create() {
 	action.draw(&code);
 }
 
+void CLLVisualizer::search(int value) {
+	action.clearAllSteps();
+
+	code.update({
+		"if (n == 0) return NOT_FOUND;     ",
+		"Node* cur = head;                 ",
+		"for (int k = 0; k <= n - 1; k++) {",
+		"    if (cur->data == v) return k; ",
+		"    cur = cur->next;              ",
+		"}                                 ",
+		"return NOT_FOUND;                 ",
+		});
+
+	description.newOperation("Search " + std::to_string(value));
+
+	// New step: if (n == 0) return NOT_FOUND
+	action.addNewStep();
+
+	// Description
+	if (nodes.size() == 0) {
+		description.addDescription({ "Check if the list is empty.", "Since n = 0, NOT_FOUND is returned." });
+	} else {
+		description.addDescription({ "Check if the list is empty.", "Since n > 0, the statement is ignored." });
+	}
+
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	}
+
+	if (nodes.size() > 0) {
+		action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+	}
+
+	// Node
+	if (nodes.size() > 0) {
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	}
+
+	// Label
+	if (nodes.size() > 0) {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+	}
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	if (nodes.size() == 0) {
+		// New step: Re-layout
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "So the value " + std::to_string(value) + " was not found.", "The whole process is O(1)."});
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+
+		// Node
+
+		// Label
+
+		// Code
+		action.drawFadeOut(&code, 0);
+
+		return;
+	}
+
+	// New step: Node* cur = head
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'cur' and set it to 'head'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	if (edges.size() > 0) {
+		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	}
+
+	action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/cur");
+
+	// Code
+	action.drawMove(&code, 0, 1);
+
+	for (int i = 0; i <= nodes.size(); i++) {
+		// New step: for (int k = 0; k <= n - 1; k++)
+		action.addNewStep();
+
+		// Description
+		if (i == 0) {
+			description.addDescription({ "Iterate k from 0 to n - 1 = " + std::to_string(nodes.size() - 1) + ", k is now 0.", "Since k <= " + std::to_string(nodes.size() - 1) + ", the loop continues." });
+		} else if (i <= nodes.size() - 1) {
+			description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(nodes.size() - 1) + ", the loop continues." });
+		} else {
+			description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(nodes.size() - 1) + ", the loop stops." });
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		if (edges.size() < i) {
+			action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR);
+		} else {
+			action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR);
+		}
+
+		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		if (i < nodes.size()) {
+			action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		}
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "head/cur", "0/head/cur");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			if (i < labels.size()) {
+				action.drawChange(&labels, i, &LABEL_COLOR, "cur", std::to_string(i) + "/cur");
+			}
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 1, 2);
+		} else {
+			action.drawMove(&code, 4, 2);
+		}
+
+		if (i == nodes.size()) {
+			break;
+		}
+
+		// New step: if (cur->data == v) return k
+		action.addNewStep();
+
+		// Description
+		if (nodes.begin()->next(i)->data.value == value) {
+			description.addDescription({ "Check if value of 'cur' equals to " + std::to_string(value) + ".", "Since it is true, k is returned." });
+		} else {
+			description.addDescription({ "Check if value of 'cur' equals to " + std::to_string(value) + ".", "Since it is false, the statement is ignored." });
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.draw(&labels.front(), &LABEL_COLOR, "0/head/cur");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels, i, &LABEL_COLOR, std::to_string(i) + "/cur");
+		}
+
+		// Code
+		action.drawMove(&code, 2, 3);
+
+		if (nodes.begin()->next(i)->data.value == value) {
+			// New step: Re-layout
+			action.addNewStep();
+
+			// Description
+			description.addDescription({ "So the value " + std::to_string(value) + " was found at index " + std::to_string(i) + ".", "The whole process is O(n)." });
+			action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+			// Edge
+			action.drawChange(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+			action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR);
+			action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+			// Node
+			action.drawChange(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+			action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+			action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+			// Label
+			if (i == 0) {
+				action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/cur", "head");
+			} else {
+				action.draw(&labels.front(), &LABEL_COLOR, "head");
+				action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/cur");
+			}
+
+			// Code
+			action.drawFadeOut(&code, 3);
+
+			return;
+		}
+
+		// New step: cur = pre->cur
+		action.addNewStep();
+
+		// Description
+		if (i < nodes.size()) {
+			description.addDescription({ "Set 'cur' to the pointer of the next node." });
+		} else {
+			description.addDescription({ "Set 'cur' to the pointer of the next node", "(NULL)." });
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR);
+		if (i < edges.size()) {
+			action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR);
+			action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR);
+		}
+
+		action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		if (i + 1 < nodes.size()) {
+			action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+			action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		}
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/cur", "head");
+		} else {
+			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/cur");
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+		}
+
+		if (i + 1 < labels.size()) {
+			action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "cur");
+		}
+
+		// Code
+		action.drawMove(&code, 3, 4);
+	}
+
+	// New step: return NOT_FOUND
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "NOT_FOUND is returned." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR);
+	action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+
+	// Label
+	action.draw(&labels.front(), &LABEL_COLOR, "head");
+
+	// Code
+	action.drawMove(&code, 2, 6);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "So the value " + std::to_string(value) + " was not found.", "The whole process is O(n)."});
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.drawChange(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	action.draw(&labels.front(), &LABEL_COLOR, "head");
+
+	// Code
+	action.drawFadeOut(&code, 6);
+}
+
+void CLLVisualizer::update(int index, int value) {
+	action.clearAllSteps();
+
+	code.update({
+		"Node* upd = head;                 ",
+		"for (int k = 0; k <= i - 1; k++) {",
+		"    upd = upd->next;              ",
+		"upd->data = v;                    ",
+		});
+
+	description.newOperation("Update value at index " + std::to_string(index) + " to " + std::to_string(value));
+
+	// New step: Node* upd = head
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Create a pointer 'upd' and set it to 'head'." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/upd");
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = 0; i <= index; i++) {
+		// New step: for (int k = 0; k <= i - 1; k++)
+		action.addNewStep();
+
+		// Description
+		if (nodes.size() == 1) {
+			description.addDescription({ "Iterate k from 0 to i - 1 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to n - 1 = " + std::to_string(index - 1) + ", k is now 0.", "Since k <= " + std::to_string(index - 1) + ", the loop continues." });
+			} else if (i <= index - 1) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(index - 1) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(index - 1) + ", the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "head/upd", "0/head/upd");
+		} else {
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawChange(&labels, i, &LABEL_COLOR, "upd", std::to_string(i) + "/upd");
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		if (i == index) {
+			break;
+		}
+
+		// New step: pre = pre->next
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set 'upd' to the pointer of the next node." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR);
+		action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+		// Node
+		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+		// Label
+		if (i == 0) {
+			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/upd", "head");
+		} else {
+			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/upd");
+			action.draw(&labels.front(), &LABEL_COLOR, "head");
+		}
+
+		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "upd");
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: upd->data = v
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the value of 'upd' to " + std::to_string(value) + "." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.draw(&edges, 0, index - 1, &HIGHLIGHT_EDGE_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.draw(&nodes, 0, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.drawUpdate(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1, nodes.begin()->next(index)->data.value, value);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 0) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/upd", "head/upd");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawChange(&labels, index, &LABEL_COLOR, std::to_string(index) + "/upd", "upd");
+	}
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+	action.drawChange(&edges, 0, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	action.draw(&circularEdge, &NORMAL_EDGE_COLOR);
+
+	// Node
+	action.drawChange(&nodes, 0, index, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeOut(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+
+	// Label
+	if (index == 0) {
+		action.drawChange(&labels.front(), &LABEL_COLOR, "head/upd", "head");
+	} else {
+		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeOut(&labels, index, &LABEL_COLOR, "upd");
+	}
+
+	// Code
+	action.drawFadeOut(&code, 3);
+}
+
 void CLLVisualizer::insertWhenEmpty(int value, bool head) {
 	nodes.pushFront(Node(value, sf::Vector2f(NODE_POSITION_X, NODE_POSITION_Y)));
 	labels.pushFront(Label(&nodes.front()));
@@ -2263,7 +2735,7 @@ void CLLVisualizer::run() {
 			case 1: // Search
 				switch (std::get <1> (current)) {
 				case 0: // 
-					//search(std::stoi(std::get <2> (current)[0]));
+					search(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 
@@ -2272,7 +2744,7 @@ void CLLVisualizer::run() {
 			case 2: // Update
 				switch (std::get <1> (current)) {
 				case 0: // 
-					//update(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					update(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
 				}
 
