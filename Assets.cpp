@@ -31,10 +31,14 @@ void Assets::loadAll() {
 	loadOne(&box680x140Texture, &box680x140Sprite, "Box680x140.png");
 	loadOne(&box880x60Texture, &box880x60Sprite, "Box880x60.png");
 	loadOne(&box880x380Texture, &box880x380Sprite, "Box880x380.png");
+	loadOne(&box1580x60Texure, &box1580x60Sprite, "Box1580x60.png");
+	loadOne(&box1580x320Texure, &box1580x320Sprite, "Box1580x320.png");
 	loadOne(&skewBox100x40Texture, &skewBox100x40Sprite, "SkewBox100x40.png");
 	loadOne(&skewBox160x60Texture, &skewBox160x60Sprite, "SkewBox160x60.png");
 	loadOne(&skewBox400x60Texture, &skewBox400x60Sprite, "SkewBox400x60.png");
 	loadOne(&skewBox560x60Texture, &skewBox560x60Sprite, "SkewBox560x60.png");
+	loadOne(&backButtonTexture, &backButtonSprite, "BackButton.png");
+	loadOne(&modeButtonTexture, &modeButtonSprite, "ModeButton.png");
 	loadOne(&prevButtonTexture, &prevButtonSprite, "PrevNextButton.png");
 	loadOne(&nextButtonTexture, &nextButtonSprite, "PrevNextButton.png");
 	loadOne(&controlButtonsTexture, &controlButtonsSprite, "ControlButtons.png");

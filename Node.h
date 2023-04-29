@@ -4,7 +4,7 @@
 #include "Global.h"
 
 static const float NODE_POSITION_X = 140.0f;
-static const float NODE_POSITION_Y = 180.0f;
+static const float NODE_POSITION_Y = 160.0f;
 static const float NODE_DISTANCE = 80.0f;
 
 struct Node {

@@ -35,7 +35,6 @@ void OptionBox::addSuboptionInput(std::string valueName, std::vector <char> vali
 	this->suboptionInput.back().back().back().setValidCharacters(validCharacters);
 	this->suboptionInput.back().back().back().setValidator(validator);
 	this->suboptionInput.back().back().back().setGenerator(generator);
-	this->suboptionInput.back().back().back().setFillColor(&BOX_COLOR_3, &BOX_TEXT_COLOR);
 	for (int i = 0; i < this->suboptionInput.back().back().size(); i++) {
 		this->suboptionInput.back().back()[i].setPosition(position + sf::Vector2f(300, 200 - 40 * this->suboptionInput.back().back().size() + 80 * i));
 	}
@@ -68,21 +67,16 @@ bool OptionBox::isFocus() {
 	return false;
 }
 
-void OptionBox::draw(sf::RenderTarget &target, sf::RenderStates state) const {
+void OptionBox::draw(sf::RenderWindow* window) {
 	sf::Sprite* boxSprite = &assets->box880x380Sprite;
 	sf::Text* optionText = &assets->consolasBoldText;
 	sf::Sprite* suboptionBoxSprite = &assets->skewBox400x60Sprite;
 	sf::Text* suboptionText = &assets->consolasBoldText;
 
-	boxSprite->setTextureRect(sf::IntRect(0, 0, 280, 380));
-	boxSprite->setColor(BOX_COLOR_1);
-	boxSprite->setPosition(position);
-	target.draw(*boxSprite, state);
-
 	boxSprite->setTextureRect(sf::IntRect(280, 0, 600, 380));
 	boxSprite->setColor(BOX_COLOR_2);
 	boxSprite->setPosition(position + sf::Vector2f(280, 0));
-	target.draw(*boxSprite, state);
+	window->draw(*boxSprite);
 
 	int lastHeight = 0;
 	for (int i = 0; i < optionName.size(); i++) {
@@ -91,82 +85,104 @@ void OptionBox::draw(sf::RenderTarget &target, sf::RenderStates state) const {
 			height = 380 - lastHeight;
 		} else {
 			height = 380 / optionName.size();
-
-			sf::RectangleShape seperatorLine(sf::Vector2f(200, 2));
-			seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_1);
-			seperatorLine.setOrigin(0, seperatorLine.getSize().y / 2);
-			seperatorLine.setPosition(position.x + 40, position.y + lastHeight + height);
-			target.draw(seperatorLine, state);
 		}
+
+		boxSprite->setTextureRect(sf::IntRect(0, lastHeight, 280, 5));
+		boxSprite->setPosition(position.x, position.y + lastHeight);
+		boxSprite->setColor(BOX_COLOR_1);
+		window->draw(*boxSprite);
 
 		boxSprite->setTextureRect(sf::IntRect(0, lastHeight + 5, 280, height - 10));
 		boxSprite->setPosition(position.x, position.y + lastHeight + 5);
-		if (i == currentOption) {
+		if (i == currentOption || positionInRect(sf::Mouse::getPosition(*window), boxSprite->getGlobalBounds())) {
 			boxSprite->setColor(BOX_COLOR_2);
 		} else {
 			boxSprite->setColor(BOX_COLOR_1);
 		}
 
-		target.draw(*boxSprite, state);
+		window->draw(*boxSprite);
 
 		optionText->setString(optionName[i]);
-		optionText->setFillColor(BOX_TEXT_COLOR);
+		optionText->setFillColor(BOX_TEXT_COLOR_1);
 		optionText->setCharacterSize(30);
 		optionText->setOrigin(optionText->getLocalBounds().left + optionText->getLocalBounds().width / 2, optionText->getLocalBounds().top + optionText->getLocalBounds().height / 2);
 		optionText->setPosition(boxSprite->getGlobalBounds().left + boxSprite->getGlobalBounds().width / 2, boxSprite->getGlobalBounds().top + boxSprite->getGlobalBounds().height / 2);
-		target.draw(*optionText, state);
+		window->draw(*optionText);
+
+		boxSprite->setTextureRect(sf::IntRect(0, lastHeight + height - 5, 280, 5));
+		boxSprite->setPosition(position.x, position.y + lastHeight + height - 5);
+		boxSprite->setColor(BOX_COLOR_1);
+		window->draw(*boxSprite);
+
+		if (i < optionName.size() - 1) {
+			sf::RectangleShape seperatorLine(sf::Vector2f(200, 2));
+			seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_1);
+			seperatorLine.setOrigin(0, seperatorLine.getSize().y / 2);
+			seperatorLine.setPosition(position.x + 40, position.y + lastHeight + height);
+			window->draw(seperatorLine);
+		}
 
 		lastHeight += height;
 	}
 
 	if (currentOption != -1) {
 		assets->prevButtonSprite.setPosition(position + sf::Vector2f(300, 20));
-		assets->prevButtonSprite.setColor(BOX_COLOR_3);
-		target.draw(assets->prevButtonSprite, state);
+		if (positionInRect(sf::Mouse::getPosition(*window), assets->prevButtonSprite.getGlobalBounds())) {
+			assets->prevButtonSprite.setColor(BOX_COLOR_4);
+		} else {
+			assets->prevButtonSprite.setColor(BOX_COLOR_3);
+		}
+
+		window->draw(assets->prevButtonSprite);
 
 		assets->nextButtonSprite.setPosition(position + sf::Vector2f(800, 20));
-		assets->nextButtonSprite.setColor(BOX_COLOR_3);
-		target.draw(assets->nextButtonSprite, state);
+		if (positionInRect(sf::Mouse::getPosition(*window), assets->nextButtonSprite.getGlobalBounds())) {
+			assets->nextButtonSprite.setColor(BOX_COLOR_4);
+		} else {
+			assets->nextButtonSprite.setColor(BOX_COLOR_3);
+		}
+
+		window->draw(assets->nextButtonSprite);
 
 		suboptionBoxSprite->setPosition(position + sf::Vector2f(380, 20));
 		suboptionBoxSprite->setColor(BOX_COLOR_3);
-		target.draw(*suboptionBoxSprite, state);
+		window->draw(*suboptionBoxSprite);
 
 		suboptionText->setString(suboptionName[currentOption][currentSuboption[currentOption]]);
-		suboptionText->setFillColor(BOX_TEXT_COLOR);
+		suboptionText->setFillColor(BOX_TEXT_COLOR_1);
 		suboptionText->setCharacterSize(30);
 		suboptionText->setOrigin(suboptionText->getLocalBounds().left + suboptionText->getLocalBounds().width / 2, 0);
 		suboptionText->setPosition(position + sf::Vector2f(580, 30));
-		target.draw(*suboptionText, state);
+		window->draw(*suboptionText);
 
 		for (int i = 0; i < suboptionInput[currentOption][currentSuboption[currentOption]].size(); i++) {
-			target.draw(suboptionInput[currentOption][currentSuboption[currentOption]][i], state);
+			suboptionInput[currentOption][currentSuboption[currentOption]][i].draw(window);
 
 			if (suboptionName[currentOption][currentSuboption[currentOption]] != "Manual" || i != 1) {
 				Button randomButton;
 				randomButton.setSprite(&assets->skewBox160x60Sprite);
 				randomButton.setText(&assets->consolasBoldText, "Random", 30);
-				randomButton.setFillColor(&BOX_COLOR_3, &BOX_TEXT_COLOR);
 				randomButton.setPosition(position + sf::Vector2f(700, 200 - 40 * suboptionInput[currentOption][currentSuboption[currentOption]].size() + 80 * i));
-				target.draw(randomButton, state);
+				randomButton.draw(window);
 			}
 		}
+
+		updateMessage();
 
 		Button messageButton;
 		messageButton.setSprite(&assets->skewBox560x60Sprite);
 		messageButton.setText(&assets->consolasBoldText, message.empty() ? "GO" : message, 30);
-		messageButton.setFillColor(&BOX_COLOR_3, &BOX_TEXT_COLOR);
 		messageButton.setPosition(position + sf::Vector2f(300, 300));
-		target.draw(messageButton, state);
+		messageButton.draw(window);
 
 		sf::RectangleShape seperatorLine(sf::Vector2f(500, 2));
 		seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_2);
 		seperatorLine.setOrigin(0, seperatorLine.getSize().y / 2);
 		seperatorLine.setPosition(position.x + 330, position.y + 100);
-		target.draw(seperatorLine, state);
+		window->draw(seperatorLine);
 
 		seperatorLine.setPosition(position.x + 330, position.y + 280);
-		target.draw(seperatorLine, state);
+		window->draw(seperatorLine);
 	}
 }
 

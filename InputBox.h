@@ -3,7 +3,7 @@
 
 #include "Global.h"
 
-class InputBox : public sf::Drawable {
+class InputBox {
 public:
 	InputBox();
 
@@ -12,7 +12,6 @@ public:
 	void setValidator(std::function <std::string(std::string, std::string)> validator);
 	void setValidCharacters(std::vector <char> validCharacters);
 	void setGenerator(std::function <std::string()> generator);
-	void setFillColor(sf::Color* spriteColor, sf::Color* textColor);
 	void setPosition(sf::Vector2f position);
 	void setFocus(bool focus);
 	bool isFocus();
@@ -26,6 +25,7 @@ public:
 	std::string getErrorMessage();
 	sf::FloatRect getGlobalBounds();
 	void handleEvent(sf::RenderWindow* window, sf::Event* event);
+	void draw(sf::RenderWindow* window);
 
 private:
 	std::string valueName;
@@ -39,12 +39,8 @@ private:
 	int characterSize;
 	bool focus;
 	sf::Clock timer;
-	sf::Color* spriteColor;
-	sf::Color* textColor;
 
 	sf::Vector2f position;
-
-	virtual void draw(sf::RenderTarget &target, sf::RenderStates state) const;
 };
 
 #endif

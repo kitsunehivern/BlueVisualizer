@@ -5,6 +5,7 @@ CLLVisualizer::CLLVisualizer(sf::RenderWindow* window, Assets* assets) {
 	this->window = window;
 	this->assets = assets;
 
+	header = HeaderBox(assets, "Circular Linked List", sf::Vector2f(10, 10));
 	action = ActionBox(window, assets, sf::Vector2f(10, 430));
 	option = OptionBox(assets, sf::Vector2f(10, 510));
 	code = CodeBox(sf::Vector2f(910, 590));
@@ -2691,12 +2692,18 @@ void CLLVisualizer::run() {
 	randomList(7);
 	create();
 
+	sf::Texture texture;
+	texture.loadFromFile("Images/LightBackground.png");
+
+	sf::Sprite sprite(texture);
+
 	while (window->isOpen()) {
 		window->clear(sf::Color(190, 230, 240));
 
+		window->draw(sprite);
+		header.draw(window);
 		action.draw();
-		option.updateMessage();
-		window->draw(option);
+		option.draw(window);
 
 		window->display();
 

@@ -311,7 +311,8 @@ void ActionBox::drawChange(DescriptionBox* description, int fromLine, int toLine
 }
 
 void ActionBox::draw() {
-	sf::Sprite* boxSprite = &assets->box880x60Sprite;
+	sf::Sprite* boxSprite = &assets->box1580x320Sprite;
+	sf::Sprite* controlBoxSprite = &assets->box880x60Sprite;
 	sf::Sprite* controlButtonsSprite = &assets->controlButtonsSprite;
 	sf::Sprite* statusButtonsSprite = &assets->statusButtonsSprite;
 	sf::Sprite* progressBarSprite = &assets->progressBarSprite;
@@ -319,17 +320,31 @@ void ActionBox::draw() {
 	sf::Sprite* speedSprite = &assets->speedSprite;
 
 	boxSprite->setColor(BOX_COLOR_2);
-	boxSprite->setPosition(position);
+	boxSprite->setPosition(10, 90);
 	window->draw(*boxSprite);
 
+	controlBoxSprite->setColor(BOX_COLOR_2);
+	controlBoxSprite->setPosition(position);
+	window->draw(*controlBoxSprite);
+
 	controlButtonsSprite->setTextureRect(sf::IntRect(0, 0, 20, 30));
-	controlButtonsSprite->setColor(BOX_COLOR_3);
-	controlButtonsSprite->setPosition(position + sf::Vector2f(20, 15));
+	controlButtonsSprite->setPosition(position + sf::Vector2f(30, 15));
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
+		controlButtonsSprite->setColor(BOX_COLOR_4);
+	} else {
+		controlButtonsSprite->setColor(BOX_COLOR_3);
+	}
+
 	window->draw(*controlButtonsSprite);
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(20, 0, 20, 30));
-	controlButtonsSprite->setColor(BOX_COLOR_3);
-	controlButtonsSprite->setPosition(position + sf::Vector2f(80, 15));
+	controlButtonsSprite->setPosition(position + sf::Vector2f(90, 15));
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
+		controlButtonsSprite->setColor(BOX_COLOR_4);
+	} else {
+		controlButtonsSprite->setColor(BOX_COLOR_3);
+	}
+
 	window->draw(*controlButtonsSprite);
 
 	int index = -1;
@@ -342,18 +357,33 @@ void ActionBox::draw() {
 	}
 
 	statusButtonsSprite->setTextureRect(sf::IntRect(30 * index, 0, 30, 30));
-	statusButtonsSprite->setColor(BOX_COLOR_3);
-	statusButtonsSprite->setPosition(position + sf::Vector2f(135, 15));
+	statusButtonsSprite->setPosition(position + sf::Vector2f(145, 15));
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
+		statusButtonsSprite->setColor(BOX_COLOR_4);
+	} else {
+		statusButtonsSprite->setColor(BOX_COLOR_3);
+	}
+
 	window->draw(*statusButtonsSprite);
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(40, 0, 20, 30));
-	controlButtonsSprite->setColor(BOX_COLOR_3);
-	controlButtonsSprite->setPosition(position + sf::Vector2f(200, 15));
+	controlButtonsSprite->setPosition(position + sf::Vector2f(210, 15));
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
+		controlButtonsSprite->setColor(BOX_COLOR_4);
+	} else {
+		controlButtonsSprite->setColor(BOX_COLOR_3);
+	}
+
 	window->draw(*controlButtonsSprite);
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(60, 0, 20, 30));
-	controlButtonsSprite->setColor(BOX_COLOR_3);
-	controlButtonsSprite->setPosition(position + sf::Vector2f(260, 15));
+	controlButtonsSprite->setPosition(position + sf::Vector2f(270, 15));
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
+		controlButtonsSprite->setColor(BOX_COLOR_4);
+	} else {
+		controlButtonsSprite->setColor(BOX_COLOR_3);
+	}
+
 	window->draw(*controlButtonsSprite);
 
 	progressBarSprite->setTextureRect(sf::IntRect(0, 0, 400, 20));
@@ -374,7 +404,13 @@ void ActionBox::draw() {
 	}
 
 	speedBoxSprite->setColor(BOX_COLOR_3);
-	speedBoxSprite->setPosition(position + sf::Vector2f(760, 10));
+	speedBoxSprite->setPosition(position + sf::Vector2f(750, 10));
+	if (positionInRect(sf::Mouse::getPosition(*window), speedBoxSprite->getGlobalBounds())) {
+		speedBoxSprite->setColor(BOX_COLOR_4);
+	} else {
+		speedBoxSprite->setColor(BOX_COLOR_3);
+	}
+
 	window->draw(*speedBoxSprite);
 
 	if (speed == X1) {
@@ -388,6 +424,12 @@ void ActionBox::draw() {
 	speedSprite->setTextureRect(sf::IntRect(0, 40 * index, 100, 40));
 	speedSprite->setColor(BOX_COLOR_4);
 	speedSprite->setPosition(speedBoxSprite->getPosition());
+	if (positionInRect(sf::Mouse::getPosition(*window), speedBoxSprite->getGlobalBounds())) {
+		speedSprite->setColor(BOX_COLOR_3);
+	} else {
+		speedSprite->setColor(BOX_COLOR_4);
+	}
+
 	window->draw(*speedSprite);
 
 	if (status == PAUSED) {
@@ -558,15 +600,15 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 	} else if (event->type == sf::Event::MouseButtonReleased) {
 		mouseButtonHolding = false;
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 20, position.y + 15, 20, 30))) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
 			goToBeginning();
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 80, position.y + 15, 20, 30))) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
 			goToPrevStep();
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 135, position.y + 15, 30, 30))) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
 			if (status == PAUSED) {
 				if (direction == NONE) {
 					status = CONTINUE;
@@ -583,15 +625,15 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 			}
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 200, position.y + 15, 20, 30))) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
 			goToNextStep();
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 260, position.y + 15, 20, 30))) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
 			goToEnding();
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 760, position.y + 10, 100, 40))) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 750, position.y + 10, 100, 40))) {
 			if (speed & X1) {
 				speed = X2;
 			} else if (speed & X2) {

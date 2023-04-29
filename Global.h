@@ -45,16 +45,15 @@ static sf::Color ERASED_EDGE_COLOR             = sf::Color(215,  80,  60, 255);
 static sf::Color CODE_TEXT_COLOR               = sf::Color(  0,   0,   0, 255);
 static sf::Color CODE_BAR_COLOR                = sf::Color(120, 220, 255, 255);
 
-static sf::Color BOX_COLOR_1                   = sf::Color(170, 225, 245, 255);
-static sf::Color BOX_COLOR_2                   = sf::Color(240, 250, 250, 255);
-static sf::Color BOX_COLOR_3                   = sf::Color(120, 220, 255, 255);
-static sf::Color BOX_COLOR_4                   = sf::Color( 45,  70, 100, 255);
-static sf::Color BOX_TEXT_COLOR                = sf::Color(  0,   0,   0, 255);
-static sf::Color BOX_EMPTY_TEXT_COLOR		   = sf::Color(125, 125, 125, 255);
-static sf::Color SEPERATOR_LINE_COLOR_1        = sf::Color(145, 200, 220, 255);
-static sf::Color SEPERATOR_LINE_COLOR_2        = sf::Color(220, 235, 235, 255);
-static sf::Color SEPERATOR_LINE_COLOR_3        = sf::Color(250, 250, 250, 255);
-static sf::Color INSERTION_POINT_COLOR         = sf::Color(  0,   0,   0, 255);
+static sf::Color BOX_COLOR_1                   = sf::Color(170, 225, 250, 200);
+static sf::Color BOX_COLOR_2                   = sf::Color(240, 250, 250, 200);
+static sf::Color BOX_COLOR_3                   = sf::Color(  0, 190, 250, 200);
+static sf::Color BOX_COLOR_4                   = sf::Color(  0, 140, 190, 200);
+static sf::Color BOX_TEXT_COLOR_1              = sf::Color(  0,   0,   0, 255);
+static sf::Color BOX_TEXT_COLOR_2              = sf::Color(  0,   0,   0, 255);
+static sf::Color BOX_EMPTY_TEXT_COLOR          = sf::Color(125, 125, 125, 255);
+static sf::Color SEPERATOR_LINE_COLOR_1        = sf::Color(120, 200, 220, 255);
+static sf::Color SEPERATOR_LINE_COLOR_2        = sf::Color(200, 215, 215, 255);
 
 // Global function
 static bool positionInRect(sf::Vector2i position, sf::FloatRect rectangle) {

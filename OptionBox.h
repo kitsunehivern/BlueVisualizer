@@ -7,7 +7,7 @@
 #include "Button.h"
 #include "InputBox.h"
 
-class OptionBox : public sf::Drawable {
+class OptionBox {
 public:
 	OptionBox();
 	OptionBox(Assets* assets, sf::Vector2f positions);
@@ -19,6 +19,7 @@ public:
 	bool isFocus();
 	void updateMessage();
 	std::tuple <int, int, std::vector <std::string> > handleEvent(sf::RenderWindow* window, sf::Event* event);
+	void draw(sf::RenderWindow* window);
 
 private:
 	Assets* assets;
@@ -30,8 +31,6 @@ private:
 	int currentOption;
 	std::vector <int> currentSuboption;
 	std::string message;
-
-	virtual void draw(sf::RenderTarget &target, sf::RenderStates state) const;
 };
 
 #endif

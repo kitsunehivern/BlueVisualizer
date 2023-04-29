@@ -2112,18 +2112,12 @@ void SLLVisualizer::run() {
 	randomList(7);
 	create();
 
-	sf::Texture background;
-	background.loadFromFile("Images/LightBackground.png");
-
-	sf::Sprite lmao(background);
-
 	while (window->isOpen()) {
 		window->clear(sf::Color(190, 230, 240));
-
-		//window->draw(lmao);
+		
 		action.draw();
 		option.updateMessage();
-		window->draw(option);
+		option.draw(window);
 
 		window->display();
 

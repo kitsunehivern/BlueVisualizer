@@ -3,6 +3,7 @@
 
 #include "Global.h"
 #include "Assets.h"
+#include "HeaderBox.h"
 #include "ActionBox.h"
 #include "OptionBox.h"
 #include "DescriptionBox.h"
@@ -37,6 +38,7 @@ private:
 	sf::RenderWindow* window;
 	Assets* assets;
 
+	HeaderBox header;
 	ActionBox action;
 	CodeBox code;
 	OptionBox option;

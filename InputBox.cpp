@@ -28,11 +28,6 @@ void InputBox::setGenerator(std::function <std::string()> generator) {
 	this->generator = generator;
 }
 
-void InputBox::setFillColor(sf::Color* spriteColor, sf::Color* textColor) {
-	this->spriteColor = spriteColor;
-	this->textColor = textColor;
-}
-
 void InputBox::setPosition(sf::Vector2f position) {
 	this->position = position;
 }
@@ -178,23 +173,32 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
 	}
 }
 
-void InputBox::draw(sf::RenderTarget &target, sf::RenderStates state) const {
-	sprite->setColor(*spriteColor);
+void InputBox::draw(sf::RenderWindow* window) {
 	sprite->setPosition(position);
-	target.draw(*sprite, state);
+	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+		sprite->setColor(BOX_COLOR_4);
+	} else {
+		sprite->setColor(BOX_COLOR_3);
+	}
+
+	window->draw(*sprite);
 
 	if (valueName == "File browser") {
 		text->setString("Upload a file");
 		text->setCharacterSize(characterSize);
-		text->setFillColor(*textColor);
 		text->setOrigin(text->getLocalBounds().width / 2, 0);
 		text->setPosition(position + sf::Vector2f(sprite->getGlobalBounds().width / 2, 10));
-		target.draw(*text, state);
+		if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+			text->setFillColor(BOX_TEXT_COLOR_2);
+		} else {
+			text->setFillColor(BOX_TEXT_COLOR_1);
+		}
+
+		window->draw(*text);
 	} else {
 		std::string currentString = valueName + " = " + value;
 		text->setString(currentString);
 		text->setCharacterSize(characterSize);
-		text->setFillColor(*textColor);
 		if (text->getGlobalBounds().width > sprite->getGlobalBounds().width - 60) {
 			int stringLength = -1;
 			for (int left = 1, right = currentString.size(); left <= right; ) {
@@ -212,17 +216,17 @@ void InputBox::draw(sf::RenderTarget &target, sf::RenderStates state) const {
 			text->setString(currentString.substr(currentString.size() - stringLength, stringLength));
 			text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width, 0);
 			text->setPosition(position + sf::Vector2f(sprite->getGlobalBounds().width - 30, 10));
-			target.draw(*text, state);
+			if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+				text->setFillColor(BOX_TEXT_COLOR_2);
+			} else {
+				text->setFillColor(BOX_TEXT_COLOR_1);
+			}
 
-			int spriteWidth = sprite->getGlobalBounds().width;
-			sprite->setTextureRect(sf::IntRect(0, 0, 30, 60));
-			sprite->setPosition(position);
-			target.draw(*sprite, state);
-			sprite->setTextureRect(sf::IntRect(0, 0, spriteWidth, 60));
+			window->draw(*text);
 		} else {
 			text->setOrigin(0, 0);
 			text->setPosition(position + sf::Vector2f(30, 10));
-			target.draw(*text, state);
+			window->draw(*text);
 		}
 
 		float currentTimer = timer.getElapsedTime().asSeconds();
@@ -231,10 +235,15 @@ void InputBox::draw(sf::RenderTarget &target, sf::RenderStates state) const {
 		}
 
 		sf::RectangleShape insertionPoint(sf::Vector2f(2, text->getCharacterSize()));
-		insertionPoint.setFillColor(INSERTION_POINT_COLOR);
+		if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+			insertionPoint.setFillColor(BOX_TEXT_COLOR_2);
+		} else {
+			insertionPoint.setFillColor(BOX_TEXT_COLOR_1);
+		}
+
 		insertionPoint.setOrigin(0, insertionPoint.getLocalBounds().top + insertionPoint.getLocalBounds().height / 2);
 		insertionPoint.setPosition(text->getGlobalBounds().left + text->getGlobalBounds().width, sprite->getGlobalBounds().top + sprite->getGlobalBounds().height / 2);
 
-		target.draw(insertionPoint, state);
+		window->draw(insertionPoint);
 	}
 }

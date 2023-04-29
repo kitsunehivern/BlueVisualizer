@@ -13,11 +13,6 @@ void Button::setText(sf::Text* text, std::string name, int characterSize) {
 	this->characterSize = characterSize;
 }
 
-void Button::setFillColor(sf::Color* spriteColor, sf::Color* textColor) {
-	this->spriteColor = spriteColor;
-	this->textColor = textColor;
-}
-
 void Button::setPosition(sf::Vector2f position) {
 	this->position = position;
 }
@@ -28,15 +23,25 @@ sf::FloatRect Button::getGlobalBounds() {
 	return sprite->getGlobalBounds();
 }
 
-void Button::draw(sf::RenderTarget& target, sf::RenderStates state) const {
-	sprite->setColor(*spriteColor);
+void Button::draw(sf::RenderWindow* window) {
 	sprite->setPosition(position);
-	target.draw(*sprite, state);
+	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+		sprite->setColor(BOX_COLOR_4);	
+	} else {
+		sprite->setColor(BOX_COLOR_3);
+	}
+
+	window->draw(*sprite);
 
 	text->setString(name);
 	text->setCharacterSize(characterSize);
-	text->setFillColor(*textColor);
 	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, 0);
 	text->setPosition(sprite->getGlobalBounds().left + sprite->getGlobalBounds().width / 2, sprite->getGlobalBounds().top + 10);
-	target.draw(*text, state);
+	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+		text->setFillColor(BOX_TEXT_COLOR_2);	
+	} else {
+		text->setFillColor(BOX_TEXT_COLOR_1);
+	}
+
+	window->draw(*text);
 }

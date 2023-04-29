@@ -15,7 +15,6 @@
 #include "OptionBox.h"
 
 enum CircleSpriteType { HOLLOW, SOLID };
-enum VisualType;
 
 class ActionBox {
 public:

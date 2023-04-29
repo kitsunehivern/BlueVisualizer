@@ -39,7 +39,7 @@ void DescriptionBox::draw(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::T
 
 	operationText->setString(operation);
 	operationText->setCharacterSize(30);
-	operationText->setFillColor(BOX_TEXT_COLOR);
+	operationText->setFillColor(BOX_TEXT_COLOR_1);
 	operationText->setOrigin(operationText->getLocalBounds().left + operationText->getLocalBounds().width / 2, 0);
 	operationText->setPosition(position + sf::Vector2f(340, 4));
 	window->draw(*operationText);
@@ -47,7 +47,7 @@ void DescriptionBox::draw(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::T
 	for (int i = 0; i < description[line].size(); i++) {
 		descriptionText->setString(description[line][i]);
 		descriptionText->setCharacterSize(25);
-		descriptionText->setFillColor(BOX_TEXT_COLOR);
+		descriptionText->setFillColor(BOX_TEXT_COLOR_1);
 		descriptionText->setOrigin(0, 0);
 		descriptionText->setPosition(position + sf::Vector2f(15, 60 + 40 * i));
 		window->draw(*descriptionText);
@@ -65,7 +65,7 @@ void DescriptionBox::drawFadeIn(sf::RenderWindow* window, sf::Sprite* boxSprite,
 
 	operationText->setString(operation);
 	operationText->setCharacterSize(30);
-	operationText->setFillColor(BOX_TEXT_COLOR);
+	operationText->setFillColor(BOX_TEXT_COLOR_1);
 	operationText->setOrigin(operationText->getLocalBounds().left + operationText->getLocalBounds().width / 2, 0);
 	operationText->setPosition(position + sf::Vector2f(340, 4));
 	window->draw(*operationText);
@@ -79,7 +79,7 @@ void DescriptionBox::drawFadeIn(sf::RenderWindow* window, sf::Sprite* boxSprite,
 	for (int i = 0; i < description[line].size(); i++) {
 		descriptionText->setString(description[line][i]);
 		descriptionText->setCharacterSize(25);
-		descriptionText->setFillColor(BOX_TEXT_COLOR * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255)));
+		descriptionText->setFillColor(BOX_TEXT_COLOR_1 * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255)));
 		descriptionText->setOrigin(0, 0);
 		descriptionText->setPosition(position + sf::Vector2f(15, 60 + 40 * i));
 		window->draw(*descriptionText);

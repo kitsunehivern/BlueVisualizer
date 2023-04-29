@@ -958,7 +958,7 @@ void QueueVisualizer::run() {
 
 		action.draw();
 		option.updateMessage();
-		window->draw(option);
+		option.draw(window);
 
 		window->display();
 
