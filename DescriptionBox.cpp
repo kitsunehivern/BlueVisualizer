@@ -1,7 +1,11 @@
 #include "DescriptionBox.h"
 #include "Motion.h"
 
-DescriptionBox::DescriptionBox(sf::Vector2f position) {
+DescriptionBox::DescriptionBox() {
+}
+
+DescriptionBox::DescriptionBox(Assets* assets, sf::Vector2f position) {
+	this->assets = assets;
 	this->position = position;
 }
 
@@ -23,12 +27,12 @@ void DescriptionBox::draw(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::T
 		return;
 	}
 
-	boxSprite->setColor(BOX_COLOR_2);
+	boxSprite->setColor(assets->boxColor2);
 	boxSprite->setPosition(position);
 	window->draw(*boxSprite);
 
 	sf::RectangleShape seperatorLine(sf::Vector2f(580, 2));
-	seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_2);
+	seperatorLine.setFillColor(assets->seperatorLineColor2);
 	seperatorLine.setOrigin(seperatorLine.getSize().x / 2, seperatorLine.getSize().y / 2);
 	seperatorLine.setPosition(position + sf::Vector2f(340, 50));
 	window->draw(seperatorLine);
@@ -39,7 +43,7 @@ void DescriptionBox::draw(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::T
 
 	operationText->setString(operation);
 	operationText->setCharacterSize(30);
-	operationText->setFillColor(BOX_TEXT_COLOR_1);
+	operationText->setFillColor(assets->boxTextColor1);
 	operationText->setOrigin(operationText->getLocalBounds().left + operationText->getLocalBounds().width / 2, 0);
 	operationText->setPosition(position + sf::Vector2f(340, 4));
 	window->draw(*operationText);
@@ -47,7 +51,7 @@ void DescriptionBox::draw(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::T
 	for (int i = 0; i < description[line].size(); i++) {
 		descriptionText->setString(description[line][i]);
 		descriptionText->setCharacterSize(25);
-		descriptionText->setFillColor(BOX_TEXT_COLOR_1);
+		descriptionText->setFillColor(assets->boxTextColor1);
 		descriptionText->setOrigin(0, 0);
 		descriptionText->setPosition(position + sf::Vector2f(15, 60 + 40 * i));
 		window->draw(*descriptionText);
@@ -59,19 +63,19 @@ void DescriptionBox::drawFadeIn(sf::RenderWindow* window, sf::Sprite* boxSprite,
 		return;
 	}
 
-	boxSprite->setColor(BOX_COLOR_2);
+	boxSprite->setColor(assets->boxColor2);
 	boxSprite->setPosition(position);
 	window->draw(*boxSprite);
 
 	operationText->setString(operation);
 	operationText->setCharacterSize(30);
-	operationText->setFillColor(BOX_TEXT_COLOR_1);
+	operationText->setFillColor(assets->boxTextColor1);
 	operationText->setOrigin(operationText->getLocalBounds().left + operationText->getLocalBounds().width / 2, 0);
 	operationText->setPosition(position + sf::Vector2f(340, 4));
 	window->draw(*operationText);
 
 	sf::RectangleShape seperatorLine(sf::Vector2f(580, 2));
-	seperatorLine.setFillColor(SEPERATOR_LINE_COLOR_2);
+	seperatorLine.setFillColor(assets->seperatorLineColor2);
 	seperatorLine.setOrigin(seperatorLine.getSize().x / 2, seperatorLine.getSize().y / 2);
 	seperatorLine.setPosition(position + sf::Vector2f(340, 50));
 	window->draw(seperatorLine);
@@ -79,7 +83,7 @@ void DescriptionBox::drawFadeIn(sf::RenderWindow* window, sf::Sprite* boxSprite,
 	for (int i = 0; i < description[line].size(); i++) {
 		descriptionText->setString(description[line][i]);
 		descriptionText->setCharacterSize(25);
-		descriptionText->setFillColor(BOX_TEXT_COLOR_1 * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255)));
+		descriptionText->setFillColor(assets->boxTextColor1 * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255)));
 		descriptionText->setOrigin(0, 0);
 		descriptionText->setPosition(position + sf::Vector2f(15, 60 + 40 * i));
 		window->draw(*descriptionText);

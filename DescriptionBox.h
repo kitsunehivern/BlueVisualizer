@@ -6,7 +6,8 @@
 
 class DescriptionBox {
 public:
-	DescriptionBox(sf::Vector2f position = sf::Vector2f(0, 0));
+	DescriptionBox();
+	DescriptionBox(Assets* assets, sf::Vector2f position);
 
 	void newOperation(std::string operation);
 	void addDescription(std::vector <std::string> description);
@@ -18,6 +19,7 @@ public:
 	void drawChange(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::Text* operationText, sf::Text* descriptinText, int fromLine, int toLine, float ratio, bool isDrawn);
 
 private:
+	Assets* assets;
 	std::string operation;
 	std::vector <std::vector <std::string> > description;
 	sf::Vector2f position;

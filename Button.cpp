@@ -23,12 +23,12 @@ sf::FloatRect Button::getGlobalBounds() {
 	return sprite->getGlobalBounds();
 }
 
-void Button::draw(sf::RenderWindow* window) {
+void Button::draw(sf::RenderWindow* window, Assets* assets) {
 	sprite->setPosition(position);
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-		sprite->setColor(BOX_COLOR_4);	
+		sprite->setColor(assets->boxColor4);	
 	} else {
-		sprite->setColor(BOX_COLOR_3);
+		sprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*sprite);
@@ -38,9 +38,9 @@ void Button::draw(sf::RenderWindow* window) {
 	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, 0);
 	text->setPosition(sprite->getGlobalBounds().left + sprite->getGlobalBounds().width / 2, sprite->getGlobalBounds().top + 10);
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-		text->setFillColor(BOX_TEXT_COLOR_2);	
+		text->setFillColor(assets->boxTextColor2);	
 	} else {
-		text->setFillColor(BOX_TEXT_COLOR_1);
+		text->setFillColor(assets->boxTextColor1);
 	}
 
 	window->draw(*text);

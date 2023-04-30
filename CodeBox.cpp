@@ -1,7 +1,11 @@
 #include "CodeBox.h"
 #include "Motion.h"
 
-CodeBox::CodeBox(sf::Vector2f position) {
+CodeBox::CodeBox() {
+}
+
+CodeBox::CodeBox(Assets* assets, sf::Vector2f position) {
+	this->assets = assets;
 	this->position = position;
 }
 
@@ -15,18 +19,18 @@ void CodeBox::draw(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::Sprite* 
 	}
 
 	boxSprite->setPosition(position);
-	boxSprite->setColor(BOX_COLOR_2);
+	boxSprite->setColor(assets->boxColor2);
 	window->draw(*boxSprite);
 
 	if (!withoutBar) {
-		barSprite->setColor(CODE_BAR_COLOR);
+		barSprite->setColor(assets->boxColor3);
 		window->draw(*barSprite);
 	}
 
 	for (int i = 0; i < code.size(); i++) {
 		codeText->setString(code[i]);
 		codeText->setCharacterSize(25);
-		codeText->setFillColor(CODE_TEXT_COLOR);
+		codeText->setFillColor(assets->boxTextColor1);
 		codeText->setPosition(position + sf::Vector2f(15, 10 + 40 * i + 4));
 		window->draw(*codeText);
 	}
@@ -38,17 +42,17 @@ void CodeBox::drawFadeIn(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::Sp
 	}
 
 	boxSprite->setPosition(position);
-	boxSprite->setColor(BOX_COLOR_2);
+	boxSprite->setColor(assets->boxColor2);
 	window->draw(*boxSprite);
 
-	barSprite->setColor(CODE_BAR_COLOR * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255)));
+	barSprite->setColor(assets->boxColor3 * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255)));
 	barSprite->setPosition(position + sf::Vector2f(0, 10 + 40 * line));
 	window->draw(*barSprite);
 
 	for (int i = 0; i < code.size(); i++) {
 		codeText->setString(code[i]);
 		codeText->setCharacterSize(25);
-		codeText->setFillColor(CODE_TEXT_COLOR);
+		codeText->setFillColor(assets->boxTextColor1);
 		codeText->setPosition(position + sf::Vector2f(15, 10 + 40 * i + 4));
 		window->draw(*codeText);
 	}

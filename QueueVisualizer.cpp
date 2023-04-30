@@ -7,8 +7,8 @@ QueueVisualizer::QueueVisualizer(sf::RenderWindow* window, Assets *assets) {
 
 	action = ActionBox(window, assets, sf::Vector2f(10, 430));
 	option = OptionBox(assets, sf::Vector2f(10, 510));
-	code = CodeBox(sf::Vector2f(910, 590));
-	description = DescriptionBox(sf::Vector2f(910, 430));
+	code = CodeBox(assets, sf::Vector2f(910, 590));
+	description = DescriptionBox(assets, sf::Vector2f(910, 430));
 }
 
 void QueueVisualizer::randomQueue(int size) {
@@ -78,14 +78,14 @@ void QueueVisualizer::createQueue() {
 		// Edge
 
 		// Node
-		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		if (labels.size() == 1) {
-			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.drawFadeIn(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
-			action.drawFadeIn(&labels.back(), &LABEL_COLOR, "tail");
+			action.drawFadeIn(&labels.front(), &assets->labelColor, "head");
+			action.drawFadeIn(&labels.back(), &assets->labelColor, "tail");
 		}
 
 		// Code
@@ -102,17 +102,17 @@ void QueueVisualizer::createQueue() {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.drawSlideIn(&edges, 0, edges.size() - 1, &INSERTED_EDGE_COLOR);
+		action.drawSlideIn(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		if (labels.size() == 1) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 
 		// Code
@@ -133,22 +133,22 @@ void QueueVisualizer::createQueue() {
 
 	// Edge
 	if (!edges.empty()) {
-		action.drawChange(&edges, 0, edges.size() - 1, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawChange(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (!nodes.empty()) {
-		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	}
 
 	// Label
 	if (labels.size() > 0) {
 		if (labels.size() == 1) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 	}
 
@@ -179,21 +179,21 @@ void QueueVisualizer::peekAtTheFront() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() > 0) {
 		if (labels.size() == 1) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 	}
 
@@ -226,20 +226,20 @@ void QueueVisualizer::peekAtTheFront() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (labels.size() == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.back(), &assets->labelColor, "tail");
 	}
 
 	// Code
@@ -253,20 +253,20 @@ void QueueVisualizer::peekAtTheFront() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (labels.size() == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.back(), &assets->labelColor, "tail");
 	}
 
 	// Code
@@ -296,21 +296,21 @@ void QueueVisualizer::peekAtTheBack() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() > 0) {
 		if (labels.size() == 1) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 	}
 
@@ -343,20 +343,20 @@ void QueueVisualizer::peekAtTheBack() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.back(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.back(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (labels.size() == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.back(), &assets->labelColor, "tail");
 	}
 
 	// Code
@@ -370,20 +370,20 @@ void QueueVisualizer::peekAtTheBack() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.back(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.back(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (labels.size() == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.back(), &assets->labelColor, "tail");
 	}
 
 	// Code
@@ -423,24 +423,24 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->normalEdgeColor);
 
 	// Node
 	if (nodes.size() == 1) {
-		action.drawFadeIn(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	} else {
-		action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() == 1) {
-			action.drawFadeIn(&labels.back(), &LABEL_COLOR, "head/tail");
+			action.drawFadeIn(&labels.back(), &assets->labelColor, "head/tail");
 	} else {
 		if (labels.size() == 2) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.rbegin()->prev()->data, &assets->labelColor, "tail");
 		}
 	}
 
@@ -459,11 +459,11 @@ void QueueVisualizer::enqueue(int value) {
 		// Edge
 
 		// Node
-		action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes.back(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
-		action.draw(&labels.back(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.back(), &assets->labelColor, "head/tail");
 
 		// Code
 		action.drawFadeOut(&code, 0);
@@ -479,21 +479,21 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeIn(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawFadeIn(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (labels.size() == 2) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.rbegin()->prev()->data, &assets->labelColor, "tail");
 	}
 
-	action.drawFadeIn(&labels.back(), &LABEL_COLOR, "add");
+	action.drawFadeIn(&labels.back(), &assets->labelColor, "add");
 
 	// Code
 	action.drawMove(&code, 0, 2);
@@ -506,24 +506,24 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
-	action.drawSlideIn(&edges.back(), &INSERTED_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->normalEdgeColor);
+	action.drawSlideIn(&edges.back(), &assets->insertedEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.rbegin()->prev()->data, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (labels.size() == 2) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.rbegin()->prev()->data, &assets->labelColor, "tail");
 	}
 
-	action.draw(&labels.back(), &LABEL_COLOR, "add");
+	action.draw(&labels.back(), &assets->labelColor, "add");
 
 	// Code
 	action.drawMove(&code, 2, 3);
@@ -538,23 +538,23 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
-	action.draw(&edges.back(), &INSERTED_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->normalEdgeColor);
+	action.draw(&edges.back(), &assets->insertedEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.draw(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes.rbegin()->prev()->data, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (labels.size() == 2) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "head/tail", "head");
+		action.drawChange(&labels.front(), &assets->labelColor, "head/tail", "head");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawFadeOut(&labels.rbegin()->prev()->data, &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawFadeOut(&labels.rbegin()->prev()->data, &assets->labelColor, "tail");
 	}
 
-	action.drawChange(&labels.back(), &LABEL_COLOR, "add", "tail/add");
+	action.drawChange(&labels.back(), &assets->labelColor, "add", "tail/add");
 
 	// Code
 	action.drawMove(&code, 3, 4);
@@ -567,19 +567,19 @@ void QueueVisualizer::enqueue(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR);
-	action.drawChange(&edges.back(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->normalEdgeColor);
+	action.drawChange(&edges.back(), &assets->insertedEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.rbegin()->prev()->data, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.rbegin()->prev()->data, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.rbegin()->prev()->data, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes.back(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
-	action.drawChange(&labels.back(), &LABEL_COLOR, "tail/add", "tail");
+	action.draw(&labels.front(), &assets->labelColor, "head");
+	action.drawChange(&labels.back(), &assets->labelColor, "tail/add", "tail");
 
 	// Code
 	action.drawFadeOut(&code, 4);
@@ -611,26 +611,26 @@ void QueueVisualizer::dequeue() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->normalEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (nodes.size() == 0) {
-		action.drawChange(&deletedLabel, &LABEL_COLOR, "head/tail", "head/tail/del");
+		action.drawChange(&deletedLabel, &assets->labelColor, "head/tail", "head/tail/del");
 	} else {
-		action.drawChange(&deletedLabel, &LABEL_COLOR, "head", "head/del");
-		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		action.drawChange(&deletedLabel, &assets->labelColor, "head", "head/del");
+		action.draw(&labels.back(), &assets->labelColor, "tail");
 	}
 
 	// Code
@@ -650,32 +650,32 @@ void QueueVisualizer::dequeue() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->normalEdgeColor);
+		action.drawSlideIn(&deletedEdge, &assets->erasedEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() == 0) {
-		action.drawChange(&deletedLabel, &LABEL_COLOR, "head/tail/del", "tail/del");
+		action.drawChange(&deletedLabel, &assets->labelColor, "head/tail/del", "tail/del");
 	} else {
-		action.drawChange(&deletedLabel, &LABEL_COLOR, "head/del", "del");
+		action.drawChange(&deletedLabel, &assets->labelColor, "head/del", "del");
 		if (labels.size() == 1) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "tail", "head/tail");
+			action.drawChange(&labels.front(), &assets->labelColor, "tail", "head/tail");
 		} else {
-			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.drawFadeIn(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 	}
 
@@ -691,30 +691,30 @@ void QueueVisualizer::dequeue() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &ERASED_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->erasedEdgeColor);
 	}
 
 	if  (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_NODE_CIRCLE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalNodeCircleColor);
 	}
 
 	// Node
-	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() == 0) {
-		action.drawChange(&deletedLabel, &LABEL_COLOR, "tail/del", "del");
+		action.drawChange(&deletedLabel, &assets->labelColor, "tail/del", "del");
 	} else {
-		action.draw(&deletedLabel, &LABEL_COLOR, "del");
+		action.draw(&deletedLabel, &assets->labelColor, "del");
 		if (labels.size() == 1) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 	}
 
@@ -735,30 +735,30 @@ void QueueVisualizer::dequeue() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR);
+		action.drawSlideOut(&deletedEdge, &assets->erasedEdgeColor);
 	}
 
 	if  (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_NODE_CIRCLE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalNodeCircleColor);
 	}
 
 	// Node
-	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() == 0) {
-		action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+		action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
 	} else {
-		action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+		action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
 		if (labels.size() == 1) {
-			action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+			action.draw(&labels.front(), &assets->labelColor, "head/tail");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels.back(), &LABEL_COLOR, "tail");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels.back(), &assets->labelColor, "tail");
 		}
 	}
 
@@ -778,25 +778,25 @@ void QueueVisualizer::dequeue() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
-		action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
+		action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		for (int i = 1; i < nodes.size(); i++) {
-			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
+			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
 		}
 	}
 
 	// Label
 	if (labels.size() == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/tail");
+		action.draw(&labels.front(), &assets->labelColor, "head/tail");
 	} else if (labels.size() >= 2) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.back(), &LABEL_COLOR, "tail");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.back(), &assets->labelColor, "tail");
 	}
 
 	// Code

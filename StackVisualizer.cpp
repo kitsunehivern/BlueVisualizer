@@ -7,8 +7,8 @@ StackVisualizer::StackVisualizer(sf::RenderWindow* window, Assets* assets) {
 
 	action = ActionBox(window, assets, sf::Vector2f(10, 430));
 	option = OptionBox(assets, sf::Vector2f(10, 510));
-	code = CodeBox(sf::Vector2f(910, 590));
-	description = DescriptionBox(sf::Vector2f(910, 430));
+	code = CodeBox(assets, sf::Vector2f(910, 590));
+	description = DescriptionBox(assets, sf::Vector2f(910, 430));
 }
 
 void StackVisualizer::randomStack(int size) {
@@ -78,11 +78,11 @@ void StackVisualizer::createStack() {
 		// Edge
 
 		// Node
-		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		if (!labels.empty()) {
-			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeIn(&labels.front(), &assets->labelColor, "head");
 		}
 
 		// Code
@@ -99,13 +99,13 @@ void StackVisualizer::createStack() {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.drawSlideIn(&edges, 0, edges.size() - 1, &INSERTED_EDGE_COLOR);
+		action.drawSlideIn(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 
 		// Code
 		action.draw(&code);
@@ -125,18 +125,18 @@ void StackVisualizer::createStack() {
 
 	// Edge
 	if (!edges.empty()) {
-		action.drawChange(&edges, 0, edges.size() - 1, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawChange(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (!nodes.empty()) {
-		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	}
 
 	// Label
 	if (!labels.empty()) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -166,17 +166,17 @@ void StackVisualizer::peek() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -208,16 +208,16 @@ void StackVisualizer::peek() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	action.draw(&labels.front(), &assets->labelColor, "head");
 
 	// Code
 	action.drawMove(&code, 0, 1);
@@ -230,16 +230,16 @@ void StackVisualizer::peek() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	action.draw(&labels.front(), &assets->labelColor, "head");
 
 	// Code
 	action.drawFadeOut(&code, 1);
@@ -270,16 +270,16 @@ void StackVisualizer::push(int value) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor);
 
 	// Node
-	action.drawFadeIn(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawFadeIn(&labels.front(), &LABEL_COLOR, "add");
+	action.drawFadeIn(&labels.front(), &assets->labelColor, "add");
 	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+		action.draw(&labels, 1, &assets->labelColor, "head");
 	}
 
 	// Code
@@ -299,18 +299,18 @@ void StackVisualizer::push(int value) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.drawSlideIn(&edges.front(), &INSERTED_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges.front(), &assets->insertedEdgeColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "add");
+	action.draw(&labels.front(), &assets->labelColor, "add");
 	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+		action.draw(&labels, 1, &assets->labelColor, "head");
 	}
 
 	// Code
@@ -325,18 +325,18 @@ void StackVisualizer::push(int value) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges.front(), &INSERTED_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges.front(), &assets->insertedEdgeColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "add", "head/add");
+	action.drawChange(&labels.front(), &assets->labelColor, "add", "head/add");
 	if (labels.size() > 1) {
-		action.drawChange(&labels, 1, &LABEL_COLOR, "head", "");
+		action.drawChange(&labels, 1, &assets->labelColor, "head", "");
 	}
 
 	// Code
@@ -350,20 +350,20 @@ void StackVisualizer::push(int value) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.drawChange(&edges.front(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.drawChange(&edges.front(), &assets->insertedEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -60 - NODE_DISTANCE));
-	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(0, -60 - NODE_DISTANCE));
+	action.drawChange(&nodes.front(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(60 + NODE_DISTANCE, 0));
+		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeCircleColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(60 + NODE_DISTANCE, 0));
 	}
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head/add", "head");
+	action.drawChange(&labels.front(), &assets->labelColor, "head/add", "head");
 
 	// Code
 	action.drawFadeOut(&code, 2);
@@ -394,22 +394,22 @@ void StackVisualizer::pop() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->normalEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.drawChange(&deletedLabel, &LABEL_COLOR, "head", "head/del");
+	action.drawChange(&deletedLabel, &assets->labelColor, "head", "head/del");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -428,26 +428,26 @@ void StackVisualizer::pop() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->normalEdgeColor);
+		action.drawSlideIn(&deletedEdge, &assets->erasedEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.drawChange(&deletedLabel, &LABEL_COLOR, "head/del", "del");
+	action.drawChange(&deletedLabel, &assets->labelColor, "head/del", "del");
 	if (labels.size() > 0) {
-		action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeIn(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -467,24 +467,24 @@ void StackVisualizer::pop() {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR);
+		action.drawSlideOut(&deletedEdge, &assets->erasedEdgeColor);
 	}
 
 	if  (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_NODE_CIRCLE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalNodeCircleColor);
 	}
 
 	// Node
-	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+	action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -503,22 +503,22 @@ void StackVisualizer::pop() {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
-		action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
+		action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		for (int i = 1; i < nodes.size(); i++) {
-			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
+			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
 		}
 	}
 
 	// Label
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code

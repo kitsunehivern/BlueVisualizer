@@ -2,10 +2,12 @@
 #define CODE_BOX_H
 
 #include "Global.h"
+#include "Assets.h"
 
 class CodeBox {
 public:
-	CodeBox(sf::Vector2f position = sf::Vector2f(0, 0));
+	CodeBox();
+	CodeBox(Assets* assets, sf::Vector2f position);
 
 	void update(std::vector <std::string> code);
 
@@ -15,6 +17,7 @@ public:
 	void drawMove(sf::RenderWindow* window, sf::Sprite* boxSprite, sf::Sprite* barSprite, sf::Text* codeText, int fromLine, int toLine, float ratio, bool isDrawn);
 
 private:
+	Assets* assets;
 	std::vector <std::string> code;
 	sf::Vector2f position;
 };

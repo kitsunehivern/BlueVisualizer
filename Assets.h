@@ -3,17 +3,23 @@
 
 #include "Global.h"
 
-struct Assets {
+class Assets {
+public:
+	// Font
 	sf::Font arialFont;
 	sf::Font consolasFont;
 	sf::Font consolasBoldFont;
 	sf::Font hyperspaceItalicFont;
 
+	// Text
 	sf::Text arialText;
 	sf::Text consolasText;
 	sf::Text consolasBoldText;
 	sf::Text hyperspaceItalicText;
 
+	// Texture
+	sf::Texture lightBackgroundTexture;
+	sf::Texture darkBackgroundTexture;
 	sf::Texture hollowCircleTexture;
 	sf::Texture solidCircleTexture;
 	sf::Texture stickTexture;
@@ -40,6 +46,8 @@ struct Assets {
 	sf::Texture progressBarTexture;
 	sf::Texture speedTexture;
 
+	// Sprite
+	sf::Sprite backgroundSprite;
 	sf::Sprite hollowCircleSprite;
 	sf::Sprite solidCircleSprite;
 	sf::Sprite stickSprite;
@@ -64,7 +72,40 @@ struct Assets {
 	sf::Sprite progressBarSprite;
 	sf::Sprite speedSprite;
 
+	// Color
+	sf::Color blankColor;
+
+	sf::Color normalNodeCircleColor;
+	sf::Color highlightNodeCircleColor1;
+	sf::Color highlightNodeCircleColor2;
+	sf::Color normalNodeTextColor;
+	sf::Color highlightNodeTextColor1;
+	sf::Color highlightNodeTextColor2;
+	sf::Color insertedNodeCircleColor;
+	sf::Color erasedNodeCircleColor;
+
+	sf::Color labelColor;
+
+	sf::Color normalEdgeColor;
+	sf::Color highlightEdgeColor;
+	sf::Color insertedEdgeColor;
+	sf::Color erasedEdgeColor;
+
+	sf::Color boxColor1;
+	sf::Color boxColor2;
+	sf::Color boxColor3;
+	sf::Color boxColor4;
+	sf::Color boxTextColor1;
+	sf::Color boxTextColor2;
+	sf::Color seperatorLineColor1;
+	sf::Color seperatorLineColor2;
+
 	Assets();
+
+	void switchMode();
+
+private:
+	enum { LIGHT, DARK } mode;
 
 	void loadOne(sf::Font* font, sf::Text* text, std::string filename);
 	void loadOne(sf::Texture* texture, sf::Sprite* sprite, std::string filename);

@@ -2,6 +2,7 @@
 #define INPUT_BOX_H
 
 #include "Global.h"
+#include "Assets.h"
 
 class InputBox {
 public:
@@ -25,7 +26,7 @@ public:
 	std::string getErrorMessage();
 	sf::FloatRect getGlobalBounds();
 	void handleEvent(sf::RenderWindow* window, sf::Event* event);
-	void draw(sf::RenderWindow* window);
+	void draw(sf::RenderWindow* window, Assets* assets);
 
 private:
 	std::string valueName;

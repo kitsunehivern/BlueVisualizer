@@ -259,55 +259,54 @@ void ActionBox::drawChange(List <DoublyEdge>* edges, int fromIndex, int toIndex,
 }
 
 // CircularEdge animation
-
 void ActionBox::draw(CircularEdge* edge, sf::Color* color) {
-	drawFunction.back().push_back(std::bind(&CircularEdge::draw, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CircularEdge::draw, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawSlideIn(CircularEdge* edge, sf::Color* color) {
-	drawFunction.back().push_back(std::bind(&CircularEdge::drawSlideIn, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CircularEdge::drawSlideIn, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawSlideOut(CircularEdge* edge, sf::Color* color) {
-	drawFunction.back().push_back(std::bind(&CircularEdge::drawSlideOut, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CircularEdge::drawSlideOut, edge, window, &assets->stickSprite, &assets->arrowSprite, color, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawChange(CircularEdge* edge, sf::Color* fromColor, sf::Color* toColor) {
-	drawFunction.back().push_back(std::bind(&CircularEdge::drawChange, edge, window, &assets->stickSprite, &assets->arrowSprite, fromColor, toColor, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CircularEdge::drawChange, edge, window, &assets->stickSprite, &assets->arrowSprite, fromColor, toColor, std::placeholders::_1, std::placeholders::_2));
 }
 
 // Code animtion
 void ActionBox::draw(CodeBox* code) {
-	drawFunction.back().push_back(std::bind(&CodeBox::draw, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, true, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CodeBox::draw, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, true, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawFadeIn(CodeBox* code, int line) {
-	drawFunction.back().push_back(std::bind(&CodeBox::drawFadeIn, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, line, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CodeBox::drawFadeIn, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, line, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawFadeOut(CodeBox* code, int line) {
-	drawFunction.back().push_back(std::bind(&CodeBox::drawFadeOut, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, line, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CodeBox::drawFadeOut, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, line, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawMove(CodeBox* code, int fromLine, int toLine) {
-	drawFunction.back().push_back(std::bind(&CodeBox::drawMove, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, fromLine, toLine, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&CodeBox::drawMove, code, window, &assets->box680x300Sprite, &assets->box680x40Sprite, &assets->consolasText, fromLine, toLine, std::placeholders::_1, std::placeholders::_2));
 }
 
 // Description animation
 void ActionBox::draw(DescriptionBox* description, int line) {
-	drawFunction.back().push_back(std::bind(&DescriptionBox::draw, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, line, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&DescriptionBox::draw, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, line, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawFadeIn(DescriptionBox* description, int line) {
-	drawFunction.back().push_back(std::bind(&DescriptionBox::drawFadeIn, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, line, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&DescriptionBox::drawFadeIn, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, line, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawFadeOut(DescriptionBox* description, int line) {
-	drawFunction.back().push_back(std::bind(&DescriptionBox::drawFadeOut, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, line, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&DescriptionBox::drawFadeOut, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, line, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::drawChange(DescriptionBox* description, int fromLine, int toLine) {
-	drawFunction.back().push_back(std::bind(&DescriptionBox::drawChange, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, fromLine, toLine, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&DescriptionBox::drawChange, description, window, &assets->box680x140Sprite, &assets->consolasBoldText, &assets->consolasText, fromLine, toLine, std::placeholders::_1, std::placeholders::_2));
 }
 
 void ActionBox::draw() {
@@ -318,21 +317,21 @@ void ActionBox::draw() {
 	sf::Sprite* progressBarSprite = &assets->progressBarSprite;
 	sf::Sprite* speedBoxSprite = &assets->skewBox100x40Sprite;
 	sf::Sprite* speedSprite = &assets->speedSprite;
-
-	boxSprite->setColor(BOX_COLOR_2);
+	
+	boxSprite->setColor(assets->boxColor2);
 	boxSprite->setPosition(10, 90);
 	window->draw(*boxSprite);
 
-	controlBoxSprite->setColor(BOX_COLOR_2);
+	controlBoxSprite->setColor(assets->boxColor2);
 	controlBoxSprite->setPosition(position);
 	window->draw(*controlBoxSprite);
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(0, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(30, 15));
 	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
-		controlButtonsSprite->setColor(BOX_COLOR_4);
+		controlButtonsSprite->setColor(assets->boxColor4);
 	} else {
-		controlButtonsSprite->setColor(BOX_COLOR_3);
+		controlButtonsSprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*controlButtonsSprite);
@@ -340,9 +339,9 @@ void ActionBox::draw() {
 	controlButtonsSprite->setTextureRect(sf::IntRect(20, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(90, 15));
 	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
-		controlButtonsSprite->setColor(BOX_COLOR_4);
+		controlButtonsSprite->setColor(assets->boxColor4);
 	} else {
-		controlButtonsSprite->setColor(BOX_COLOR_3);
+		controlButtonsSprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*controlButtonsSprite);
@@ -359,9 +358,9 @@ void ActionBox::draw() {
 	statusButtonsSprite->setTextureRect(sf::IntRect(30 * index, 0, 30, 30));
 	statusButtonsSprite->setPosition(position + sf::Vector2f(145, 15));
 	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
-		statusButtonsSprite->setColor(BOX_COLOR_4);
+		statusButtonsSprite->setColor(assets->boxColor4);
 	} else {
-		statusButtonsSprite->setColor(BOX_COLOR_3);
+		statusButtonsSprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*statusButtonsSprite);
@@ -369,9 +368,9 @@ void ActionBox::draw() {
 	controlButtonsSprite->setTextureRect(sf::IntRect(40, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(210, 15));
 	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
-		controlButtonsSprite->setColor(BOX_COLOR_4);
+		controlButtonsSprite->setColor(assets->boxColor4);
 	} else {
-		controlButtonsSprite->setColor(BOX_COLOR_3);
+		controlButtonsSprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*controlButtonsSprite);
@@ -379,36 +378,36 @@ void ActionBox::draw() {
 	controlButtonsSprite->setTextureRect(sf::IntRect(60, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(270, 15));
 	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
-		controlButtonsSprite->setColor(BOX_COLOR_4);
+		controlButtonsSprite->setColor(assets->boxColor4);
 	} else {
-		controlButtonsSprite->setColor(BOX_COLOR_3);
+		controlButtonsSprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*controlButtonsSprite);
 
 	progressBarSprite->setTextureRect(sf::IntRect(0, 0, 400, 20));
-	progressBarSprite->setColor(BOX_COLOR_3);
+	progressBarSprite->setColor(assets->boxColor3);
 	progressBarSprite->setPosition(position + sf::Vector2f(320, 20));
 	window->draw(*progressBarSprite);
 
 	progressBarSprite->setTextureRect(sf::IntRect(0, 0, std::floor(400.f * getNumberOfFramePassed() / (120 * numberOfFrames.size())), 20));
-	progressBarSprite->setColor(BOX_COLOR_4);
+	progressBarSprite->setColor(assets->boxColor4);
 	window->draw(*progressBarSprite);
 
 	sf::RectangleShape seperatorLine(sf::Vector2f(1, 20));
-	seperatorLine.setFillColor(BOX_COLOR_2);
+	seperatorLine.setFillColor(assets->boxColor2);
 	seperatorLine.setOrigin(seperatorLine.getSize().x / 2, 0);
 	for (int i = 1; i < numberOfFrames.size(); i++) {
 		seperatorLine.setPosition(progressBarSprite->getPosition() + sf::Vector2f(std::floor(400.f * i / numberOfFrames.size()), 0));
 		window->draw(seperatorLine);
 	}
 
-	speedBoxSprite->setColor(BOX_COLOR_3);
+	speedBoxSprite->setColor(assets->boxColor3);
 	speedBoxSprite->setPosition(position + sf::Vector2f(750, 10));
 	if (positionInRect(sf::Mouse::getPosition(*window), speedBoxSprite->getGlobalBounds())) {
-		speedBoxSprite->setColor(BOX_COLOR_4);
+		speedBoxSprite->setColor(assets->boxColor4);
 	} else {
-		speedBoxSprite->setColor(BOX_COLOR_3);
+		speedBoxSprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*speedBoxSprite);
@@ -422,12 +421,12 @@ void ActionBox::draw() {
 	}
 
 	speedSprite->setTextureRect(sf::IntRect(0, 40 * index, 100, 40));
-	speedSprite->setColor(BOX_COLOR_4);
+	speedSprite->setColor(assets->boxColor4);
 	speedSprite->setPosition(speedBoxSprite->getPosition());
 	if (positionInRect(sf::Mouse::getPosition(*window), speedBoxSprite->getGlobalBounds())) {
-		speedSprite->setColor(BOX_COLOR_3);
+		speedSprite->setColor(assets->boxColor3);
 	} else {
-		speedSprite->setColor(BOX_COLOR_4);
+		speedSprite->setColor(assets->boxColor4);
 	}
 
 	window->draw(*speedSprite);

@@ -173,12 +173,12 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
 	}
 }
 
-void InputBox::draw(sf::RenderWindow* window) {
+void InputBox::draw(sf::RenderWindow* window, Assets* assets) {
 	sprite->setPosition(position);
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-		sprite->setColor(BOX_COLOR_4);
+		sprite->setColor(assets->boxColor4);
 	} else {
-		sprite->setColor(BOX_COLOR_3);
+		sprite->setColor(assets->boxColor3);
 	}
 
 	window->draw(*sprite);
@@ -189,9 +189,9 @@ void InputBox::draw(sf::RenderWindow* window) {
 		text->setOrigin(text->getLocalBounds().width / 2, 0);
 		text->setPosition(position + sf::Vector2f(sprite->getGlobalBounds().width / 2, 10));
 		if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-			text->setFillColor(BOX_TEXT_COLOR_2);
+			text->setFillColor(assets->boxTextColor2);
 		} else {
-			text->setFillColor(BOX_TEXT_COLOR_1);
+			text->setFillColor(assets->boxTextColor1);
 		}
 
 		window->draw(*text);
@@ -217,9 +217,9 @@ void InputBox::draw(sf::RenderWindow* window) {
 			text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width, 0);
 			text->setPosition(position + sf::Vector2f(sprite->getGlobalBounds().width - 30, 10));
 			if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-				text->setFillColor(BOX_TEXT_COLOR_2);
+				text->setFillColor(assets->boxTextColor2);
 			} else {
-				text->setFillColor(BOX_TEXT_COLOR_1);
+				text->setFillColor(assets->boxTextColor1);
 			}
 
 			window->draw(*text);
@@ -236,9 +236,9 @@ void InputBox::draw(sf::RenderWindow* window) {
 
 		sf::RectangleShape insertionPoint(sf::Vector2f(2, text->getCharacterSize()));
 		if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-			insertionPoint.setFillColor(BOX_TEXT_COLOR_2);
+			insertionPoint.setFillColor(assets->boxTextColor2);
 		} else {
-			insertionPoint.setFillColor(BOX_TEXT_COLOR_1);
+			insertionPoint.setFillColor(assets->boxTextColor1);
 		}
 
 		insertionPoint.setOrigin(0, insertionPoint.getLocalBounds().top + insertionPoint.getLocalBounds().height / 2);

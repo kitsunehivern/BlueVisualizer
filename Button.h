@@ -2,6 +2,7 @@
 #define BUTTON_H
 
 #include "Global.h"
+#include "Assets.h"
 
 class Button {
 public:
@@ -12,7 +13,7 @@ public:
 	void setPosition(sf::Vector2f position);
 	sf::FloatRect getGlobalBounds();
 
-	void draw(sf::RenderWindow* window);
+	void draw(sf::RenderWindow* window, Assets* assets);
 
 private:
 	sf::Sprite* sprite;

@@ -7,8 +7,8 @@ DLLVisualizer::DLLVisualizer(sf::RenderWindow* window, Assets* assets) {
 
 	action = ActionBox(window, assets, sf::Vector2f(10, 430));
 	option = OptionBox(assets, sf::Vector2f(10, 510));
-	code = CodeBox(sf::Vector2f(910, 590));
-	description = DescriptionBox(sf::Vector2f(910, 430));
+	code = CodeBox(assets, sf::Vector2f(910, 590));
+	description = DescriptionBox(assets, sf::Vector2f(910, 430));
 }
 
 void DLLVisualizer::randomList(int size) {
@@ -81,11 +81,11 @@ void DLLVisualizer::create() {
 		// Edge
 
 		// Node
-		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		if (!labels.empty()) {
-			action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeIn(&labels.front(), &assets->labelColor, "head");
 		}
 
 		// Code
@@ -102,13 +102,13 @@ void DLLVisualizer::create() {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.drawSlideIn(&edges, 0, edges.size() - 1, &INSERTED_EDGE_COLOR, &INSERTED_EDGE_COLOR);
+		action.drawSlideIn(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor, &assets->insertedEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 
 		// Code
 		action.draw(&code);
@@ -128,18 +128,18 @@ void DLLVisualizer::create() {
 
 	// Edge
 	if (!edges.empty()) {
-		action.drawChange(&edges, 0, edges.size() - 1, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawChange(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor, &assets->normalEdgeColor, &assets->insertedEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (!nodes.empty()) {
-		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	}
 
 	// Label
 	if (!labels.empty()) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -175,17 +175,17 @@ void DLLVisualizer::search(int value) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
 	if (nodes.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -220,16 +220,16 @@ void DLLVisualizer::search(int value) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/cur");
+	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/cur");
 
 	// Code
 	action.drawMove(&code, 0, 1);
@@ -251,27 +251,27 @@ void DLLVisualizer::search(int value) {
 
 		// Edge
 		if (edges.size() < i) {
-			action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+			action.draw(&edges, 0, edges.size() - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 		} else {
-			action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+			action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 		}
 
-		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 		if (i < nodes.size()) {
-			action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+			action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		}
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "head/cur", "0/head/cur");
+			action.drawChange(&labels.front(), &assets->labelColor, "head/cur", "0/head/cur");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 			if (i < labels.size()) {
-				action.drawChange(&labels, i, &LABEL_COLOR, "cur", std::to_string(i) + "/cur");
+				action.drawChange(&labels, i, &assets->labelColor, "cur", std::to_string(i) + "/cur");
 			}
 		}
 
@@ -299,20 +299,20 @@ void DLLVisualizer::search(int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.draw(&labels.front(), &LABEL_COLOR, "0/head/cur");
+			action.draw(&labels.front(), &assets->labelColor, "0/head/cur");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.draw(&labels, i, &LABEL_COLOR, std::to_string(i) + "/cur");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.draw(&labels, i, &assets->labelColor, std::to_string(i) + "/cur");
 		}
 
 		// Code
@@ -327,20 +327,20 @@ void DLLVisualizer::search(int value) {
 			action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 			// Edge
-			action.drawChange(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-			action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+			action.drawChange(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
+			action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 			// Node
-			action.drawChange(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
-			action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-			action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+			action.drawChange(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+			action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 			// Label
 			if (i == 0) {
-				action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/cur", "head");
+				action.drawChange(&labels.front(), &assets->labelColor, "0/head/cur", "head");
 			} else {
-				action.draw(&labels.front(), &LABEL_COLOR, "head");
-				action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/cur");
+				action.draw(&labels.front(), &assets->labelColor, "head");
+				action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/cur");
 			}
 
 			// Code
@@ -362,31 +362,31 @@ void DLLVisualizer::search(int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 		if (i < edges.size()) {
-			action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-			action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+			action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+			action.drawSlideIn(&edges, i, &assets->highlightEdgeColor, &assets->blankColor);
 		}
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 		if (i + 1 < nodes.size()) {
-			action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-			action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+			action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+			action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		}
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/cur", "head");
+			action.drawChange(&labels.front(), &assets->labelColor, "0/head/cur", "head");
 		} else {
-			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/cur");
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/cur");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 		}
 
 		if (i + 1 < labels.size()) {
-			action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "cur");
+			action.drawFadeIn(&labels, i + 1, &assets->labelColor, "cur");
 		}
 
 		// Code
@@ -401,13 +401,13 @@ void DLLVisualizer::search(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
+	action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	action.draw(&labels.front(), &assets->labelColor, "head");
 
 	// Code
 	action.drawMove(&code, 2, 6);
@@ -420,13 +420,13 @@ void DLLVisualizer::search(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.drawChange(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, 0, edges.size() - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "head");
+	action.draw(&labels.front(), &assets->labelColor, "head");
 
 	// Code
 	action.drawFadeOut(&code, 6);
@@ -452,15 +452,15 @@ void DLLVisualizer::update(int index, int value) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/upd");
+	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/upd");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -485,20 +485,20 @@ void DLLVisualizer::update(int index, int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "head/upd", "0/head/upd");
+			action.drawChange(&labels.front(), &assets->labelColor, "head/upd", "0/head/upd");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.drawChange(&labels, i, &LABEL_COLOR, "upd", std::to_string(i) + "/upd");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.drawChange(&labels, i, &assets->labelColor, "upd", std::to_string(i) + "/upd");
 		}
 
 		// Code
@@ -520,26 +520,26 @@ void DLLVisualizer::update(int index, int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.drawSlideIn(&edges, i, &assets->highlightEdgeColor, &assets->blankColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/upd", "head");
+			action.drawChange(&labels.front(), &assets->labelColor, "0/head/upd", "head");
 		} else {
-			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/upd");
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/upd");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 		}
 
-		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "upd");
+		action.drawFadeIn(&labels, i + 1, &assets->labelColor, "upd");
 
 		// Code
 		action.drawMove(&code, 1, 2);
@@ -553,20 +553,20 @@ void DLLVisualizer::update(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.drawUpdate(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1, nodes.begin()->next(index)->data.value, value);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.drawUpdate(&nodes, index, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1, nodes.begin()->next(index)->data.value, value);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 0) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/upd", "head/upd");
+		action.drawChange(&labels.front(), &assets->labelColor, "0/head/upd", "head/upd");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawChange(&labels, index, &LABEL_COLOR, std::to_string(index) + "/upd", "upd");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawChange(&labels, index, &assets->labelColor, std::to_string(index) + "/upd", "upd");
 	}
 
 	// Code
@@ -580,20 +580,20 @@ void DLLVisualizer::update(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.drawChange(&edges, 0, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, 0, index - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, index, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes, 0, index, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 0) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "head/upd", "head");
+		action.drawChange(&labels.front(), &assets->labelColor, "head/upd", "head");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawFadeOut(&labels, index, &LABEL_COLOR, "upd");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawFadeOut(&labels, index, &assets->labelColor, "upd");
 	}
 
 	// Code
@@ -628,16 +628,16 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawFadeIn(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawFadeIn(&labels.front(), &LABEL_COLOR, "add");
+	action.drawFadeIn(&labels.front(), &assets->labelColor, "add");
 	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+		action.draw(&labels, 1, &assets->labelColor, "head");
 	}
 
 	// Code
@@ -657,18 +657,18 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.drawSlideIn(&edges.front(), &INSERTED_EDGE_COLOR, &BLANK_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges.front(), &assets->insertedEdgeColor, &assets->blankColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "add");
+	action.draw(&labels.front(), &assets->labelColor, "add");
 	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+		action.draw(&labels, 1, &assets->labelColor, "head");
 	}
 
 	// Code
@@ -688,19 +688,19 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.drawSlideIn(&edges.front(), &BLANK_COLOR, &INSERTED_EDGE_COLOR);
-		action.draw(&edges.front(), &INSERTED_EDGE_COLOR, &BLANK_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawSlideIn(&edges.front(), &assets->blankColor, &assets->insertedEdgeColor);
+		action.draw(&edges.front(), &assets->insertedEdgeColor, &assets->blankColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.draw(&labels.front(), &LABEL_COLOR, "add");
+	action.draw(&labels.front(), &assets->labelColor, "add");
 	if (labels.size() > 1) {
-		action.draw(&labels, 1, &LABEL_COLOR, "head");
+		action.draw(&labels, 1, &assets->labelColor, "head");
 	}
 
 	// Code
@@ -715,18 +715,18 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges.front(), &INSERTED_EDGE_COLOR, &INSERTED_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges.front(), &assets->insertedEdgeColor, &assets->insertedEdgeColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "add", "head/add");
+	action.drawChange(&labels.front(), &assets->labelColor, "add", "head/add");
 	if (labels.size() > 1) {
-		action.drawFadeOut(&labels, 1, &LABEL_COLOR, "head");
+		action.drawFadeOut(&labels, 1, &assets->labelColor, "head");
 	}
 
 	// Code
@@ -740,20 +740,20 @@ void DLLVisualizer::insertAtTheFront(int value, bool head) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.drawChange(&edges.front(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.drawChange(&edges.front(), &assets->insertedEdgeColor, &assets->normalEdgeColor, &assets->insertedEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
-	action.drawChange(&nodes.front(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.front(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
+	action.drawChange(&nodes.front(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeCircleColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head/add", "head");
+	action.drawChange(&labels.front(), &assets->labelColor, "head/add", "head");
 
 	// Code
 	action.drawFadeOut(&code, 3);
@@ -781,15 +781,15 @@ void DLLVisualizer::insertAtTheBack(int value) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -814,20 +814,20 @@ void DLLVisualizer::insertAtTheBack(int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 1, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+			action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "0/head/pre");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.drawChange(&labels, i, &assets->labelColor, "pre", std::to_string(i) + "/pre");
 		}
 
 		// Code
@@ -849,26 +849,26 @@ void DLLVisualizer::insertAtTheBack(int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.drawSlideIn(&edges, i, &assets->highlightEdgeColor, &assets->blankColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 2, nodes.size() - 2, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+			action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head");
 		} else {
-			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 		}
 
-		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+		action.drawFadeIn(&labels, i + 1, &assets->labelColor, "pre");
 
 		// Code
 		action.drawMove(&code, 1, 2);
@@ -882,22 +882,22 @@ void DLLVisualizer::insertAtTheBack(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, nodes.size() - 2, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+		action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawChange(&labels, labels.size() - 2, &LABEL_COLOR, std::to_string(labels.size() - 2) + "/pre", "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawChange(&labels, labels.size() - 2, &assets->labelColor, std::to_string(labels.size() - 2) + "/pre", "pre");
 	}
 
-	action.drawFadeIn(&labels.back(), &LABEL_COLOR, "add");
+	action.drawFadeIn(&labels.back(), &assets->labelColor, "add");
 
 	// Code
 	action.drawMove(&code, 1, 3);
@@ -910,23 +910,23 @@ void DLLVisualizer::insertAtTheBack(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawSlideIn(&edges.back(), &INSERTED_EDGE_COLOR, &INSERTED_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.drawSlideIn(&edges.back(), &assets->insertedEdgeColor, &assets->insertedEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, nodes.size() - 2, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, labels.size() - 2, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, labels.size() - 2, &assets->labelColor, "pre");
 	}
 
-	action.draw(&labels.back(), &LABEL_COLOR, "add");
+	action.draw(&labels.back(), &assets->labelColor, "add");
 
 	// Code
 	action.drawMove(&code, 3, 4);
@@ -939,24 +939,24 @@ void DLLVisualizer::insertAtTheBack(int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.drawChange(&edges, 0, edges.size() - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawChange(&edges.back(), &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, 0, edges.size() - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawChange(&edges.back(), &assets->insertedEdgeColor, &assets->normalEdgeColor, &assets->insertedEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, nodes.size() - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, nodes.size() - 2, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&nodes.back(), HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.back(), SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes.back(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+		action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "head");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawFadeOut(&labels, labels.size() - 2, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawFadeOut(&labels, labels.size() - 2, &assets->labelColor, "pre");
 	}
 
-	action.drawFadeOut(&labels.back(), &LABEL_COLOR, "add");
+	action.drawFadeOut(&labels.back(), &assets->labelColor, "add");
 
 	// Code
 	action.drawFadeOut(&code, 4);
@@ -997,18 +997,18 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 1, index - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 1, index - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -1033,23 +1033,23 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, index - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 1, index - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, index - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+			action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "0/head/pre");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.drawChange(&labels, i, &assets->labelColor, "pre", std::to_string(i) + "/pre");
 		}
 
 		// Code
@@ -1071,29 +1071,29 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, index - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.drawSlideIn(&edges, i, &assets->highlightEdgeColor, &assets->blankColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 2, index - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, index - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+			action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head");
 		} else {
-			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 		}
 
-		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+		action.drawFadeIn(&labels, i + 1, &assets->labelColor, "pre");
 
 		// Code
 		action.drawMove(&code, 1, 2);
@@ -1107,27 +1107,27 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawSlideIn(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawSlideIn(&randomEdge1, &assets->highlightEdgeColor, &assets->blankColor);
+	action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&nodes, index + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, index + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor2, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+		action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawChange(&labels, index - 1, &LABEL_COLOR, std::to_string(index - 1) + "/pre", "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawChange(&labels, index - 1, &assets->labelColor, std::to_string(index - 1) + "/pre", "pre");
 	}
 
-	action.drawFadeIn(&labels, index + 1, &LABEL_COLOR, "nxt");
+	action.drawFadeIn(&labels, index + 1, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 1, 3);
@@ -1140,27 +1140,27 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.drawFadeIn(&labels, index, &LABEL_COLOR, "add");
-	action.draw(&labels, index + 1, &LABEL_COLOR, "nxt");
+	action.drawFadeIn(&labels, index, &assets->labelColor, "add");
+	action.draw(&labels, index + 1, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 3, 4);
@@ -1173,30 +1173,30 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge:
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-	action.drawChange(&randomEdge2, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
-	action.drawSlideIn(&edges, index, &INSERTED_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->highlightEdgeColor, &assets->blankColor);
+	action.drawChange(&randomEdge2, &assets->blankColor, &assets->blankColor, &assets->normalEdgeColor, &assets->highlightEdgeColor);
+	action.drawSlideIn(&edges, index, &assets->insertedEdgeColor, &assets->blankColor);
+	action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode2.position, randomNode2.position + sf::Vector2f((60 + NODE_DISTANCE), (60 + NODE_DISTANCE)));
-	action.draw(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawMove(&randomNode2, HOLLOW, &assets->blankColor, &assets->blankColor, randomNode2.position, randomNode2.position + sf::Vector2f((60 + NODE_DISTANCE), (60 + NODE_DISTANCE)));
+	action.draw(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.draw(&labels, index, &LABEL_COLOR, "add");
-	action.draw(&labels, index + 1, &LABEL_COLOR, "nxt");
+	action.draw(&labels, index, &assets->labelColor, "add");
+	action.draw(&labels, index + 1, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 4, 5);
@@ -1209,31 +1209,31 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&randomEdge2, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-	action.drawSlideIn(&edges, index - 1, &BLANK_COLOR, &INSERTED_EDGE_COLOR);
-	action.draw(&edges, index, &INSERTED_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
-	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->highlightEdgeColor, &assets->blankColor);
+	action.draw(&randomEdge2, &assets->highlightEdgeColor, &assets->blankColor);
+	action.drawSlideIn(&edges, index - 1, &assets->blankColor, &assets->insertedEdgeColor);
+	action.draw(&edges, index, &assets->insertedEdgeColor, &assets->highlightEdgeColor);
+	action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawMove(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, randomNode1.position, randomNode1.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawMove(&randomNode1, HOLLOW, &assets->blankColor, &assets->blankColor, randomNode1.position, randomNode1.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.draw(&labels, index, &LABEL_COLOR, "add");
-	action.draw(&labels, index + 1, &LABEL_COLOR, "nxt");
+	action.draw(&labels, index, &assets->labelColor, "add");
+	action.draw(&labels, index + 1, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 5, 6);
@@ -1246,35 +1246,35 @@ void DLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.drawChange(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawChange(&edges, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawChange(&edges, index, &INSERTED_EDGE_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index + 1, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawChange(&edges, index - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->insertedEdgeColor, &assets->normalEdgeColor);
+	action.drawChange(&edges, index, &assets->insertedEdgeColor, &assets->normalEdgeColor, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index + 1, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
-	action.drawChange(&nodes, 0, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&nodes, index, HOLLOW, &INSERTED_NODE_CIRCLE_COLOR, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, index, SOLID, &INSERTED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&nodes, index + 1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
-	action.drawChange(&nodes, index + 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, index + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawMove(&nodes, index, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
+	action.drawChange(&nodes, 0, index - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, index, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes, index + 1, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
+	action.drawChange(&nodes, index + 1, HOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
 
 	for (int i = index + 2; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
 	if (index == 1) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+		action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "head");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawFadeOut(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawFadeOut(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.drawFadeOut(&labels, index, &LABEL_COLOR, "add");
-	action.drawFadeOut(&labels, index + 1, &LABEL_COLOR, "nxt");
+	action.drawFadeOut(&labels, index, &assets->labelColor, "add");
+	action.drawFadeOut(&labels, index + 1, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawFadeOut(&code, 6);
@@ -1323,22 +1323,22 @@ void DLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.drawChange(&deletedLabel, &LABEL_COLOR, "head", "head/del");
+	action.drawChange(&deletedLabel, &assets->labelColor, "head", "head/del");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -1357,27 +1357,27 @@ void DLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
-		action.drawChange(&deletedEdge, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &ERASED_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.drawSlideIn(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
+		action.drawChange(&deletedEdge, &assets->blankColor, &assets->blankColor, &assets->normalEdgeColor, &assets->erasedEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.drawChange(&deletedLabel, &LABEL_COLOR, "head/del", "del");
+	action.drawChange(&deletedLabel, &assets->labelColor, "head/del", "del");
 	if (labels.size() > 0) {
-		action.drawFadeIn(&labels.front(), &LABEL_COLOR, "head");
+		action.drawFadeIn(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -1397,25 +1397,25 @@ void DLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.draw(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
-		action.drawSlideOut(&deletedEdge, &BLANK_COLOR, &ERASED_EDGE_COLOR);
+		action.draw(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
+		action.drawSlideOut(&deletedEdge, &assets->blankColor, &assets->erasedEdgeColor);
 	}
 
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.draw(&deletedLabel, &LABEL_COLOR, "del");
+	action.draw(&deletedLabel, &assets->labelColor, "del");
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -1435,24 +1435,24 @@ void DLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Edge
 	if (deletedEdge.right != nullptr) {
-		action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
+		action.drawSlideOut(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
 	}
 
 	if  (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalNodeCircleColor, &assets->normalEdgeColor);
 	}
 
 	// Node
-	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
-	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+	action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -1471,22 +1471,22 @@ void DLLVisualizer::eraseAtTheFront(bool head) {
 
 	// Edge
 	if (edges.size() > 0) {
-		action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 	}
 
 	// Node
 	if (nodes.size() > 0) {
-		action.drawMove(&nodes.front(), HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.front().position, nodes.front().position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
-		action.drawChange(&nodes.front(), HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-		action.drawFadeOut(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+		action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+		action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		for (int i = 1; i < nodes.size(); i++) {
-			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 		}
 	}
 
 	// Label
 	if (labels.size() > 0) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
+		action.draw(&labels.front(), &assets->labelColor, "head");
 	}
 
 	// Code
@@ -1518,17 +1518,17 @@ void DLLVisualizer::eraseAtTheBack() {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -1552,22 +1552,22 @@ void DLLVisualizer::eraseAtTheBack() {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+			action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "0/head/pre");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.drawChange(&labels, i, &assets->labelColor, "pre", std::to_string(i) + "/pre");
 		}
 
 		// Code
@@ -1589,28 +1589,28 @@ void DLLVisualizer::eraseAtTheBack() {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.drawSlideIn(&edges, i, &assets->highlightEdgeColor, &assets->blankColor);
+		action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+			action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head");
 		} else {
-			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 		}
 
-		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+		action.drawFadeIn(&labels, i + 1, &assets->labelColor, "pre");
 
 		// Code
 		action.drawMove(&code, 1, 2);
@@ -1624,26 +1624,26 @@ void DLLVisualizer::eraseAtTheBack() {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
-	action.drawChange(&deletedEdge, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &ERASED_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawSlideIn(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
+	action.drawChange(&deletedEdge, &assets->blankColor, &assets->blankColor, &assets->normalEdgeColor, &assets->erasedEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+		action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawChange(&labels.back(), &LABEL_COLOR, std::to_string(labels.size() - 1) + "/pre", "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawChange(&labels.back(), &assets->labelColor, std::to_string(labels.size() - 1) + "/pre", "pre");
 	}
 
-	action.drawFadeIn(&deletedLabel, &LABEL_COLOR, "del");
+	action.drawFadeIn(&deletedLabel, &assets->labelColor, "del");
 
 	// Code
 	action.drawMove(&code, 1, 3);
@@ -1656,23 +1656,23 @@ void DLLVisualizer::eraseAtTheBack() {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR, &ERASED_EDGE_COLOR);
+	action.draw(&edges, 0, edges.size() - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.drawSlideOut(&deletedEdge, &assets->erasedEdgeColor, &assets->erasedEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels.back(), &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels.back(), &assets->labelColor, "pre");
 	}
 
-	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
+	action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
 
 	// Code
 	action.drawMove(&code, 3, 4);
@@ -1685,18 +1685,18 @@ void DLLVisualizer::eraseAtTheBack() {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.drawChange(&edges, 0, edges.size() - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, 0, edges.size() - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes.back(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+		action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "head");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawFadeOut(&labels.back(), &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawFadeOut(&labels.back(), &assets->labelColor, "pre");
 	}
 
 	// Code
@@ -1746,19 +1746,19 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawFadeIn(&description, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes.front(), SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-	action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
-	action.drawChange(&labels.front(), &LABEL_COLOR, "head", "head/pre");
+	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
 
 	// Code
 	action.drawFadeIn(&code, 0);
@@ -1783,24 +1783,24 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, index - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.draw(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "0/head/pre");
+			action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "0/head/pre");
 		} else {
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
-			action.drawChange(&labels, i, &LABEL_COLOR, "pre", std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
+			action.drawChange(&labels, i, &assets->labelColor, "pre", std::to_string(i) + "/pre");
 		}
 
 		// Code
@@ -1822,30 +1822,30 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 		// Edge
-		action.draw(&edges, 0, i - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, i, index - 2, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.drawSlideIn(&edges, i, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-		action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-		action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+		action.draw(&edges, 0, i - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, i, index - 2, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.drawSlideIn(&edges, i, &assets->highlightEdgeColor, &assets->blankColor);
+		action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+		action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-		action.drawFadeOut(&nodes, i, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
-		action.draw(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
-			action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head");
+			action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head");
 		} else {
-			action.drawFadeOut(&labels, i, &LABEL_COLOR, std::to_string(i) + "/pre");
-			action.draw(&labels.front(), &LABEL_COLOR, "head");
+			action.drawFadeOut(&labels, i, &assets->labelColor, std::to_string(i) + "/pre");
+			action.draw(&labels.front(), &assets->labelColor, "head");
 		}
 
-		action.drawFadeIn(&labels, i + 1, &LABEL_COLOR, "pre");
+		action.drawFadeIn(&labels, i + 1, &assets->labelColor, "pre");
 
 		// Code
 		action.drawMove(&code, 1, 2);
@@ -1859,28 +1859,28 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawSlideIn(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawSlideIn(&randomEdge1, &assets->highlightEdgeColor, &assets->blankColor);
+	action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&deletedNode, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &ERASED_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "0/head/pre", "head/pre");
+		action.drawChange(&labels.front(), &assets->labelColor, "0/head/pre", "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawChange(&labels, index - 1, &LABEL_COLOR, std::to_string(index - 1) + "/pre", "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawChange(&labels, index - 1, &assets->labelColor, std::to_string(index - 1) + "/pre", "pre");
 	}
 
-	action.drawFadeIn(&deletedLabel, &LABEL_COLOR, "del");
+	action.drawFadeIn(&deletedLabel, &assets->labelColor, "del");
 
 	// Code
 	action.drawMove(&code, 1, 3);
@@ -1893,30 +1893,30 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&deletedEdge, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawSlideIn(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&randomEdge1, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&deletedEdge, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawSlideIn(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawChange(&nodes, index, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_TEXT_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeIn(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, index, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor2, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.draw(&deletedLabel, &LABEL_COLOR, "del");
-	action.drawFadeIn(&labels, index, &LABEL_COLOR, "nxt");
+	action.draw(&deletedLabel, &assets->labelColor, "del");
+	action.drawFadeIn(&labels, index, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 3, 4);
@@ -1929,32 +1929,32 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawChange(&randomEdge2, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
-	action.draw(&randomEdge1, &HIGHLIGHT_EDGE_COLOR, &BLANK_COLOR);
-	action.drawChange(&randomEdge, &BLANK_COLOR, &BLANK_COLOR, &NORMAL_EDGE_COLOR, &ERASED_EDGE_COLOR);
-	action.draw(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.drawChange(&randomEdge2, &assets->blankColor, &assets->blankColor, &assets->normalEdgeColor, &assets->highlightEdgeColor);
+	action.draw(&randomEdge1, &assets->highlightEdgeColor, &assets->blankColor);
+	action.drawChange(&randomEdge, &assets->blankColor, &assets->blankColor, &assets->normalEdgeColor, &assets->erasedEdgeColor);
+	action.draw(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, deletedNode.position, deletedNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
-	action.drawSlide(&randomNode1, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, &deletedNode, &nodes.begin()->next(index)->data);
-	action.drawSlide(&randomNode2, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, &deletedNode, &nodes.begin()->next(index - 1)->data);
-	action.draw(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawMove(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1, deletedNode.position, deletedNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
+	action.drawSlide(&randomNode1, HOLLOW, &assets->blankColor, &assets->blankColor, &deletedNode, &nodes.begin()->next(index)->data);
+	action.drawSlide(&randomNode2, HOLLOW, &assets->blankColor, &assets->blankColor, &deletedNode, &nodes.begin()->next(index - 1)->data);
+	action.draw(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.draw(&deletedLabel, &LABEL_COLOR, "del");
-	action.draw(&labels, index, &LABEL_COLOR, "nxt");
+	action.draw(&deletedLabel, &assets->labelColor, "del");
+	action.draw(&labels, index, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 4, 5);
@@ -1967,29 +1967,29 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.draw(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index - 1, &HIGHLIGHT_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR);
-	action.drawSlideOut(&randomEdge, &BLANK_COLOR, &ERASED_EDGE_COLOR);
-	action.drawSlideOut(&deletedEdge, &ERASED_EDGE_COLOR, &BLANK_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.draw(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index - 1, &assets->highlightEdgeColor, &assets->highlightEdgeColor);
+	action.drawSlideOut(&randomEdge, &assets->blankColor, &assets->erasedEdgeColor);
+	action.drawSlideOut(&deletedEdge, &assets->erasedEdgeColor, &assets->blankColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_2);
-	action.draw(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawFadeOut(&deletedNode, SOLID, &ERASED_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR);
+	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
-		action.draw(&labels.front(), &LABEL_COLOR, "head/pre");
+		action.draw(&labels.front(), &assets->labelColor, "head/pre");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.draw(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.draw(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.drawFadeOut(&deletedLabel, &LABEL_COLOR, "del");
-	action.draw(&labels, index, &LABEL_COLOR, "nxt");
+	action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
+	action.draw(&labels, index, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawMove(&code, 5, 6);
@@ -2002,30 +2002,30 @@ void DLLVisualizer::eraseAtTheMiddle(int index) {
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Edge
-	action.drawChange(&edges, 0, index - 2, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.drawChange(&edges, index - 1, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR, &HIGHLIGHT_EDGE_COLOR, &NORMAL_EDGE_COLOR);
-	action.draw(&edges, index, edges.size() - 1, &NORMAL_EDGE_COLOR, &NORMAL_EDGE_COLOR);
+	action.drawChange(&edges, 0, index - 2, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor, &assets->normalEdgeColor);
+	action.drawChange(&edges, index - 1, &assets->highlightEdgeColor, &assets->normalEdgeColor, &assets->highlightEdgeColor, &assets->normalEdgeColor);
+	action.draw(&edges, index, edges.size() - 1, &assets->normalEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, index - 2, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_2, &NORMAL_NODE_TEXT_COLOR);
-	action.drawChange(&nodes, index - 1, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, index - 1, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_1, &HIGHLIGHT_NODE_TEXT_COLOR_1);
-	action.drawMove(&nodes, index, HOLLOW, &BLANK_COLOR, &BLANK_COLOR, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
-	action.drawChange(&nodes, index, HOLLOW, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &NORMAL_NODE_CIRCLE_COLOR, &HIGHLIGHT_NODE_TEXT_COLOR_1, &NORMAL_NODE_TEXT_COLOR);
-	action.drawFadeOut(&nodes, index, SOLID, &HIGHLIGHT_NODE_CIRCLE_COLOR_2, &HIGHLIGHT_NODE_TEXT_COLOR_1);
+	action.drawChange(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawChange(&nodes, index - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes, index, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+	action.drawChange(&nodes, index, HOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
 	for (int i = index + 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &NORMAL_NODE_CIRCLE_COLOR, &NORMAL_NODE_TEXT_COLOR, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
 	if (index == 1) {
-		action.drawChange(&labels.front(), &LABEL_COLOR, "head/pre", "head");
+		action.drawChange(&labels.front(), &assets->labelColor, "head/pre", "head");
 	} else {
-		action.draw(&labels.front(), &LABEL_COLOR, "head");
-		action.drawFadeOut(&labels, index - 1, &LABEL_COLOR, "pre");
+		action.draw(&labels.front(), &assets->labelColor, "head");
+		action.drawFadeOut(&labels, index - 1, &assets->labelColor, "pre");
 	}
 
-	action.drawFadeOut(&labels, index, &LABEL_COLOR, "nxt");
+	action.drawFadeOut(&labels, index, &assets->labelColor, "nxt");
 
 	// Code
 	action.drawFadeOut(&code, 6);
