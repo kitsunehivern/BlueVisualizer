@@ -35,8 +35,8 @@ void Button::draw(sf::RenderWindow* window, Assets* assets) {
 
 	text->setString(name);
 	text->setCharacterSize(characterSize);
-	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, 0);
-	text->setPosition(sprite->getGlobalBounds().left + sprite->getGlobalBounds().width / 2, sprite->getGlobalBounds().top + 10);
+	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, text->getLocalBounds().top + text->getLocalBounds().height / 2);
+	text->setPosition(sprite->getGlobalBounds().left + sprite->getGlobalBounds().width / 2, sprite->getGlobalBounds().top + sprite->getGlobalBounds().height / 2);
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
 		text->setFillColor(assets->boxTextColor2);	
 	} else {

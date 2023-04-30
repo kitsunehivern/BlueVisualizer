@@ -14,6 +14,10 @@ bool HeaderBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
 		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 1520, position.y + 10, 40, 40))) {
 			assets->switchMode();
 		}
+
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 20, position.y + 10, 40, 40))) {
+			return true;
+		}
 	}
 
 	return false;

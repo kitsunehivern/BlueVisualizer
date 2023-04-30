@@ -5,6 +5,7 @@ StackVisualizer::StackVisualizer(sf::RenderWindow* window, Assets* assets) {
 	this->window = window;
 	this->assets = assets;
 
+	header = HeaderBox(assets, "Stack", sf::Vector2f(10, 10));
 	action = ActionBox(window, assets, sf::Vector2f(10, 430));
 	option = OptionBox(assets, sf::Vector2f(10, 510));
 	code = CodeBox(assets, sf::Vector2f(910, 590));
@@ -78,7 +79,7 @@ void StackVisualizer::createStack() {
 		// Edge
 
 		// Node
-		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, 0, nodes.size() - 1, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		if (!labels.empty()) {
@@ -102,7 +103,7 @@ void StackVisualizer::createStack() {
 		action.drawSlideIn(&edges, 0, edges.size() - 1, &assets->insertedEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 0, nodes.size() - 1, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		action.draw(&labels.front(), &assets->labelColor, "head");
@@ -130,8 +131,8 @@ void StackVisualizer::createStack() {
 
 	// Node
 	if (!nodes.empty()) {
-		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes, 0, nodes.size() - 1, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	}
 
 	// Label
@@ -171,7 +172,7 @@ void StackVisualizer::peek() {
 
 	// Node
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
@@ -203,6 +204,8 @@ void StackVisualizer::peek() {
 	}
 
 	// New step: return head->data
+	action.addNewStep();
+
 	description.addDescription({ "Return the value of 'head', which is " + std::to_string(nodes.front().value) + "." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
@@ -212,9 +215,9 @@ void StackVisualizer::peek() {
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -234,9 +237,9 @@ void StackVisualizer::peek() {
 	}
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -273,8 +276,8 @@ void StackVisualizer::push(int value) {
 	action.draw(&edges, 1, edges.size() - 1, &assets->normalEdgeColor);
 
 	// Node
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawFadeIn(&labels.front(), &assets->labelColor, "add");
@@ -304,8 +307,8 @@ void StackVisualizer::push(int value) {
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "add");
@@ -330,8 +333,8 @@ void StackVisualizer::push(int value) {
 	}
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "add", "head/add");
@@ -355,11 +358,11 @@ void StackVisualizer::push(int value) {
 	}
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(0, -60 - NODE_DISTANCE));
-	action.drawChange(&nodes.front(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes.front(), CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(0, -60 - NODE_DISTANCE));
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeCircleColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(60 + NODE_DISTANCE, 0));
+		action.drawMove(&nodes, i, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeCircleColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(60 + NODE_DISTANCE, 0));
 	}
 
 	// Label
@@ -402,10 +405,10 @@ void StackVisualizer::pop() {
 	}
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
@@ -437,11 +440,11 @@ void StackVisualizer::pop() {
 	}
 
 	// Node
-	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
@@ -475,10 +478,10 @@ void StackVisualizer::pop() {
 	}
 
 	// Node
-	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 	if (nodes.size() > 0) {
-		action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
@@ -508,11 +511,11 @@ void StackVisualizer::pop() {
 
 	// Node
 	if (nodes.size() > 0) {
-		action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
-		action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-		action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawMove(&nodes.front(), CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
+		action.drawChange(&nodes.front(), CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		for (int i = 1; i < nodes.size(); i++) {
-			action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
+			action.drawMove(&nodes.begin()->next(i)->data, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-60 - NODE_DISTANCE, 0));
 		}
 	}
 
@@ -675,10 +678,11 @@ void StackVisualizer::run() {
 	createStack();
 
 	while (window->isOpen()) {
-		window->clear(sf::Color(190, 230, 240));
+		window->clear(sf::Color::White);
 
+		window->draw(assets->backgroundSprite);
+		header.draw(window);
 		action.draw();
-		option.updateMessage();
 		option.draw(window);
 
 		window->display();
@@ -687,6 +691,10 @@ void StackVisualizer::run() {
 		while (window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				window->close();
+				return;
+			}
+
+			if (header.handleEvent(window, &event)) {
 				return;
 			}
 

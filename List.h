@@ -84,6 +84,8 @@ List <T>::List() {
 	mSize = 0;
 }
 
+#include <iostream>
+
 template <class T>
 List <T>::~List() {
 	clear();

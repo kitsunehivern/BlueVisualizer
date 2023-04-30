@@ -21,21 +21,31 @@ void run() {
     window.setFramerateLimit(60);
 
     Assets assets;
+
+    while (window.isOpen()) {
+        SLLVisualizer sll(&window, &assets);
+        sll.run();
+
+        DLLVisualizer dll(&window, &assets);
+        dll.run();
+
+        CLLVisualizer cll(&window, &assets);
+        cll.run();
+
+        StackVisualizer stack(&window, &assets);
+        stack.run();
+
+        QueueVisualizer queue(&window, &assets);
+        queue.run();
         
-    //SLLVisualizer sll(&window, &assets);
-    //sll.run();
-
-    //DLLVisualizer dll(&window, &assets);
-    //dll.run();
-
-    CLLVisualizer cll(&window, &assets);
-    cll.run();
-
-    //StackVisualizer stack(&window, &assets);
-    //stack.run();
-
-    //QueueVisualizer queue(&window, &assets);
-    //queue.run();
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                return;
+            }
+        }
+    }
 }
 
 } // namespace Core

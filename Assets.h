@@ -22,6 +22,8 @@ public:
 	sf::Texture darkBackgroundTexture;
 	sf::Texture hollowCircleTexture;
 	sf::Texture solidCircleTexture;
+	sf::Texture hollowSquareTexture;
+	sf::Texture solidSquareTexture;
 	sf::Texture stickTexture;
 	sf::Texture arrowTexture;
 	sf::Texture box680x40Texture;
@@ -50,6 +52,8 @@ public:
 	sf::Sprite backgroundSprite;
 	sf::Sprite hollowCircleSprite;
 	sf::Sprite solidCircleSprite;
+	sf::Sprite hollowSquareSprite;
+	sf::Sprite solidSquareSprite;
 	sf::Sprite stickSprite;
 	sf::Sprite arrowSprite;
 	sf::Sprite box680x40Sprite;

@@ -6,6 +6,7 @@
 #include "List.h"
 #include "Assets.h"
 #include "Node.h"
+#include "Cell.h"
 #include "Label.h"
 #include "Edge.h"
 #include "DoublyEdge.h"
@@ -14,7 +15,8 @@
 #include "DescriptionBox.h"
 #include "OptionBox.h"
 
-enum CircleSpriteType { HOLLOW, SOLID };
+enum CircleSpriteType { CHOLLOW, CSOLID };
+enum SquareSpriteType { SHOLLOW, SSOLID };
 
 class ActionBox {
 public:
@@ -50,6 +52,29 @@ public:
 	void drawChange(Node* node, CircleSpriteType type, sf::Color* fromCircleColor, sf::Color* toCircleColor, sf::Color* fromValueColor, sf::Color* toValueColor);
 	void drawChange(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* fromCircleColor, sf::Color* toCircleColor, sf::Color* fromValueColor, sf::Color* toValueColor);
 	void drawChange(List <Node>* nodes, int fromIndex, int toIndex, CircleSpriteType type, sf::Color* fromCircleColor, sf::Color* toCircleColor, sf::Color* fromValueColor, sf::Color* toValueColor);
+
+	// Cell animation
+	void draw(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+	void draw(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+	void draw(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+
+	void drawFadeIn(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+	void drawFadeIn(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+	void drawFadeIn(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+
+	void drawFadeOut(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+	void drawFadeOut(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+	void drawFadeOut(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor);
+
+	void drawMove(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition);
+	void drawMove(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition);
+
+	void drawUpdate(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue);
+	void drawUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue);
+
+	void drawChange(Cell* cell, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor);
+	void drawChange(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor);
+	void drawChange(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor);
 
 	// Label animation
 	void draw(Label* label, sf::Color* color, std::string name);
@@ -99,7 +124,6 @@ public:
 	void drawChange(List <DoublyEdge>* edges, int fromIndex, int toIndex, sf::Color* fromLeftColor, sf::Color* toLeftColor, sf::Color* fromRIghtColor, sf::Color* toRightColor);
 
 	// CircularEdge animation
-
 	void draw(CircularEdge* edge, sf::Color* color);
 
 	void drawSlideIn(CircularEdge* edge, sf::Color* color);
@@ -107,6 +131,8 @@ public:
 	void drawSlideOut(CircularEdge* edge, sf::Color* color);
 
 	void drawChange(CircularEdge* edge, sf::Color* fromColor, sf::Color* toColor);
+
+	// Cell animtion
 
 	// Code animation
 	void draw(CodeBox* code);

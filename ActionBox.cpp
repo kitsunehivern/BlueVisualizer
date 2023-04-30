@@ -32,7 +32,7 @@ void ActionBox::clearAllSteps() {
 
 // Node animation
 void ActionBox::draw(Node* node, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor) {
-	drawFunction.back().push_back(std::bind(&Node::draw, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::draw, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::draw(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor) {
@@ -46,7 +46,7 @@ void ActionBox::draw(List <Node>* nodes, int fromIndex, int toIndex, CircleSprit
 }
 
 void ActionBox::drawFadeIn(Node* node, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor) {
-	drawFunction.back().push_back(std::bind(&Node::drawFadeIn, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::drawFadeIn, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawFadeIn(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor) {
@@ -60,7 +60,7 @@ void ActionBox::drawFadeIn(List <Node>* nodes, int fromIndex, int toIndex, Circl
 }
 
 void ActionBox::drawFadeOut(Node* node, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor) {
-	drawFunction.back().push_back(std::bind(&Node::drawFadeOut, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::drawFadeOut, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawFadeOut(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor) {
@@ -74,7 +74,7 @@ void ActionBox::drawFadeOut(List <Node>* nodes, int fromIndex, int toIndex, Circ
 }
 
 void ActionBox::drawMove(Node* node, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition) {
-	drawFunction.back().push_back(std::bind(&Node::drawMove, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, fromPosition, toPosition, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::drawMove, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, fromPosition, toPosition, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawMove(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition) {
@@ -82,7 +82,7 @@ void ActionBox::drawMove(List <Node>* nodes, int index, CircleSpriteType type, s
 }
 
 void ActionBox::drawSlide(Node* node, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor, Node* fromNode, Node* toNode) {
-	drawFunction.back().push_back(std::bind(&Node::drawSlide, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, fromNode, toNode, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::drawSlide, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, fromNode, toNode, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawSlide(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor, Node* fromNode, Node* toNode) {
@@ -90,7 +90,7 @@ void ActionBox::drawSlide(List <Node>* nodes, int index, CircleSpriteType type, 
 }
 
 void ActionBox::drawUpdate(Node* node, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor, int fromValue, int toValue) {
-	drawFunction.back().push_back(std::bind(&Node::drawUpdate, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, fromValue, toValue, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::drawUpdate, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, circleColor, &assets->consolasBoldText, valueColor, fromValue, toValue, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawUpdate(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* circleColor, sf::Color* valueColor, int fromValue, int toValue) {
@@ -98,7 +98,7 @@ void ActionBox::drawUpdate(List <Node>* nodes, int index, CircleSpriteType type,
 }
 
 void ActionBox::drawChange(Node* node, CircleSpriteType type, sf::Color* fromCircleColor, sf::Color* toCircleColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
-	drawFunction.back().push_back(std::bind(&Node::drawChange, node, window, type == HOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, fromCircleColor, toCircleColor, &assets->consolasBoldText, fromValueColor, toValueColor, std::placeholders::_1,  std::placeholders::_2));
+	drawFunction.back().push_back(std::bind(&Node::drawChange, node, window, type == CHOLLOW ? &assets->hollowCircleSprite : &assets->solidCircleSprite, fromCircleColor, toCircleColor, &assets->consolasBoldText, fromValueColor, toValueColor, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawChange(List <Node>* nodes, int index, CircleSpriteType type, sf::Color* fromCircleColor, sf::Color* toCircleColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
@@ -108,6 +108,79 @@ void ActionBox::drawChange(List <Node>* nodes, int index, CircleSpriteType type,
 void ActionBox::drawChange(List <Node>* nodes, int fromIndex, int toIndex, CircleSpriteType type, sf::Color* fromCircleColor, sf::Color* toCircleColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
 	for (int i = fromIndex; i <= toIndex; i++) {
 		drawChange(&nodes->begin()->next(i)->data, type, fromCircleColor, toCircleColor, fromValueColor, toValueColor);
+	}
+}
+
+// Cell animation
+void ActionBox::draw(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	drawFunction.back().push_back(std::bind(&Cell::draw, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::draw(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	draw(&cells->begin()->next(index)->data, type, squareColor, valueColor);
+}
+
+void ActionBox::draw(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	for (int i = fromIndex; i <= toIndex; i++) {
+		draw(cells, i, type, squareColor, valueColor);
+	}
+}
+
+void ActionBox::drawFadeIn(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	drawFunction.back().push_back(std::bind(&Cell::drawFadeIn, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawFadeIn(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	drawFadeIn(&cells->begin()->next(index)->data, type, squareColor, valueColor);
+}
+
+void ActionBox::drawFadeIn(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {	
+	for (int i = fromIndex; i <= toIndex; i++) {
+		drawFadeIn(cells, i, type, squareColor, valueColor);
+	}
+}
+
+void ActionBox::drawFadeOut(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	drawFunction.back().push_back(std::bind(&Cell::drawFadeOut, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawFadeOut(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {
+	drawFadeOut(&cells->begin()->next(index)->data, type, squareColor, valueColor);
+}
+
+void ActionBox::drawFadeOut(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor) {	
+	for (int i = fromIndex; i <= toIndex; i++) {
+		drawFadeOut(cells, i, type, squareColor, valueColor);
+	}
+}
+
+void ActionBox::drawMove(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition) {
+	drawFunction.back().push_back(std::bind(&Cell::drawMove, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, fromPosition, toPosition, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawMove(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition) {
+	drawMove(&cells->begin()->next(index)->data, type, squareColor, valueColor, fromPosition, toPosition);
+}
+
+void ActionBox::drawUpdate(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue) {
+	drawFunction.back().push_back(std::bind(&Cell::drawUpdate, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, fromValue, toValue, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue) {
+	drawUpdate(&cells->begin()->next(index)->data, type, squareColor, valueColor, fromValue, toValue);
+}
+
+void ActionBox::drawChange(Cell* cell, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
+	drawFunction.back().push_back(std::bind(&Cell::drawChange, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, fromSquareColor, toSquareColor, &assets->consolasBoldText, fromValueColor, toValueColor, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawChange(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
+	drawChange(&cells->begin()->next(index)->data, type, fromSquareColor, toSquareColor, fromValueColor, toValueColor);
+}
+
+void ActionBox::drawChange(List <Cell>* cells, int fromIndex, int toIndex, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
+	for (int i = fromIndex; i <= toIndex; i++) {
+		drawChange(&cells->begin()->next(i)->data, type, fromSquareColor, toSquareColor, fromValueColor, toValueColor);
 	}
 }
 

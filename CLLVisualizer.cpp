@@ -86,7 +86,7 @@ void CLLVisualizer::create() {
 
 		// Node
 		
-		action.drawFadeIn(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, 0, nodes.size() - 1, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		if (!labels.empty()) {
@@ -111,7 +111,7 @@ void CLLVisualizer::create() {
 		action.drawSlideIn(&circularEdge, &assets->insertedEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, 0, nodes.size() - 1, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 		// Label
 		action.draw(&labels.front(), &assets->labelColor, "head");
@@ -143,8 +143,8 @@ void CLLVisualizer::create() {
 
 	// Node
 	if (!nodes.empty()) {
-		action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-		action.drawFadeOut(&nodes, 0, nodes.size() - 1, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+		action.drawFadeOut(&nodes, 0, nodes.size() - 1, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	}
 
 	// Label
@@ -194,7 +194,7 @@ void CLLVisualizer::search(int value) {
 
 	// Node
 	if (nodes.size() > 0) {
-		action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 	}
 
 	// Label
@@ -240,9 +240,9 @@ void CLLVisualizer::search(int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/cur");
@@ -276,10 +276,10 @@ void CLLVisualizer::search(int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 		if (i < nodes.size()) {
-			action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		}
 
 		// Label
@@ -321,9 +321,9 @@ void CLLVisualizer::search(int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -350,9 +350,9 @@ void CLLVisualizer::search(int value) {
 			action.draw(&circularEdge, &assets->normalEdgeColor);
 
 			// Node
-			action.drawChange(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-			action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-			action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+			action.drawChange(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+			action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 			// Label
 			if (i == 0) {
@@ -390,12 +390,12 @@ void CLLVisualizer::search(int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 		if (i + 1 < nodes.size()) {
-			action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-			action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.drawChange(&nodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+			action.drawFadeIn(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		}
 
 		// Label
@@ -426,7 +426,7 @@ void CLLVisualizer::search(int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -446,7 +446,7 @@ void CLLVisualizer::search(int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawChange(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -479,9 +479,9 @@ void CLLVisualizer::update(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/upd");
@@ -514,9 +514,9 @@ void CLLVisualizer::update(int index, int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -551,11 +551,11 @@ void CLLVisualizer::update(int index, int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -584,9 +584,9 @@ void CLLVisualizer::update(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.drawUpdate(&nodes, index, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1, nodes.begin()->next(index)->data.value, value);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.drawUpdate(&nodes, index, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1, nodes.begin()->next(index)->data.value, value);
+	action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 0) {
@@ -612,9 +612,9 @@ void CLLVisualizer::update(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, index, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, index, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes, 0, index, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 0) {
@@ -655,7 +655,7 @@ void CLLVisualizer::insertWhenEmpty(int value, bool head) {
 	// Edge
 
 	// Node
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -674,7 +674,7 @@ void CLLVisualizer::insertWhenEmpty(int value, bool head) {
 	action.drawSlideIn(&circularEdge, &assets->insertedEdgeColor);
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -693,8 +693,8 @@ void CLLVisualizer::insertWhenEmpty(int value, bool head) {
 	action.drawChange(&circularEdge, &assets->insertedEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.draw(&labels.front(), &assets->labelColor, "head");
@@ -737,9 +737,9 @@ void CLLVisualizer::insertAtTheFront(int value) {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes, 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes, 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels, 1, &assets->labelColor, "head", "head/pre");
@@ -772,9 +772,9 @@ void CLLVisualizer::insertAtTheFront(int value) {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 1, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 1, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -809,11 +809,11 @@ void CLLVisualizer::insertAtTheFront(int value) {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 1, i + 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.drawChange(&nodes, i + 2, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i + 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 3, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 1, i + 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 2, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 2, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 3, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -841,9 +841,9 @@ void CLLVisualizer::insertAtTheFront(int value) {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -871,9 +871,9 @@ void CLLVisualizer::insertAtTheFront(int value) {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -901,10 +901,10 @@ void CLLVisualizer::insertAtTheFront(int value) {
 	action.drawChange(&randomCircularEdge, &assets->normalEdgeColor, &assets->highlightEdgeColor);
 
 	// Node
-	action.drawSlide(&randomNode, HOLLOW, &assets->blankColor, &assets->blankColor, &nodes.begin()->next()->data, &nodes.front());
-	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawSlide(&randomNode, CHOLLOW, &assets->blankColor, &assets->blankColor, &nodes.begin()->next()->data, &nodes.front());
+	action.draw(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -932,9 +932,9 @@ void CLLVisualizer::insertAtTheFront(int value) {
 	action.draw(&circularEdge, &assets->highlightEdgeColor);
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -961,16 +961,16 @@ void CLLVisualizer::insertAtTheFront(int value) {
 	action.drawChange(&circularEdge, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawMove(&nodes.front(), HOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
-	action.drawChange(&nodes.front(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.front(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes.front(), CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.front().position, nodes.front().position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 	for (int i = 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes, i, CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	}
 
-	action.drawChange(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawChange(&nodes, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, nodes.size() - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawChange(&nodes, nodes.size() - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, nodes.size() - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawFadeOut(&labels.back(), &assets->labelColor, "pre");
@@ -1012,9 +1012,9 @@ void CLLVisualizer::insertAtTheBack(int value) {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
@@ -1047,9 +1047,9 @@ void CLLVisualizer::insertAtTheBack(int value) {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 2, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -1084,11 +1084,11 @@ void CLLVisualizer::insertAtTheBack(int value) {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, nodes.size() - 2, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 2, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -1116,9 +1116,9 @@ void CLLVisualizer::insertAtTheBack(int value) {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 3, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 2, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.back(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -1146,9 +1146,9 @@ void CLLVisualizer::insertAtTheBack(int value) {
 	action.drawSlideIn(&edges.back(), &assets->highlightEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 3, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 2, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.back(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -1176,9 +1176,9 @@ void CLLVisualizer::insertAtTheBack(int value) {
 	action.drawSlideIn(&circularEdge, &assets->insertedEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 3, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 3, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, nodes.size() - 2, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.back(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -1206,10 +1206,10 @@ void CLLVisualizer::insertAtTheBack(int value) {
 	action.drawChange(&circularEdge, &assets->insertedEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, nodes.size() - 2, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawChange(&nodes.back(), HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.back(), SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, 0, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, nodes.size() - 2, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes.back(), CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 2) {
@@ -1260,10 +1260,10 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 1, index - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, index - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
@@ -1298,10 +1298,10 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, index - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, index - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -1338,12 +1338,12 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, index - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-		action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, index - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -1374,11 +1374,11 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawChange(&nodes, index + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor2, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, index + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor2, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, index + 1, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -1407,11 +1407,11 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, index, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -1442,11 +1442,11 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -1477,12 +1477,12 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawMove(&randomNode, HOLLOW, &assets->blankColor, &assets->blankColor, randomNode.position, randomNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawMove(&randomNode, CHOLLOW, &assets->blankColor, &assets->blankColor, randomNode.position, randomNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -1512,17 +1512,17 @@ void CLLVisualizer::insertAtTheMiddle(int index, int value) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawMove(&nodes, index, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
-	action.drawChange(&nodes, 0, index - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawChange(&nodes, index, HOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, index, SOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.drawMove(&nodes, index + 1, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
-	action.drawChange(&nodes, index + 1, HOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, index + 1, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes, index, CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(0, -(60 + NODE_DISTANCE)));
+	action.drawChange(&nodes, 0, index - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, index, CHOLLOW, &assets->insertedNodeCircleColor, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index, CSOLID, &assets->insertedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes, index + 1, CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index + 1)->data.position, nodes.begin()->next(index + 1)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
+	action.drawChange(&nodes, index + 1, CHOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index + 1, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
 
 	for (int i = index + 2; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes, i, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f((60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
@@ -1585,8 +1585,8 @@ void CLLVisualizer::eraseToEmpty(bool head) {
 	action.drawChange(&randomCircularEdge, &assets->normalEdgeColor, &assets->erasedEdgeColor);
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeCircleColor1);
-	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeCircleColor1);
+	action.drawFadeIn(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawChange(&deletedLabel, &assets->labelColor, "head", "head/del");
@@ -1605,7 +1605,7 @@ void CLLVisualizer::eraseToEmpty(bool head) {
 	action.draw(&randomCircularEdge, &assets->erasedEdgeColor);
 
 	// Node
-	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawChange(&deletedLabel, &assets->labelColor, "head/del", "del");
@@ -1624,7 +1624,7 @@ void CLLVisualizer::eraseToEmpty(bool head) {
 	action.drawSlideOut(&randomCircularEdge, &assets->erasedEdgeColor);
 
 	// Node
-	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
@@ -1683,9 +1683,9 @@ void CLLVisualizer::eraseAtTheFront() {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&deletedNode, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&deletedLabel, &assets->labelColor, "head", "head/pre");
@@ -1722,14 +1722,14 @@ void CLLVisualizer::eraseAtTheFront() {
 
 		// Node
 		if (i == 0) {
-			action.draw(&deletedNode, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&deletedNode, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		} else {
-			action.draw(&deletedNode, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-			action.draw(&nodes, i - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&deletedNode, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+			action.draw(&nodes, i - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		}
 
-		action.draw(&nodes, 0, i - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -1772,16 +1772,16 @@ void CLLVisualizer::eraseAtTheFront() {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&deletedNode, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, 0, i - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawChange(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, 0, i - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawChange(&nodes, i, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 		if (i == 0) {
-			action.drawFadeOut(&deletedNode, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.drawFadeOut(&deletedNode, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		} else {
-			action.draw(&nodes, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-			action.drawFadeOut(&nodes, i - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&nodes, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+			action.drawFadeOut(&nodes, i - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 		}
 
 		// Label
@@ -1811,10 +1811,10 @@ void CLLVisualizer::eraseAtTheFront() {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&deletedNode, HOLLOW, &assets->highlightNodeCircleColor1, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor2, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor2, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawChange(&deletedLabel, &assets->labelColor, "head", "head/del");
@@ -1837,11 +1837,11 @@ void CLLVisualizer::eraseAtTheFront() {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor2, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor2, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawChange(&deletedLabel, &assets->labelColor, "head/del", "del");
@@ -1868,10 +1868,10 @@ void CLLVisualizer::eraseAtTheFront() {
 	action.drawSlideOut(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	action.drawFadeOut(&deletedLabel, &assets->labelColor, "del");
@@ -1897,9 +1897,9 @@ void CLLVisualizer::eraseAtTheFront() {
 	action.drawSlideIn(&circularEdge, &assets->highlightEdgeColor);
 
 	// Node
-	action.draw(&nodes.front(), SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (labels.size() == 1) {
@@ -1924,13 +1924,13 @@ void CLLVisualizer::eraseAtTheFront() {
 	action.drawChange(&circularEdge, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.front(), SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.drawChange(&nodes, 1, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawChange(&nodes.back(), HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, 1, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.back(), CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 	for (int i = 0; i < nodes.size(); i++) {
-		action.drawMove(&nodes.begin()->next(i)->data, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes.begin()->next(i)->data, CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
@@ -1980,10 +1980,10 @@ void CLLVisualizer::eraseAtTheBack() {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-	action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
@@ -2016,10 +2016,10 @@ void CLLVisualizer::eraseAtTheBack() {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -2055,12 +2055,12 @@ void CLLVisualizer::eraseAtTheBack() {
 		action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -2090,10 +2090,10 @@ void CLLVisualizer::eraseAtTheBack() {
 	action.draw(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
@@ -2121,9 +2121,9 @@ void CLLVisualizer::eraseAtTheBack() {
 	action.drawSlideOut(&randomCircularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
@@ -2150,8 +2150,8 @@ void CLLVisualizer::eraseAtTheBack() {
 	action.drawSlideIn(&circularEdge, &assets->highlightEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, nodes.size() - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 0, nodes.size() - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
@@ -2176,8 +2176,8 @@ void CLLVisualizer::eraseAtTheBack() {
 	action.drawChange(&circularEdge, &assets->highlightEdgeColor, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, nodes.size() - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes.back(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, 0, nodes.size() - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes.back(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
 
 	// Label
 	if (nodes.size() == 1) {
@@ -2232,10 +2232,10 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes.front(), HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes.front(), SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-	action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.drawChange(&nodes.front(), CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes.front(), CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	action.drawChange(&labels.front(), &assets->labelColor, "head", "head/pre");
@@ -2271,10 +2271,10 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.draw(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.draw(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -2312,12 +2312,12 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 		action.draw(&circularEdge, &assets->normalEdgeColor);
 
 		// Node
-		action.draw(&nodes, 0, i, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-		action.drawFadeOut(&nodes, i, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.drawChange(&nodes, i + 1, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-		action.drawFadeIn(&nodes, i + 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-		action.draw(&nodes, i + 2, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
-		action.draw(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&nodes, 0, i, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+		action.drawFadeOut(&nodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.drawChange(&nodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+		action.drawFadeIn(&nodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+		action.draw(&nodes, i + 2, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		action.draw(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 		// Label
 		if (i == 0) {
@@ -2349,11 +2349,11 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawChange(&deletedNode, HOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawChange(&deletedNode, CHOLLOW, &assets->normalNodeCircleColor, &assets->erasedNodeCircleColor, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -2384,12 +2384,12 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.draw(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.drawChange(&nodes, index, HOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor2, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
-	action.drawFadeIn(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.draw(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, index, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor2, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+	action.drawFadeIn(&nodes, index, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -2420,12 +2420,12 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawMove(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1, deletedNode.position, deletedNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
-	action.drawSlide(&randomNode, HOLLOW, &assets->blankColor, &assets->blankColor, &deletedNode, &nodes.begin()->next(index)->data);
-	action.draw(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawMove(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1, deletedNode.position, deletedNode.position + sf::Vector2f(0, (60 + NODE_DISTANCE)));
+	action.drawSlide(&randomNode, CHOLLOW, &assets->blankColor, &assets->blankColor, &deletedNode, &nodes.begin()->next(index)->data);
+	action.draw(&nodes, index, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -2455,11 +2455,11 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.draw(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
-	action.draw(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawFadeOut(&deletedNode, SOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
-	action.draw(&nodes, index + 1, nodes.size() - 1, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+	action.draw(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor2);
+	action.draw(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawFadeOut(&deletedNode, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.draw(&nodes, index + 1, nodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
 
 	// Label
 	if (index == 1) {
@@ -2488,14 +2488,14 @@ void CLLVisualizer::eraseAtTheMiddle(int index) {
 	action.draw(&circularEdge, &assets->normalEdgeColor);
 
 	// Node
-	action.drawChange(&nodes, 0, index - 2, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
-	action.drawChange(&nodes, index - 1, HOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, index - 1, SOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
-	action.drawMove(&nodes, index, HOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
-	action.drawChange(&nodes, index, HOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
-	action.drawFadeOut(&nodes, index, SOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
+	action.drawChange(&nodes, 0, index - 2, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor2, &assets->normalNodeTextColor);
+	action.drawChange(&nodes, index - 1, CHOLLOW, &assets->highlightNodeCircleColor1, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index - 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+	action.drawMove(&nodes, index, CHOLLOW, &assets->blankColor, &assets->blankColor, nodes.begin()->next(index)->data.position, nodes.begin()->next(index)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+	action.drawChange(&nodes, index, CHOLLOW, &assets->highlightNodeCircleColor2, &assets->normalNodeCircleColor, &assets->highlightNodeTextColor1, &assets->normalNodeTextColor);
+	action.drawFadeOut(&nodes, index, CSOLID, &assets->highlightNodeCircleColor2, &assets->highlightNodeTextColor1);
 	for (int i = index + 1; i < nodes.size(); i++) {
-		action.drawMove(&nodes, i, HOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
+		action.drawMove(&nodes, i, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor, nodes.begin()->next(i)->data.position, nodes.begin()->next(i)->data.position + sf::Vector2f(-(60 + NODE_DISTANCE), 0));
 	}
 
 	// Label
@@ -2694,7 +2694,7 @@ void CLLVisualizer::run() {
 	create();
 
 	while (window->isOpen()) {
-		window->clear();
+		window->clear(sf::Color::White);
 		
 		window->draw(assets->backgroundSprite);
 		header.draw(window);
@@ -2710,7 +2710,10 @@ void CLLVisualizer::run() {
 				return;
 			}
 
-			header.handleEvent(window, &event);
+			if (header.handleEvent(window, &event)) {
+				return;
+			}
+
 			action.handleEvent(&event, &option);
 
 			auto current = option.handleEvent(window, &event);

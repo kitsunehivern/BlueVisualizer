@@ -28,6 +28,8 @@ void Assets::loadAll() {
 	loadOne(&darkBackgroundTexture, &backgroundSprite, "DarkBackground.png");
 	loadOne(&hollowCircleTexture, &hollowCircleSprite, "HollowCircle.png");
 	loadOne(&solidCircleTexture, &solidCircleSprite, "SolidCircle.png");
+	loadOne(&hollowSquareTexture, &hollowSquareSprite, "HollowSquare.png");
+	loadOne(&solidSquareTexture, &solidSquareSprite, "SolidSquare.png");
 	loadOne(&stickTexture, &stickSprite, "Stick.png");
 	loadOne(&arrowTexture, &arrowSprite, "Arrow.png");
 	loadOne(&box680x40Texture, &box680x40Sprite, "Box680x40.png");

@@ -3,6 +3,7 @@
 
 #include "Global.h"
 #include "Assets.h"
+#include "HeaderBox.h"
 #include "ActionBox.h"
 #include "OptionBox.h"
 #include "DescriptionBox.h"
@@ -35,6 +36,7 @@ private:
 	sf::RenderWindow* window;
 	Assets* assets;
 
+	HeaderBox header;
 	ActionBox action;
 	CodeBox code;
 	OptionBox option;
@@ -46,11 +48,9 @@ private:
 	List <DoublyEdge> edges;
 
 	Node randomNode1;
-	Label randomLabel1;
 	DoublyEdge randomEdge1;
 
 	Node randomNode2;
-	Label randomLabel2;
 	DoublyEdge randomEdge2;
 
 	DoublyEdge randomEdge;
