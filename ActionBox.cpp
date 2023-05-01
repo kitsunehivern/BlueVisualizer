@@ -193,6 +193,12 @@ void ActionBox::draw(List <Label>* labels, int index, sf::Color* color, std::str
 	draw(&labels->begin()->next(index)->data, color, name);
 }
 
+void ActionBox::draw(List <Label>* labels, sf::Color* color) {
+	for (int i = 0; i < labels->size(); i++) {
+		draw(&labels->begin()->next(i)->data, color, std::to_string(i));
+	}
+}
+
 void ActionBox::drawFadeIn(Label* label, sf::Color* color, std::string name) {
 	drawFunction.back().push_back(std::bind(&Label::drawFadeIn, label, window, &assets->consolasBoldText, color, name, std::placeholders::_1,  std::placeholders::_2));
 }
@@ -201,12 +207,24 @@ void ActionBox::drawFadeIn(List <Label>* labels, int index, sf::Color* color, st
 	drawFadeIn(&labels->begin()->next(index)->data, color, name);
 }
 
+void ActionBox::drawFadeIn(List <Label>* labels, sf::Color* color) {
+	for (int i = 0; i < labels->size(); i++) {
+		drawFadeIn(&labels->begin()->next(i)->data, color, std::to_string(i));
+	}
+}
+
 void ActionBox::drawFadeOut(Label* label, sf::Color* color, std::string name) {
 	drawFunction.back().push_back(std::bind(&Label::drawFadeOut, label, window, &assets->consolasBoldText, color, name, std::placeholders::_1,  std::placeholders::_2));
 }
 
 void ActionBox::drawFadeOut(List <Label>* labels, int index, sf::Color* color, std::string name) {
 	drawFadeOut(&labels->begin()->next(index)->data, color, name);
+}
+
+void ActionBox::drawFadeOut(List <Label>* labels, sf::Color* color) {
+	for (int i = 0; i < labels->size(); i++) {
+		drawFadeOut(&labels->begin()->next(i)->data, color, std::to_string(i));
+	}
 }
 
 void ActionBox::drawChange(Label* label, sf::Color* color, std::string fromName, std::string toName) {

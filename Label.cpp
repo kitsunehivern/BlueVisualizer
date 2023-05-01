@@ -1,8 +1,9 @@
 #include "Label.h"
 #include "Motion.h"
 
-Label::Label(Node* node) {
+Label::Label(Node* node, Cell* cell) {
 	this->node = node;
+	this->cell = cell;
 }
 
 void Label::draw(sf::RenderWindow* window, sf::Text* text, sf::Color* color, std::string name, float dummy, bool isDrawn) {
@@ -13,7 +14,7 @@ void Label::draw(sf::RenderWindow* window, sf::Text* text, sf::Color* color, std
 	text->setFillColor(*color);
 	text->setString(name);
 	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, 0);
-	text->setPosition(node->position + sf::Vector2f(30, 60));
+	text->setPosition(((node) ? node->position : cell->position) + sf::Vector2f(30, 60));
 	window->draw(*text);
 }
 
@@ -22,7 +23,7 @@ void Label::drawFadeIn(sf::RenderWindow* window, sf::Text* text, sf::Color* colo
 		return;
 	}
 
-	sf::Color newColor = (*color) * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255));
+	sf::Color newColor = (*color) * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * color->a));
 	draw(window, text, &newColor, name);
 }
 

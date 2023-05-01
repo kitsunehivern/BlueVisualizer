@@ -15,7 +15,7 @@ SLLVisualizer::SLLVisualizer(sf::RenderWindow* window, Assets* assets) {
 void SLLVisualizer::randomList(int size) {
 	nodes.clear();
 	for (int i = 0; i < size; i++) {
-		nodes.pushBack(Node(randInt(1, 99), sf::Vector2f()));
+		nodes.pushBack(Node(randInt(0, 99), sf::Vector2f()));
 	}
 }
 

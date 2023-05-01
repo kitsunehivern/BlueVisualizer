@@ -1,5 +1,5 @@
-#ifndef DLL_VISUALIZER_H
-#define DLL_VISUALIZER_H
+#ifndef STATIC_ARRAY_VISUALIZER
+#define STATIC_ARRAY_VISUALIZER
 
 #include "Global.h"
 #include "Assets.h"
@@ -8,9 +8,9 @@
 #include "OptionBox.h"
 #include "DescriptionBox.h"
 
-class DLLVisualizer {
+class StaticArrayVisualizer {
 public:
-	DLLVisualizer(sf::RenderWindow* window, Assets* assets);
+	StaticArrayVisualizer(sf::RenderWindow* window, Assets* assets);
 
 	void run();
 
@@ -25,39 +25,28 @@ private:
 	DescriptionBox description;
 
 	int maxPosition1, maxPosition2;
-	List <Node> nodes;
+	int size;
+	List <Cell> cells;
 	List <Label> labels;
-	List <DoublyEdge> edges;
 
-	Node randomNode1;
-	DoublyEdge randomEdge1;
-
-	Node randomNode2;
-	DoublyEdge randomEdge2;
-
-	DoublyEdge randomEdge;
-
-	Node deletedNode;
-	Label deletedLabel;
-	DoublyEdge deletedEdge;
-
-	void randomList(int size);
-	void manualList(std::string listOfValues);
+	void zeroArray(int capacity, int size);
+	void randomArray(int capacity, int size);
+	void manualArray(std::string listOfValues);
 	void create();
+
+	void access(int index);
 
 	void search(int value);
 
 	void update(int index, int value);
 
-	void insertAtTheFront(int value, bool head);
+	void insertAtTheFirst(int value);
 	void insertAtTheBack(int value);
 	void insertAtTheMiddle(int index, int value);
-	void insert(int index, int value, bool head = true);
 
-	void eraseAtTheFront(bool head);
+	void eraseAtTheFirst();
 	void eraseAtTheBack();
 	void eraseAtTheMiddle(int index);
-	void erase(int index, bool head = true);
 };
 
 #endif

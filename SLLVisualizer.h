@@ -12,24 +12,6 @@ class SLLVisualizer {
 public:
 	SLLVisualizer(sf::RenderWindow* window, Assets* assets);
 
-	void randomList(int size);
-	void manualList(std::string listOfValues);
-	void create();
-
-	void search(int value);
-
-	void update(int index, int value);
-
-	void insertAtTheFront(int value, bool head);
-	void insertAtTheBack(int value);
-	void insertAtTheMiddle(int index, int value);
-	void insert(int index, int value, bool head = true);
-
-	void eraseAtTheFront(bool head);
-	void eraseAtTheBack();
-	void eraseAtTheMiddle(int index);
-	void erase(int index, bool head = true);
-
 	void run();
 
 private:
@@ -53,6 +35,24 @@ private:
 	Node deletedNode;
 	Label deletedLabel;
 	Edge deletedEdge;
+
+	void randomList(int size);
+	void manualList(std::string listOfValues);
+	void create();
+
+	void search(int value);
+
+	void update(int index, int value);
+
+	void insertAtTheFront(int value, bool head);
+	void insertAtTheBack(int value);
+	void insertAtTheMiddle(int index, int value);
+	void insert(int index, int value, bool head = true);
+
+	void eraseAtTheFront(bool head);
+	void eraseAtTheBack();
+	void eraseAtTheMiddle(int index);
+	void erase(int index, bool head = true);
 };
 
 #endif

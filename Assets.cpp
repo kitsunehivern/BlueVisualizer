@@ -76,6 +76,17 @@ void Assets::switchMode() {
 		insertedNodeCircleColor   = sf::Color( 80, 190, 105, 255);
 		erasedNodeCircleColor     = sf::Color(215,  80,  60, 255);
 
+		normalCellSquareColor     = sf::Color(  0,   0,   0, 255);
+		blurCellSquareColor       = sf::Color(150, 150, 150, 255);
+		highlightCellSquareColor1 = sf::Color(255, 140,  40, 255);
+		highlightCellSquareColor2 = sf::Color( 45, 185, 210, 255);
+		normalCellTextColor       = sf::Color(  0,   0,   0, 255);
+		blurCellTextColor         = sf::Color(150, 150, 150, 255);
+		highlightCellTextColor1   = sf::Color(255, 255, 255, 255);
+		highlightCellTextColor2   = sf::Color(255, 140,  40, 255);
+		insertedCellSquareColor   = sf::Color( 80, 190, 105, 255);
+		erasedCellSquareColor     = sf::Color(215,  80,  60, 255);
+
 		labelColor                = sf::Color(255,   0,   0, 255);
 
 		normalEdgeColor           = sf::Color(  0,   0,   0, 255);

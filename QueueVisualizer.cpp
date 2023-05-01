@@ -15,7 +15,7 @@ QueueVisualizer::QueueVisualizer(sf::RenderWindow* window, Assets *assets) {
 void QueueVisualizer::randomQueue(int size) {
 	nodes.clear();
 	for (int i = 0; i < size; i++) {
-		nodes.pushBack(Node(randInt(1, 99), sf::Vector2f()));
+		nodes.pushBack(Node(randInt(0, 99), sf::Vector2f()));
 	}
 }
 
@@ -40,7 +40,7 @@ void QueueVisualizer::manualQueue(std::string listOfValues) {
 	}
 }
 
-void QueueVisualizer::createQueue() {
+void QueueVisualizer::create() {
 	action.clearAllSteps();
 
 	labels.clear();
@@ -956,7 +956,7 @@ void QueueVisualizer::run() {
 	option.addSuboption("", conditionListNotEmpty);
 
 	randomQueue(7);
-	createQueue();
+	create();
 
 	while (window->isOpen()) {
 		window->clear(sf::Color::White);
@@ -1001,7 +1001,7 @@ void QueueVisualizer::run() {
 					manualQueue(std::get <2> (current)[0]);
 				}
 
-				createQueue();
+				create();
 				break;
 
 			case 1: // Peek

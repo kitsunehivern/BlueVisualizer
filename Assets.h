@@ -88,6 +88,17 @@ public:
 	sf::Color insertedNodeCircleColor;
 	sf::Color erasedNodeCircleColor;
 
+	sf::Color normalCellSquareColor;
+	sf::Color blurCellSquareColor;
+	sf::Color highlightCellSquareColor1;
+	sf::Color highlightCellSquareColor2;
+	sf::Color normalCellTextColor;
+	sf::Color blurCellTextColor;
+	sf::Color highlightCellTextColor1;
+	sf::Color highlightCellTextColor2;
+	sf::Color insertedCellSquareColor;
+	sf::Color erasedCellSquareColor;
+
 	sf::Color labelColor;
 
 	sf::Color normalEdgeColor;

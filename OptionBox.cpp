@@ -67,6 +67,10 @@ bool OptionBox::isFocus() {
 	return false;
 }
 
+std::string OptionBox::getValue(int option, int suboption, int index) {
+	return suboptionInput[option][suboption][index].getValue();
+}
+
 void OptionBox::draw(sf::RenderWindow* window) {
 	sf::Sprite* boxSprite = &assets->box880x380Sprite;
 	sf::Text* optionText = &assets->consolasBoldText;

@@ -12,17 +12,6 @@ class QueueVisualizer {
 public:
 	QueueVisualizer(sf::RenderWindow* window, Assets* assets);
 
-	void randomQueue(int size);
-	void manualQueue(std::string listOfValues);
-	void createQueue();
-
-	void peekAtTheFront();
-	void peekAtTheBack();
-
-	void enqueue(int value);
-
-	void dequeue();
-
 	void run();
 
 private:
@@ -42,6 +31,17 @@ private:
 	Node deletedNode;
 	Label deletedLabel;
 	Edge deletedEdge;
+
+	void randomQueue(int size);
+	void manualQueue(std::string listOfValues);
+	void create();
+
+	void peekAtTheFront();
+	void peekAtTheBack();
+
+	void enqueue(int value);
+
+	void dequeue();
 };
 
 #endif

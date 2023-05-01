@@ -15,7 +15,7 @@ StackVisualizer::StackVisualizer(sf::RenderWindow* window, Assets* assets) {
 void StackVisualizer::randomStack(int size) {
 	nodes.clear();
 	for (int i = 0; i < size; i++) {
-		nodes.pushBack(Node(randInt(1, 99), sf::Vector2f()));
+		nodes.pushBack(Node(randInt(0, 99), sf::Vector2f()));
 	}
 }
 
@@ -40,7 +40,7 @@ void StackVisualizer::manualStack(std::string listOfValues) {
 	}
 }
 
-void StackVisualizer::createStack() {
+void StackVisualizer::create() {
 	action.clearAllSteps();
 
 	labels.clear();
@@ -675,7 +675,7 @@ void StackVisualizer::run() {
 	option.addSuboption("", conditionListNotEmpty);
 
 	randomStack(7);
-	createStack();
+	create();
 
 	while (window->isOpen()) {
 		window->clear(sf::Color::White);
@@ -720,7 +720,7 @@ void StackVisualizer::run() {
 					manualStack(std::get <2> (current)[0]);
 				}
 
-				createStack();
+				create();
 				break;
 
 			case 1: // Peek

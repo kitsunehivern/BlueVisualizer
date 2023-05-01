@@ -12,16 +12,6 @@ class StackVisualizer {
 public:
 	StackVisualizer(sf::RenderWindow* window, Assets* assets);
 
-	void randomStack(int size);
-	void manualStack(std::string listOfValues);
-	void createStack();
-
-	void peek();
-	
-	void push(int value);
-	
-	void pop();
-
 	void run();
 
 private:
@@ -41,6 +31,16 @@ private:
 	Node deletedNode;
 	Label deletedLabel;
 	Edge deletedEdge;
+
+	void randomStack(int size);
+	void manualStack(std::string listOfValues);
+	void create();
+
+	void peek();
+
+	void push(int value);
+
+	void pop();
 };
 
 #endif

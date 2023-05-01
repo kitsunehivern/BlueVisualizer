@@ -32,9 +32,6 @@ void Node::drawFadeIn(sf::RenderWindow* window, sf::Sprite* circleSprite, sf::Co
 	sf::Color newValueColor = (*valueColor) * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255));
 
 	draw(window, circleSprite, &newCircleColor, valueText, &newValueColor);
-
-	circleColor->a = 255;
-	valueColor->a = 255;
 }
 
 void Node::drawFadeOut(sf::RenderWindow* window, sf::Sprite* circleSprite, sf::Color* circleColor, sf::Text* valueText, sf::Color* valueColor, float ratio, bool isDrawn) {

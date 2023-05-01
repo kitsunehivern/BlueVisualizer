@@ -79,12 +79,15 @@ public:
 	// Label animation
 	void draw(Label* label, sf::Color* color, std::string name);
 	void draw(List <Label>* labels, int index, sf::Color* color, std::string name);
+	void draw(List <Label>* labels, sf::Color* color);
 
 	void drawFadeIn(Label* label, sf::Color* color, std::string name);
 	void drawFadeIn(List <Label>* labels, int index, sf::Color* color, std::string name);
+	void drawFadeIn(List <Label>* labels, sf::Color* color);
 
 	void drawFadeOut(Label* label, sf::Color* color, std::string name);
 	void drawFadeOut(List <Label>* labels, int index, sf::Color* color, std::string name);
+	void drawFadeOut(List <Label>* labels, sf::Color* color);
 
 	void drawChange(Label* label, sf::Color* color, std::string fromName, std::string toName);
 	void drawChange(List <Label>* labels, int index, sf::Color* color, std::string fromName, std::string toName);

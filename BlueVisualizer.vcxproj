@@ -153,6 +153,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="SLLVisualizer.cpp" />
     <ClCompile Include="StackVisualizer.cpp" />
+    <ClCompile Include="StaticArrayVisualizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionBox.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="SLLVisualizer.h" />
     <ClInclude Include="StackVisualizer.h" />
+    <ClInclude Include="StaticArrayVisualizer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

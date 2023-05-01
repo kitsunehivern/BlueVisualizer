@@ -32,9 +32,6 @@ void Cell::drawFadeIn(sf::RenderWindow* window, sf::Sprite* squareSprite, sf::Co
 	sf::Color newValueColor = (*valueColor) * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255));
 
 	draw(window, squareSprite, &newSquareColor, valueText, &newValueColor);
-
-	squareColor->a = 255;
-	valueColor->a = 255;
 }
 
 void Cell::drawFadeOut(sf::RenderWindow* window, sf::Sprite* squareSprite, sf::Color* squareColor, sf::Text* valueText, sf::Color* valueColor, float ratio, bool isDrawn) {

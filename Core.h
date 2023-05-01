@@ -8,6 +8,7 @@
 #include "CLLVisualizer.h"
 #include "StackVisualizer.h"
 #include "QueueVisualizer.h"
+#include "StaticArrayVisualizer.h"
 
 namespace Core {
 
@@ -23,20 +24,23 @@ void run() {
     Assets assets;
 
     while (window.isOpen()) {
-        SLLVisualizer sll(&window, &assets);
-        sll.run();
+        //SLLVisualizer sll(&window, &assets);
+        //sll.run();
 
-        DLLVisualizer dll(&window, &assets);
-        dll.run();
+        //DLLVisualizer dll(&window, &assets);
+        //dll.run();
 
-        CLLVisualizer cll(&window, &assets);
-        cll.run();
+        //CLLVisualizer cll(&window, &assets);
+        //cll.run();
 
-        StackVisualizer stack(&window, &assets);
-        stack.run();
+        //StackVisualizer stack(&window, &assets);
+        //stack.run();
 
-        QueueVisualizer queue(&window, &assets);
-        queue.run();
+        //QueueVisualizer queue(&window, &assets);
+        //queue.run();
+
+        StaticArrayVisualizer staticArray(&window, &assets);
+        staticArray.run();
         
         sf::Event event;
         while (window.pollEvent(event)) {

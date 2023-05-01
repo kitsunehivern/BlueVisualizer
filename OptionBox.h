@@ -18,6 +18,7 @@ public:
 
 	bool isFocus();
 	void updateMessage();
+	std::string getValue(int option, int suboption, int index);
 	std::tuple <int, int, std::vector <std::string> > handleEvent(sf::RenderWindow* window, sf::Event* event);
 	void draw(sf::RenderWindow* window);
 
