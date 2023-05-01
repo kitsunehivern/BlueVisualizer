@@ -53,16 +53,42 @@ void Cell::drawMove(sf::RenderWindow* window, sf::Sprite* squareSprite, sf::Colo
 	draw(window, squareSprite, squareColor, valueText, valueColor);
 }
 
-void Cell::drawUpdate(sf::RenderWindow* window, sf::Sprite* squareSprite, sf::Color* squareColor, sf::Text* valueText, sf::Color* valueColor, int fromValue, int toValue, float ratio, bool isDrawn) {
-	sf::Color newValueColor = *valueColor;
+void Cell::drawFadeInAndUpdate(sf::RenderWindow* window, sf::Sprite* squareSprite, sf::Color* squareColor, sf::Text* valueText, sf::Color* valueColor, int fromValue, int toValue, float ratio, bool isDrawn) {
+	sf::Color newSquareColor = (*squareColor) * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255));
+	sf::Color newValueColor = (*valueColor) * sf::Color(255, 255, 255, std::round(Motion::Bezier(ratio) * 255));
+
 	if (ratio <= 0.5f) {
 		this->value = fromValue;
 		newValueColor *= sf::Color(255, 255, 255, std::round(Motion::Bezier(1.0f - 2.0f * ratio) * 255));
-		draw(window, squareSprite, squareColor, valueText, &newValueColor);
+		draw(window, squareSprite, &newSquareColor, valueText, &newValueColor, ratio, isDrawn);
 	} else {
 		this->value = toValue;
 		newValueColor *= sf::Color(255, 255, 255, std::round(Motion::Bezier(2.0f * (ratio - 0.5f)) * 255));
-		draw(window, squareSprite, squareColor, valueText, &newValueColor);
+		draw(window, squareSprite, &newSquareColor, valueText, &newValueColor, ratio, isDrawn);
+	}
+}
+
+void Cell::drawChangeAndUpdate(sf::RenderWindow* window, sf::Sprite* squareSprite, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Text* valueText, sf::Color* fromValueColor, sf::Color* toValueColor, int fromValue, int toValue, float ratio, bool isDrawn) {
+	sf::Color newSquareColor = *fromSquareColor;
+	newSquareColor.r += std::round(Motion::Bezier(ratio) * (toSquareColor->r - (int)fromSquareColor->r));
+	newSquareColor.g += std::round(Motion::Bezier(ratio) * (toSquareColor->g - (int)fromSquareColor->g));
+	newSquareColor.b += std::round(Motion::Bezier(ratio) * (toSquareColor->b - (int)fromSquareColor->b));
+	newSquareColor.a += std::round(Motion::Bezier(ratio) * (toSquareColor->a - (int)fromSquareColor->a));
+
+	sf::Color newValueColor = *fromValueColor;
+	newValueColor.r += std::round(Motion::Bezier(ratio) * (toValueColor->r - (int)fromValueColor->r));
+	newValueColor.g += std::round(Motion::Bezier(ratio) * (toValueColor->g - (int)fromValueColor->g));
+	newValueColor.b += std::round(Motion::Bezier(ratio) * (toValueColor->b - (int)fromValueColor->b));
+	newValueColor.a += std::round(Motion::Bezier(ratio) * (toValueColor->a - (int)fromValueColor->a));
+	
+	if (ratio <= 0.5f) {
+		this->value = fromValue;
+		newValueColor *= sf::Color(255, 255, 255, std::round(Motion::Bezier(1.0f - 2.0f * ratio) * 255));
+		draw(window, squareSprite, &newSquareColor, valueText, &newValueColor, ratio, isDrawn);
+	} else {
+		this->value = toValue;
+		newValueColor *= sf::Color(255, 255, 255, std::round(Motion::Bezier(2.0f * (ratio - 0.5f)) * 255));
+		draw(window, squareSprite, &newSquareColor, valueText, &newValueColor, ratio, isDrawn);
 	}
 }
 

@@ -282,7 +282,7 @@ void StaticArrayVisualizer::search(int value) {
 	description.addDescription({ "NOT_FOUND is returned." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
-	// Node
+	// Cell
 	action.draw(&cells, 0, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
 	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
 
@@ -299,7 +299,7 @@ void StaticArrayVisualizer::search(int value) {
 	description.addDescription({ "So the value " + std::to_string(value) + " was not found.", "The whole process is O(n)."});
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
-	// Node
+	// Cell
 	action.drawChange(&cells, 0, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor2, &assets->normalCellTextColor);
 	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
 
@@ -308,6 +308,56 @@ void StaticArrayVisualizer::search(int value) {
 
 	// Code
 	action.drawFadeOut(&code, 2);
+}
+
+void StaticArrayVisualizer::update(int index, int value) {
+	action.clearAllSteps();
+
+	code.update({
+		"a[i] = v;"
+		});
+
+	description.newOperation("Update value at index " + std::to_string(index) + " to " + std::to_string(value));
+
+	// New step: return a[i]
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the value at index " + std::to_string(index) + " to " + std::to_string(value) + "." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChangeAndUpdate(&cells, index, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(index)->data.value, value);
+	action.drawFadeInAndUpdate(&cells, index, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(index)->data.value, value);
+	action.draw(&cells, index + 1, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(1)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChange(&cells, index, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
+	action.drawFadeOut(&cells, index, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+	action.draw(&cells, index + 1, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 0);
 }
 
 void StaticArrayVisualizer::run() {
@@ -541,6 +591,15 @@ void StaticArrayVisualizer::run() {
 				switch (std::get <1> (current)) {
 				case 0: //
 					search(std::stoi(std::get <2> (current)[0]));
+					break;
+				}
+
+				break;
+
+			case 3: // Update
+				switch (std::get <1> (current)) {
+				case 0: //
+					update(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
 					break;
 				}
 

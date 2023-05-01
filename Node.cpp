@@ -72,11 +72,11 @@ void Node::drawUpdate(sf::RenderWindow* window, sf::Sprite* circleSprite, sf::Co
 	if (ratio <= 0.5f) {
 		this->value = fromValue;
 		newValueColor *= sf::Color(255, 255, 255, std::round(Motion::Bezier(1.0f - 2.0f * ratio) * 255));
-		draw(window, circleSprite, circleColor, valueText, &newValueColor);
+		draw(window, circleSprite, circleColor, valueText, &newValueColor, ratio, isDrawn);
 	} else {
 		this->value = toValue;
 		newValueColor *= sf::Color(255, 255, 255, std::round(Motion::Bezier(2.0f * (ratio - 0.5f)) * 255));
-		draw(window, circleSprite, circleColor, valueText, &newValueColor);
+		draw(window, circleSprite, circleColor, valueText, &newValueColor, ratio, isDrawn);
 	}
 }
 

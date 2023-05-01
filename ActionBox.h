@@ -69,8 +69,11 @@ public:
 	void drawMove(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition);
 	void drawMove(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, sf::Vector2f fromPosition, sf::Vector2f toPosition);
 
-	void drawUpdate(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue);
-	void drawUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue);
+	void drawFadeInAndUpdate(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue);
+	void drawFadeInAndUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue);
+
+	void drawChangeAndUpdate(Cell* cell, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor, int fromValue, int toValue);
+	void drawChangeAndUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor, int fromValue, int toValue);
 
 	void drawChange(Cell* cell, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor);
 	void drawChange(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor);

@@ -162,12 +162,20 @@ void ActionBox::drawMove(List <Cell>* cells, int index, SquareSpriteType type, s
 	drawMove(&cells->begin()->next(index)->data, type, squareColor, valueColor, fromPosition, toPosition);
 }
 
-void ActionBox::drawUpdate(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue) {
-	drawFunction.back().push_back(std::bind(&Cell::drawUpdate, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, fromValue, toValue, std::placeholders::_1,  std::placeholders::_2));
+void ActionBox::drawFadeInAndUpdate(Cell* cell, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue) {
+	drawFunction.back().push_back(std::bind(&Cell::drawFadeInAndUpdate, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, squareColor, &assets->consolasBoldText, valueColor, fromValue, toValue, std::placeholders::_1,  std::placeholders::_2));
 }
 
-void ActionBox::drawUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue) {
-	drawUpdate(&cells->begin()->next(index)->data, type, squareColor, valueColor, fromValue, toValue);
+void ActionBox::drawFadeInAndUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* squareColor, sf::Color* valueColor, int fromValue, int toValue) {
+	drawFadeInAndUpdate(&cells->begin()->next(index)->data, type, squareColor, valueColor, fromValue, toValue);
+}
+
+void ActionBox::drawChangeAndUpdate(Cell* cell, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor, int fromValue, int toValue) {
+	drawFunction.back().push_back(std::bind(&Cell::drawChangeAndUpdate, cell, window, type == CHOLLOW ? &assets->hollowSquareSprite : &assets->solidSquareSprite, fromSquareColor, toSquareColor, &assets->consolasBoldText, fromValueColor, toValueColor, fromValue, toValue, std::placeholders::_1,  std::placeholders::_2));
+}
+
+void ActionBox::drawChangeAndUpdate(List <Cell>* cells, int index, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor, int fromValue, int toValue) {
+	drawChangeAndUpdate(&cells->begin()->next(index)->data, type, fromSquareColor, toSquareColor, fromValueColor, toValueColor, fromValue, toValue);
 }
 
 void ActionBox::drawChange(Cell* cell, SquareSpriteType type, sf::Color* fromSquareColor, sf::Color* toSquareColor, sf::Color* fromValueColor, sf::Color* toValueColor) {
@@ -688,50 +696,52 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 			mouseButtonHolding = true;
 		}
 	} else if (event->type == sf::Event::MouseButtonReleased) {
-		mouseButtonHolding = false;
-
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
-			goToBeginning();
-		}
-
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
-			goToPrevStep();
-		}
-
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
-			if (status == PAUSED) {
-				if (direction == NONE) {
-					status = CONTINUE;
-				} else {
-					direction = NONE;
-				}
-			} else if (status == CONTINUE) {
-				status = PAUSED;
-				direction = NONE;
-			} else if (status == REPLAY) {
+		if (!mouseButtonHolding) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
 				goToBeginning();
-				status = CONTINUE;
-				direction = FORWARD;
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
+				goToPrevStep();
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
+				if (status == PAUSED) {
+					if (direction == NONE) {
+						status = CONTINUE;
+					} else {
+						direction = NONE;
+					}
+				} else if (status == CONTINUE) {
+					status = PAUSED;
+					direction = NONE;
+				} else if (status == REPLAY) {
+					goToBeginning();
+					status = CONTINUE;
+					direction = FORWARD;
+				}
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
+				goToNextStep();
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
+				goToEnding();
+			}
+
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 750, position.y + 10, 100, 40))) {
+				if (speed & X1) {
+					speed = X2;
+				} else if (speed & X2) {
+					speed = X4;
+				} else {
+					speed = X1;
+				}
 			}
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
-			goToNextStep();
-		}
-
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
-			goToEnding();
-		}
-
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 750, position.y + 10, 100, 40))) {
-			if (speed & X1) {
-				speed = X2;
-			} else if (speed & X2) {
-				speed = X4;
-			} else {
-				speed = X1;
-			}
-		}
+		mouseButtonHolding = false;
 	} else if (event->type == sf::Event::KeyPressed) {
 		if (!option->isFocus()) {
 			if (event->key.code == sf::Keyboard::Left) {
