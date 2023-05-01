@@ -167,7 +167,148 @@ void StaticArrayVisualizer::access(int index) {
 
 	// Code
 	action.drawFadeOut(&code, 0);
-} 
+}
+
+void StaticArrayVisualizer::search(int value) {
+	action.clearAllSteps();
+
+	code.update({
+		"for (int k = 0; k <= n - 1; k++)",
+		"    if (a[k] == v) return k;    ",
+		"return NOT_FOUND;               "
+		});
+
+	description.newOperation("Search " + std::to_string(value));
+
+	for (int i = 0; i <= size; i++) {
+		// New step: for (int k = 0; k <= n - 1; k++)
+		action.addNewStep();
+
+		// Description
+		if (size == 0) {
+			description.addDescription({ "Iterate k from 0 to n - 1 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to n - 1 = " + std::to_string(size - 1) + ", k is now 0.", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
+			} else if (i <= size - 1) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(size - 1) + ", the loop stops." });
+			}
+		}
+
+		if (i == 0) {
+			action.drawFadeIn(&description, description.size() - 1);
+		} else {
+			action.drawChange(&description, description.size() - 2, description.size() - 1);
+		}
+
+		// Cell
+		action.draw(&cells, 0, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		if (i > 0) {
+			action.drawFadeOut(&cells, i - 1, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);	
+		}
+
+		action.draw(&cells, i, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+		// Label
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		if (i == 0) {
+			action.drawFadeIn(&code, 0);
+		} else {
+			action.drawMove(&code, 1, 0);
+		}
+		
+		if (i == size) {
+			break;
+		}
+
+		// New step: if (a[k] == v) return k
+		action.addNewStep();
+
+		// Description
+		if (cells.begin()->next(i)->data.value == value) {
+			description.addDescription({ "Check if value at index " + std::to_string(i) + " equals to " + std::to_string(value) + ".", "Since it is true, k is returned." });
+		} else {
+			description.addDescription({ "Check if value at index " + std::to_string(i) + " equals to " + std::to_string(value) + ".", "Since it is false, the statement is ignored." });
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Cell
+		action.draw(&cells, 0, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		action.drawChange(&cells, i, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1);
+		action.drawFadeIn(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+		action.draw(&cells, i + 1, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+		// Label
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		action.drawMove(&code, 0, 1);
+
+		if (cells.begin()->next(i)->data.value == value) {
+			// New step: Re-layout
+			action.addNewStep();
+
+			// Description
+			description.addDescription({ "So the value " + std::to_string(value) + " was found at index " + std::to_string(i) + ".", "The whole process is O(n)." });
+			action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+			// Cell
+			action.drawChange(&cells, 0, i, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor2, &assets->normalCellTextColor);
+			action.drawFadeOut(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+			action.draw(&cells, i + 1, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+			action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+			// Label
+			action.draw(&labels, &assets->labelColor);
+
+			// Code
+			action.drawFadeOut(&code, 1);
+
+			return;
+		}
+	}
+
+	// New step: return NOT_FOUND
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "NOT_FOUND is returned." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Node
+	action.draw(&cells, 0, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawMove(&code, 0, 2);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "So the value " + std::to_string(value) + " was not found.", "The whole process is O(n)."});
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Node
+	action.drawChange(&cells, 0, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor2, &assets->normalCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 2);
+}
 
 void StaticArrayVisualizer::run() {
 	std::vector <char> numbersCharacter;
@@ -315,7 +456,7 @@ void StaticArrayVisualizer::run() {
 	option.addSuboptionInput("i", numbersCharacter, std::bind(validatorInteger, std::placeholders::_1, std::placeholders::_2, &minPosition1, &maxPosition1), std::bind(generatorInteger, &minPosition1, &maxPosition1));
 
 	option.addOption("Search");
-	option.addSuboption("", conditionSizeNotZero);
+	option.addSuboption("", conditionNone);
 	option.addSuboptionInput("v", numbersCharacter, std::bind(validatorInteger, std::placeholders::_1, std::placeholders::_2, &minValue, &maxValue), std::bind(generatorInteger, &minValue, &maxValue));
 
 	option.addOption("Update");
@@ -393,6 +534,17 @@ void StaticArrayVisualizer::run() {
 					access(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
+
+				break;
+
+			case 2: // Search
+				switch (std::get <1> (current)) {
+				case 0: //
+					search(std::stoi(std::get <2> (current)[0]));
+					break;
+				}
+
+				break;
 			}
 
 			for (int i : {0, 1}) {
