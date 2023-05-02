@@ -9,6 +9,7 @@
 #include "StackVisualizer.h"
 #include "QueueVisualizer.h"
 #include "StaticArrayVisualizer.h"
+#include "DynamicArrayVisualizer.h"
 
 namespace Core {
 
@@ -39,8 +40,11 @@ void run() {
         //QueueVisualizer queue(&window, &assets);
         //queue.run();
 
-        StaticArrayVisualizer staticArray(&window, &assets);
-        staticArray.run();
+        //StaticArrayVisualizer staticArray(&window, &assets);
+        //staticArray.run();
+
+        DynamicArrayVisualizer dynamicArray(&window, &assets);
+        dynamicArray.run();
         
         sf::Event event;
         while (window.pollEvent(event)) {

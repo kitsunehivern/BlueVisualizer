@@ -748,6 +748,10 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 				goToPrevStep();
 			} else if (event->key.code == sf::Keyboard::Right) {
 				goToNextStep();
+			} else if (event->key.code == sf::Keyboard::Home) {
+				goToBeginning();
+			} else if (event->key.code == sf::Keyboard::End) {
+				goToEnding();
 			} else if (event->key.code == sf::Keyboard::Space) {
 				if (status == PAUSED) {
 					if (direction == NONE) {
