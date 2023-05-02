@@ -94,12 +94,60 @@ void DynamicArrayVisualizer::create() {
 	action.addNewStep();
 
 	// Description
-	description.addDescription({ "An array of capacity size " + std::to_string(cells.size()) + " is created." });
+	description.addDescription({ "An array of size " + std::to_string(cells.size()) + " is created." });
 	action.drawChange(&description, description.size() - 2, description.size() - 1);
 
 	// Cell
 	action.drawChange(&cells, 0, cells.size() - 1, SHOLLOW, &assets->insertedCellSquareColor, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
 	action.drawFadeOut(&cells, 0, cells.size() - 1, SSOLID, &assets->insertedCellSquareColor, &assets->highlightCellTextColor1);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 0);
+}
+
+void DynamicArrayVisualizer::access(int index) {
+	action.clearAllSteps();
+
+	code.update({
+		"return a[i];"
+		});
+
+	description.newOperation("Access value at index " + std::to_string(index));
+
+	// New step: return a[i]
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Return the value at index " + std::to_string(index) + ", which is " + std::to_string(cells.begin()->next(index)->data.value) + "." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChange(&cells, index, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1);
+	action.drawFadeIn(&cells, index, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+	action.draw(&cells, index + 1, cells.size() - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "So the value at index " + std::to_string(index) + " is " + std::to_string(cells.begin()->next(index)->data.value) + ".", "The whole process is O(1)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChange(&cells, index, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
+	action.drawFadeOut(&cells, index, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+	action.draw(&cells, index + 1, cells.size() - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
 
 	// Label
 	action.draw(&labels, &assets->labelColor);
@@ -335,7 +383,7 @@ void DynamicArrayVisualizer::run() {
 			case 1: // Access
 				switch (std::get <1> (current)) {
 				case 0: //
-					//access(std::stoi(std::get <2> (current)[0]));
+					access(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 
