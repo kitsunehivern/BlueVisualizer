@@ -830,6 +830,55 @@ void StaticArrayVisualizer::eraseAtTheFront() {
 	action.drawFadeOut(&code, 2);
 }
 
+void StaticArrayVisualizer::eraseAtTheBack() {
+	action.clearAllSteps();
+
+	size--;
+	maxPosition1 = size - 1;
+	maxPosition2 = size - 2;
+
+	code.update({
+		"n--;"
+		});
+
+	description.newOperation("Erase value at the back");
+
+	// New step: n--;
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Decrease the size of the array by 1." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChange(&cells, size, SHOLLOW, &assets->normalCellSquareColor, &assets->blurCellSquareColor, &assets->normalCellTextColor, &assets->blurCellTextColor);
+	action.draw(&cells, size + 1, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(1)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, size - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 0);
+}
+
 void StaticArrayVisualizer::run() {
 	std::vector <char> numbersCharacter;
 	for (int i = 0; i <= 9; i++) {
@@ -1099,7 +1148,7 @@ void StaticArrayVisualizer::run() {
 					break;
 
 				case 1: // Back
-					//eraseAtTheBack();
+					eraseAtTheBack();
 					break;
 
 				case 2: // Middle
