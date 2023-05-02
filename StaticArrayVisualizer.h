@@ -40,11 +40,11 @@ private:
 
 	void update(int index, int value);
 
-	void insertAtTheFirst(int value);
+	void insertAtTheFront(int value);
 	void insertAtTheBack(int value);
 	void insertAtTheMiddle(int index, int value);
 
-	void eraseAtTheFirst();
+	void eraseAtTheFront();
 	void eraseAtTheBack();
 	void eraseAtTheMiddle(int index);
 };

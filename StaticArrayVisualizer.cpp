@@ -360,6 +360,147 @@ void StaticArrayVisualizer::update(int index, int value) {
 	action.drawFadeOut(&code, 0);
 }
 
+void StaticArrayVisualizer::insertAtTheFront(int value) {
+	action.clearAllSteps();
+
+	size++;
+	maxPosition1 = size - 1;
+	maxPosition2 = size - 2;
+
+	code.update({
+		"n++;                            ",
+		"for (int k = n - 1; k >= 1; k--)",
+		"    a[k] = a[k - 1];            ",
+		"a[0] = v;                       "
+		});
+
+	description.newOperation("Insert " + std::to_string(value) + " at the front");
+
+	// New step: n++;
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Increase the size of the array by 1." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, size - 2, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChange(&cells, size - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->insertedCellSquareColor, &assets->blurCellTextColor, &assets->insertedCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = size - 1; i >= 0; i--) {
+		// New step: for (int k = size - 1; k >= 1; k++)
+		action.addNewStep();
+
+		// Description
+		if (size == 1) {
+			description.addDescription({ "Iterate k from n - 1 = 0 downto 1, k is now 0.", "Since k < 1, the loop stops." });
+		} else {
+			if (i == size - 1) {
+				description.addDescription({ "Iterate k from n - 1 = " + std::to_string(size - 1) + " downto 1, k is now " + std::to_string(i) + ".", "Since k >= 1, the loop continues." });
+			} else if (i >= 1) {
+				description.addDescription({ "Decrease k by 1, k is now " + std::to_string(i) + ".", "Since k >= 1, the loop continues." });
+			} else {
+				description.addDescription({ "Decrease k by 1, k is now " + std::to_string(i) + ".", "Since k < 1, the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Cell
+		action.draw(&cells, 0, i - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, i + 1, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		if (i == size - 1) {
+			action.drawChange(&cells, i, SHOLLOW, &assets->insertedCellSquareColor, &assets->normalCellSquareColor, &assets->insertedCellTextColor, &assets->normalCellTextColor);
+		} else {
+			action.drawChange(&cells, i, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
+			action.drawFadeOut(&cells, i, i + 1, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+		}
+
+		action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+		// Label
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		if (i == size - 1) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		if (i == 0) {
+			break;
+		}
+
+		// New step: a[k] = a[k - 1]
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set the value at index " + std::to_string(i) + " to the value at index ", std::to_string(i - 1) + "." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Cell
+		action.draw(&cells, 0, i - 2, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.drawChange(&cells, i - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1);
+		action.drawFadeIn(&cells, i - 1, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+		action.drawChangeAndUpdate(&cells, i, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, cells.begin()->next(i - 1)->data.value);
+		action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, cells.begin()->next(i - 1)->data.value);
+		action.draw(&cells, i + 1, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+		// Label
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: a[0] = v
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Set the value at index 0 to " + std::to_string(value) + "." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.drawChangeAndUpdate(&cells.front(), SHOLLOW, &assets->normalCellSquareColor, &assets->insertedCellSquareColor, &assets->normalCellTextColor, &assets->highlightCellTextColor1, cells.front().value, value);
+	action.drawFadeInAndUpdate(&cells.front(), SSOLID, &assets->insertedCellSquareColor, &assets->highlightCellTextColor1, cells.front().value, value);
+	action.draw(&cells, 1, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.drawChange(&cells.front(), SHOLLOW, &assets->insertedCellSquareColor, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
+	action.drawFadeOut(&cells.front(), SSOLID, &assets->insertedCellSquareColor, &assets->highlightCellTextColor1);
+	action.drawChange(&cells, 1, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor2, &assets->normalCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 3);
+}
+
 void StaticArrayVisualizer::run() {
 	std::vector <char> numbersCharacter;
 	for (int i = 0; i <= 9; i++) {
@@ -600,6 +741,15 @@ void StaticArrayVisualizer::run() {
 				switch (std::get <1> (current)) {
 				case 0: //
 					update(std::stoi(std::get <2> (current)[0]), std::stoi(std::get <2> (current)[1]));
+					break;
+				}
+
+				break;
+
+			case 4: // Insert
+				switch (std::get <1> (current)) {
+				case 0: // Front
+					insertAtTheFront(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 

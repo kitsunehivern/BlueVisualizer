@@ -85,6 +85,7 @@ void Assets::switchMode() {
 		highlightCellTextColor1   = sf::Color(255, 255, 255, 255);
 		highlightCellTextColor2   = sf::Color(255, 140,  40, 255);
 		insertedCellSquareColor   = sf::Color( 80, 190, 105, 255);
+		insertedCellTextColor     = sf::Color( 80, 190, 105, 255);
 		erasedCellSquareColor     = sf::Color(215,  80,  60, 255);
 
 		labelColor                = sf::Color(255,   0,   0, 255);

@@ -97,6 +97,7 @@ public:
 	sf::Color highlightCellTextColor1;
 	sf::Color highlightCellTextColor2;
 	sf::Color insertedCellSquareColor;
+	sf::Color insertedCellTextColor;
 	sf::Color erasedCellSquareColor;
 
 	sf::Color labelColor;
