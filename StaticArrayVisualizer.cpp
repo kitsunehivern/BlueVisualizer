@@ -879,6 +879,143 @@ void StaticArrayVisualizer::eraseAtTheBack() {
 	action.drawFadeOut(&code, 0);
 }
 
+void StaticArrayVisualizer::eraseAtTheMiddle(int index) {
+	action.clearAllSteps();
+
+	size--;
+	maxPosition1 = size - 1;
+	maxPosition2 = size - 2;
+
+	code.update({
+		"for (int k = i; k <= n - 2; k++)",
+		"    a[k] = a[k + 1];            ",
+		"n--;                            ",
+		});
+
+	description.newOperation("Erase value at index " + std::to_string(index));
+	
+	for (int i = index; i <= size; i++) {
+		// New step: for (int k = i; k <= n - 2; k++)
+		action.addNewStep();
+
+		// Description
+		if (i == 0) {
+			description.addDescription({ "Iterate k from " + std::to_string(index) + " to " + std::to_string(size - 1) + ", k is now 0.", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
+		} else if (i <= size - 1) {
+			description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
+		} else {
+			description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(size - 1) + ", the loop stops." });
+		}
+
+		if (i == index) {
+			action.drawFadeIn(&description, description.size() - 1);
+		} else {
+			action.drawChange(&description, description.size() - 2, description.size() - 1);
+		}
+
+		// Cell
+		action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, index, i - 2, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		if (i == index) {
+			action.draw(&cells, i, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		} else if (i == index + 1) {
+			action.drawChange(&cells, i - 1, SHOLLOW, &assets->erasedCellSquareColor, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, &assets->highlightCellTextColor2);
+			action.drawFadeOut(&cells, i - 1, SSOLID, &assets->erasedCellSquareColor, &assets->highlightCellTextColor1);
+			action.drawChange(&cells, i, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
+			action.drawFadeOut(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+		} else {
+			action.drawChange(&cells, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, &assets->highlightCellTextColor2);
+			action.drawFadeOut(&cells, i - 1, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+			action.drawChange(&cells, i, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor1, &assets->normalCellTextColor);
+			action.drawFadeOut(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+		}
+
+		action.draw(&cells, i + 1, size, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, size + 1, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+		// Label
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		if (i == 0) {
+			action.drawFadeIn(&code, 0);
+		} else {
+			action.drawMove(&code, 1, 0);
+		}
+
+		if (i == size) {
+			break;
+		}
+
+		// New step: a[k] = a[k + 1]
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set the value at index " + std::to_string(i) + " to the value at index ", std::to_string(i + 1) + "." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Cell
+		action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, index, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		if (i == index) {
+			action.drawChangeAndUpdate(&cells, i, SHOLLOW, &assets->normalCellSquareColor, &assets->erasedCellSquareColor, &assets->normalCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, cells.begin()->next(i + 1)->data.value);
+			action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->erasedCellSquareColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, cells.begin()->next(i + 1)->data.value);
+		} else {
+			action.drawChangeAndUpdate(&cells, i, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, cells.begin()->next(i + 1)->data.value);
+			action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, cells.begin()->next(i + 1)->data.value);
+		}
+
+		action.drawChange(&cells, i + 1, SHOLLOW, &assets->normalCellSquareColor, &assets->highlightCellSquareColor1, &assets->normalCellTextColor, &assets->highlightCellTextColor1);
+		action.drawFadeIn(&cells, i + 1, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+
+		action.draw(&cells, i + 2, size, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, size + 1, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+		// Label
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		action.drawMove(&code, 0, 1);
+	}
+
+	// New step: n--;
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Decrease the size of the array by 1." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.draw(&cells, index, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+	action.drawChange(&cells, size, SHOLLOW, &assets->normalCellSquareColor, &assets->blurCellSquareColor, &assets->normalCellTextColor, &assets->blurCellTextColor);
+	action.draw(&cells, size + 1, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawMove(&code, 0, 2);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.draw(&cells, 0, index - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawChange(&cells, index, size - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor2, &assets->normalCellTextColor);
+	action.draw(&cells, size, cells.size() - 1, SHOLLOW, &assets->blurCellSquareColor, &assets->blurCellTextColor);
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 2);
+}
+
 void StaticArrayVisualizer::run() {
 	std::vector <char> numbersCharacter;
 	for (int i = 0; i <= 9; i++) {
@@ -1152,7 +1289,7 @@ void StaticArrayVisualizer::run() {
 					break;
 
 				case 2: // Middle
-					//eraseAtTheMiddle(std::stoi(std::get <2> (current)[0]));
+					eraseAtTheMiddle(std::stoi(std::get <2> (current)[0]));
 					break;
 				}
 
