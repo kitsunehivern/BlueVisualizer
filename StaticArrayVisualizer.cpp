@@ -64,7 +64,7 @@ void StaticArrayVisualizer::create() {
 	cells.front().position = sf::Vector2f(CELL_POSITION_X, CELL_POSITION_Y);
 	labels.pushBack(Label(nullptr, &cells.front()));
 	for (ListNode <Cell>* iterator = cells.begin()->next(); iterator != cells.end(); iterator = iterator->next()) {
-		iterator->data.position.x = iterator->prev()->data.position.x + 60 + CELL_DISTANCE;
+		iterator->data.position.x = iterator->prev()->data.position.x + 60 + CELL_DISTANCE_X;
 		iterator->data.position.y = iterator ->prev()->data.position.y;
 		labels.pushBack(Label(nullptr, &iterator->data));
 	}

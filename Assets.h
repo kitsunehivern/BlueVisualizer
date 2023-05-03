@@ -99,6 +99,7 @@ public:
 	sf::Color insertedCellSquareColor;
 	sf::Color insertedCellTextColor;
 	sf::Color erasedCellSquareColor;
+	sf::Color erasedCellTextColor;
 
 	sf::Color labelColor;
 

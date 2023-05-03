@@ -42,8 +42,6 @@ public:
 	void pushFront(const T &value);
 	T popFront();
 
-	List <T>& operator = (const List <T> &other);
-
 private:	
 	ListNode <T>* head;
 	ListNode <T>* tail;
@@ -287,16 +285,6 @@ T List <T>::popFront() {
 	mSize--;
 
 	return res;
-}
-
-template <class T>
-List <T>& List <T>::operator = (const List <T> &other) {
-	clear();
-	for (ListNode <T>* iterator = other.begin(); iterator != other.end(); iterator = iterator->next()) {
-		pushBack(iterator->data);
-	}
-
-	return *this;
 }
 
 #endif 

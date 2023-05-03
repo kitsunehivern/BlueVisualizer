@@ -5,7 +5,8 @@
 
 static const float CELL_POSITION_X = 140.0f;
 static const float CELL_POSITION_Y = 160.0f;
-static const float CELL_DISTANCE = 30.0f;
+static const float CELL_DISTANCE_X = 30.0f;
+static const float CELL_DISTANCE_Y = 60.0f;
 
 struct Cell {
 	int value;

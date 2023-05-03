@@ -28,6 +28,9 @@ private:
 	List <Cell> cells;
 	List <Label> labels;
 
+	List <Cell> randomCells;
+	List <Label> randomLabels;
+
 	void emptyArray();
 	void zeroArray(int size);
 	void randomArray(int size);
