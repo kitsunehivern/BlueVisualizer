@@ -360,6 +360,9 @@ void DynamicArrayVisualizer::insertAtTheFront(int value) {
 		cells.begin()->next(i)->data.position += sf::Vector2f(0, 60 + CELL_DISTANCE_Y);
 	}
 
+	maxPosition1 = cells.size() - 1;
+	maxPosition2 = cells.size() - 2;
+
 	code.update({
 		"int* b = new int[++n];          ",
 		"for (int k = 1; k <= n - 1; k++)",
@@ -452,7 +455,7 @@ void DynamicArrayVisualizer::insertAtTheFront(int value) {
 		action.draw(&cells.front(), SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
 		action.draw(&cells, 1, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
 		action.drawChangeAndUpdate(&cells, i, SHOLLOW, &assets->insertedCellSquareColor, &assets->highlightCellSquareColor1, &assets->insertedCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, randomCells.begin()->next(i - 1)->data.value);
-		action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i - 1)->data.value, randomCells.begin()->next(i - 1)->data.value);
+		action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, randomCells.begin()->next(i - 1)->data.value);
 		action.draw(&cells, i + 1, cells.size() - 1, SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
 
 		// Label
@@ -543,6 +546,9 @@ void DynamicArrayVisualizer::insertAtTheBack(int value) {
 		cells.begin()->next(i)->data.value = 0;
 		cells.begin()->next(i)->data.position += sf::Vector2f(0, 60 + CELL_DISTANCE_Y);
 	}
+
+	maxPosition1 = cells.size() - 1;
+	maxPosition2 = cells.size() - 2;
 
 	code.update({
 		"int* b = new int[++n];          ",
@@ -726,6 +732,9 @@ void DynamicArrayVisualizer::insertAtTheMiddle(int index, int value) {
 		cells.begin()->next(i)->data.position += sf::Vector2f(0, 60 + CELL_DISTANCE_Y);
 	}
 
+	maxPosition1 = cells.size() - 1;
+	maxPosition2 = cells.size() - 2;
+
 	code.update({
 		"int* b = new int[++n];              ",
 		"for (int k = 0; k <= i - 1; k++)    ",
@@ -887,7 +896,7 @@ void DynamicArrayVisualizer::insertAtTheMiddle(int index, int value) {
 		action.draw(&cells, index, SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
 		action.draw(&cells, index + 1, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
 		action.drawChangeAndUpdate(&cells, i, SHOLLOW, &assets->insertedCellSquareColor, &assets->highlightCellSquareColor1, &assets->insertedCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, randomCells.begin()->next(i - 1)->data.value);
-		action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i - 1)->data.value, randomCells.begin()->next(i - 1)->data.value);
+		action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, randomCells.begin()->next(i - 1)->data.value);
 		action.draw(&cells, i + 1, cells.size() - 1, SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
 
 		// Label
@@ -960,6 +969,173 @@ void DynamicArrayVisualizer::insertAtTheMiddle(int index, int value) {
 
 	// Code
 	action.drawFadeOut(&code, 6);
+}
+
+void DynamicArrayVisualizer::eraseAtTheFront() {
+	action.clearAllSteps();
+
+	randomCells.clear();
+	for (int i = 0; i < cells.size(); i++) {
+		randomCells.pushBack(cells.begin()->next(i)->data);
+	}
+
+	randomLabels.clear();
+	for (int i = 0; i < randomCells.size(); i++) {
+		randomLabels.pushBack(Label(nullptr, &randomCells.begin()->next(i)->data));
+	}
+
+	cells.popBack();
+	labels.popBack();
+	for (int i = 0; i < cells.size(); i++) {
+		cells.begin()->next(i)->data.value = 0;
+		cells.begin()->next(i)->data.position += sf::Vector2f(0, 60 + CELL_DISTANCE_Y);
+	}
+
+	maxPosition1 = cells.size() - 1;
+	maxPosition2 = cells.size() - 2;
+
+	code.update({
+		"int* b = new int[--n];          ",
+		"for (int k = 0; k <= n - 1; k++)",
+		"    b[k] = a[k + 1];            ",
+		"delete a; a = b;                "
+		});
+
+	description.newOperation("Erase value at the front");
+
+	// New step: int* b = new int[++n];
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Decrease the size of the array by 1 and create", "a new array of size is the new size." });
+	action.drawFadeIn(&description, description.size() - 1);
+
+	// Cell
+	action.draw(&randomCells, 0, randomCells.size() - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+	action.drawFadeIn(&cells, 0, cells.size() - 1, SSOLID, &assets->insertedCellSquareColor, &assets->highlightCellTextColor1);
+
+	// Label
+	action.draw(&randomLabels, &assets->labelColor);
+	action.drawFadeIn(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeIn(&code, 0);
+
+	for (int i = 0; i <= cells.size(); i++) {
+		// New step: for (int k = 0; k <= n - 1; k++)
+		action.addNewStep();
+
+		// Description
+		if (cells.size() == 0) {
+			description.addDescription({ "Iterate k from 0 to n - 1 = -1, k is now 0.", "Since k > -1, the loop stops." });
+		} else {
+			if (i == 0) {
+				description.addDescription({ "Iterate k from 0 to n - 1 = " + std::to_string(cells.size() - 1) + ", k is now 1.", "Since k <= " + std::to_string(cells.size() - 1) + ", the loop continues." });
+			} else if (i <= cells.size() - 1) {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(cells.size() - 1) + ", the loop continues." });
+			} else {
+				description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k > " + std::to_string(cells.size() - 1) + ", the loop stops." });
+			}
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Cell
+		if (i == 0) {
+			action.drawChange(&randomCells.front(), SHOLLOW, &assets->normalCellSquareColor, &assets->erasedCellSquareColor, &assets->normalCellTextColor, &assets->erasedCellTextColor);
+			action.draw(&randomCells, 1, randomCells.size() - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+			action.draw(&cells, 0, cells.size() - 1, SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
+			action.drawFadeOut(&cells, 0, cells.size() - 1, SSOLID, &assets->insertedCellSquareColor, &assets->highlightCellTextColor1);
+		} else {
+			action.draw(&randomCells, 0, i, SHOLLOW, &assets->erasedCellSquareColor, &assets->erasedCellTextColor);
+			action.drawFadeOut(&randomCells, i, SSOLID, &assets->erasedCellSquareColor, &assets->highlightCellTextColor1);
+			action.draw(&randomCells, i + 1, randomCells.size() - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+			action.draw(&cells, 0, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+			action.drawFadeOut(&cells, i - 1, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1);
+			action.draw(&cells, i, cells.size() - 1, SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
+		}
+
+		// Label
+		action.draw(&randomLabels, &assets->labelColor);
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		if (i == 0) {
+			action.drawMove(&code, 0, 1);
+		} else {
+			action.drawMove(&code, 2, 1);
+		}
+
+		if (i == cells.size()) {
+			break;
+		}
+
+		// New step: b[i] = a[i + 1]
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Set the value at index " + std::to_string(i) + " in array 'b' to the", "value at index " + std::to_string(i - 1) + " in array 'a'." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Cell
+		action.draw(&randomCells, 0, i, SHOLLOW, &assets->erasedCellSquareColor, &assets->erasedCellTextColor);
+		action.drawChange(&randomCells, i + 1, SHOLLOW, &assets->normalCellSquareColor, &assets->erasedCellSquareColor, &assets->normalCellTextColor, &assets->highlightCellTextColor1);
+		action.drawFadeIn(&randomCells, i + 1, SSOLID, &assets->erasedCellSquareColor, &assets->highlightCellTextColor1);
+		action.draw(&randomCells, i + 2, randomCells.size() - 1, SHOLLOW, &assets->normalCellSquareColor, &assets->normalCellTextColor);
+		action.draw(&cells, 0, i - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+		action.drawChangeAndUpdate(&cells, i, SHOLLOW, &assets->insertedCellSquareColor, &assets->highlightCellSquareColor1, &assets->insertedCellTextColor, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, randomCells.begin()->next(i + 1)->data.value);
+		action.drawFadeInAndUpdate(&cells, i, SSOLID, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor1, cells.begin()->next(i)->data.value, randomCells.begin()->next(i + 1)->data.value);
+		action.draw(&cells, i + 1, cells.size() - 1, SHOLLOW, &assets->insertedCellSquareColor, &assets->insertedCellTextColor);
+
+		// Label
+		action.draw(&randomLabels, &assets->labelColor);
+		action.draw(&labels, &assets->labelColor);
+
+		// Code
+		action.drawMove(&code, 1, 2);
+	}
+
+	// New step: delete a; a = b;
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "Erase array 'a' and set it to array 'b'." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.drawFadeOut(&randomCells, 0, randomCells.size() - 1, SHOLLOW, &assets->erasedCellSquareColor, &assets->erasedCellTextColor);
+	action.draw(&cells, 0, cells.size() - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->highlightCellTextColor2);
+
+	// Label
+	action.drawFadeOut(&randomLabels, &assets->labelColor);
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawMove(&code, 1, 3);
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	if (cells.empty()) {
+		description.addDescription({ "The whole process is O(n)." });
+	} else {
+		description.addDescription({ "Re-layout the array for visualization.", "The whole process is O(n)." });
+	}
+
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Cell
+	action.drawChange(&cells, 0, cells.size() - 1, SHOLLOW, &assets->highlightCellSquareColor1, &assets->normalCellSquareColor, &assets->highlightCellTextColor2, &assets->normalCellTextColor);
+	for (int i = 0; i < cells.size(); i++) {
+		action.drawMove(&cells, i, SHOLLOW, &assets->blankColor, &assets->blankColor, cells.begin()->next(i)->data.position, cells.begin()->next(i)->data.position + sf::Vector2f(0, -60 - CELL_DISTANCE_Y));
+	}
+
+	// Label
+	action.draw(&labels, &assets->labelColor);
+
+	// Code
+	action.drawFadeOut(&code, 3);
 }
 
 void DynamicArrayVisualizer::run() {
@@ -1088,7 +1264,7 @@ void DynamicArrayVisualizer::run() {
 	};
 
 	std::function <bool()> conditionArrayNotEmpty= [&]() -> bool {
-		return cells.size() > minSize;
+		return cells.size() > 0;
 	};
 
 	std::function <bool()> conditionArrayNotLarge = [&]() -> bool {
@@ -1233,7 +1409,7 @@ void DynamicArrayVisualizer::run() {
 			case 5: // Erase
 				switch (std::get <1> (current)) {
 				case 0: // Front
-					//eraseAtTheFront();
+					eraseAtTheFront();
 					break;
 
 				case 1: // Back
