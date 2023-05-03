@@ -456,7 +456,7 @@ void StackVisualizer::pop() {
 	// Code
 	action.drawMove(&code, 0, 1);
 
-	// New step: delete add
+	// New step: deleted del
 	action.addNewStep();
 
 	// Description
@@ -526,6 +526,189 @@ void StackVisualizer::pop() {
 
 	// Code
 	action.drawFadeOut(&code, 2);
+}
+
+void StackVisualizer::clear() {
+	action.clearAllSteps();
+
+	deletedNodes.clear();
+	deletedLabels.clear();
+	deletedEdges.clear();
+	while (!nodes.empty()) {
+		deletedNodes.pushBack(nodes.popFront());
+		deletedLabels.pushBack(&deletedNodes.back());
+		if (deletedNodes.size() >= 2) {
+			deletedEdges.pushBack(Edge(&deletedNodes.rbegin()->prev()->data, &deletedNodes.back()));
+		}
+	}
+
+	labels.clear();
+	edges.clear();
+
+	code.update({
+		"while (head != NULL) {",
+		"    Node* del = head; ",
+		"    head = head->next;",
+		"    delete del;       ",
+		"}                     ",
+		});
+
+	description.newOperation("Clear");
+
+	for (int i = 0; i <= deletedNodes.size(); i++) {
+		// New step: while (head != NULL)
+		action.addNewStep();
+
+		// Description
+		if (i < deletedNodes.size()) {
+			description.addDescription({ "Check if 'head' is not equal to NULL.", "Since it is true, the loop continues." });
+		} else {
+			description.addDescription({ "Check if 'head' is not equal to NULL.", "Since it is false, the loop stops." });
+		}
+
+		if (i == 0) {
+			action.drawFadeIn(&description, description.size() - 1);
+		} else {
+			action.drawChange(&description, description.size() - 2, description.size() - 1);
+		}
+
+		// Edge
+		action.draw(&deletedEdges, i, deletedEdges.size() - 1, &assets->normalEdgeColor);
+
+		// Node
+		if (i < deletedNodes.size()) {
+			if (i == 0) {
+				action.drawChange(&deletedNodes, i, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+				action.drawFadeIn(&deletedNodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			} else {
+				action.draw(&deletedNodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			}
+
+			action.draw(&deletedNodes, i + 1, deletedNodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		}
+
+		if (i > 0) {
+			for (int j = i; j < deletedNodes.size(); j++) {
+				action.drawMove(&deletedNodes, j, CHOLLOW, &assets->blankColor, &assets->blankColor, sf::Vector2f(NODE_POSITION_X + (j - i + 1) * (60 + NODE_DISTANCE), NODE_POSITION_Y), sf::Vector2f(NODE_POSITION_X + (j - i) * (60 + NODE_DISTANCE), NODE_POSITION_Y));
+			}
+		}
+
+		// Label
+		if (i < deletedNodes.size()) {
+			action.draw(&deletedLabels, i, &assets->labelColor, "head");
+		}
+
+		// Code
+		if (i == 0) {
+			action.drawFadeIn(&code, 0);
+		} else {
+			action.drawMove(&code, 3, 0);
+		}
+
+		if (i == deletedNodes.size()) {
+			break;
+		}
+
+		// New step: Node* del = head
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Create a pointer 'del' and set it to 'head'." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		action.draw(&deletedEdges, i, deletedEdges.size() - 1, &assets->normalEdgeColor);
+
+		// Node
+		action.drawChange(&deletedNodes, i, CSOLID, &assets->highlightNodeCircleColor1, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1, &assets->highlightNodeTextColor1);
+		action.draw(&deletedNodes, i + 1, deletedNodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+
+		// Label
+		action.drawChange(&deletedLabels, i, &assets->labelColor, "head", "head/del");
+
+		// Code
+		action.drawMove(&code, 0, 1);
+
+		// New step: head = head->next
+		action.addNewStep();
+
+		// Description
+		if (i == deletedNodes.size() - 1) {
+			description.addDescription({ "Set 'head' to the pointer of the next node", "(NULL)." });
+		} else {
+			description.addDescription({ "Set 'head' to the pointer of the next node." });
+		}
+
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		if (i < deletedEdges.size()) {
+			action.draw(&deletedEdges, i, deletedEdges.size() - 1, &assets->normalEdgeColor);
+			action.drawSlideIn(&deletedEdges, i, &assets->erasedEdgeColor);
+		}
+
+		// Node
+		action.draw(&deletedNodes, i, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+		if (i + 1 < deletedNodes.size()) {
+			action.drawChange(&deletedNodes, i + 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->highlightNodeCircleColor1, &assets->normalNodeTextColor, &assets->highlightNodeTextColor1);
+			action.drawFadeIn(&deletedNodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&deletedNodes, i + 2, deletedNodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		}
+		
+		// Label
+		action.drawChange(&deletedLabels, i, &assets->labelColor, "head/del", "del");
+		if (i + 1 < deletedLabels.size()) {
+			action.drawFadeIn(&deletedLabels, i + 1, &assets->labelColor, "head");
+		}
+
+		// Code
+		action.drawMove(&code, 1, 2);
+
+		// New step: deleted del
+		action.addNewStep();
+
+		// Description
+		description.addDescription({ "Erase 'del'." });
+		action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+		// Edge
+		if (i < deletedEdges.size()) {
+			action.draw(&deletedEdges, i + 1, deletedEdges.size() - 1, &assets->normalEdgeColor);
+			action.drawSlideOut(&deletedEdges, i, &assets->erasedEdgeColor);
+		}
+
+		// Node
+		action.drawFadeOut(&deletedNodes, i, CSOLID, &assets->erasedNodeCircleColor, &assets->highlightNodeTextColor1);
+		if (i + 1 < deletedNodes.size()) {
+			action.draw(&deletedNodes, i + 1, CSOLID, &assets->highlightNodeCircleColor1, &assets->highlightNodeTextColor1);
+			action.draw(&deletedNodes, i + 2, deletedNodes.size() - 1, CHOLLOW, &assets->normalNodeCircleColor, &assets->normalNodeTextColor);
+		}
+
+		// Label
+		action.drawFadeOut(&deletedLabels, i, &assets->labelColor, "del");
+		if (i + 1 < deletedLabels.size()) {
+			action.draw(&deletedLabels, i + 1, &assets->labelColor, "head");
+		}
+
+		// Code
+		action.drawMove(&code, 2, 3);
+	}
+
+	// New step: Re-layout
+	action.addNewStep();
+
+	// Description
+	description.addDescription({ "The whole process is O(n)." });
+	action.drawChange(&description, description.size() - 2, description.size() - 1);
+
+	// Edge
+
+	// Node
+
+	// Label
+
+	// Code
+	action.drawFadeOut(&code, 0);
 }
 
 void StackVisualizer::run() {
@@ -674,6 +857,9 @@ void StackVisualizer::run() {
 	option.addOption("Pop");
 	option.addSuboption("", conditionListNotEmpty);
 
+	option.addOption("Clear");
+	option.addSuboption("", conditionListNotEmpty);
+
 	randomStack(7);
 	create();
 
@@ -745,6 +931,15 @@ void StackVisualizer::run() {
 				switch (std::get <1> (current)) {
 				case 0: //
 					pop();
+					break;
+				}
+
+				break;
+
+			case 4: // Clear
+				switch (std::get <1> (current)) {
+				case 0: //
+					clear();
 					break;
 				}
 

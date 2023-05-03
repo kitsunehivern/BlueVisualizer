@@ -217,9 +217,9 @@ void DynamicArrayVisualizer::search(int value) {
 
 		// Description
 		if (cells.begin()->next(i)->data.value == value) {
-			description.addDescription({ "Check if value at index " + std::to_string(i) + " equals to " + std::to_string(value) + ".", "Since it is true, k is returned." });
+			description.addDescription({ "Check if value at index " + std::to_string(i) + " is equal to " + std::to_string(value) + ".", "Since it is true, k is returned." });
 		} else {
-			description.addDescription({ "Check if value at index " + std::to_string(i) + " equals to " + std::to_string(value) + ".", "Since it is false, the statement is ignored." });
+			description.addDescription({ "Check if value at index " + std::to_string(i) + " is equal to " + std::to_string(value) + ".", "Since it is false, the statement is ignored." });
 		}
 
 		action.drawChange(&description, description.size() - 2, description.size() - 1);

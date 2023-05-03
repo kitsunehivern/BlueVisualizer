@@ -17,7 +17,7 @@ sf::RenderWindow window;
 
 void run() {
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 16;
+    settings.antialiasingLevel = 4;
 
     window.create(sf::VideoMode(1600, 900), "BlueVisualizer", sf::Style::Close, settings);
     window.setFramerateLimit(60);
@@ -34,8 +34,8 @@ void run() {
         //CLLVisualizer cll(&window, &assets);
         //cll.run();
 
-        //StackVisualizer stack(&window, &assets);
-        //stack.run();
+        StackVisualizer stack(&window, &assets);
+        stack.run();
 
         //QueueVisualizer queue(&window, &assets);
         //queue.run();
@@ -43,8 +43,8 @@ void run() {
         //StaticArrayVisualizer staticArray(&window, &assets);
         //staticArray.run();
 
-        DynamicArrayVisualizer dynamicArray(&window, &assets);
-        dynamicArray.run();
+        //DynamicArrayVisualizer dynamicArray(&window, &assets);
+        //dynamicArray.run();
         
         sf::Event event;
         while (window.pollEvent(event)) {

@@ -292,9 +292,9 @@ void SLLVisualizer::search(int value) {
 
 		// Description
 		if (nodes.begin()->next(i)->data.value == value) {
-			description.addDescription({ "Check if value of 'cur' equals to " + std::to_string(value) + ".", "Since it is true, k is returned." });
+			description.addDescription({ "Check if value of 'cur' is equal to " + std::to_string(value) + ".", "Since it is true, k is returned." });
 		} else {
-			description.addDescription({ "Check if value of 'cur' equals to " + std::to_string(value) + ".", "Since it is false, the statement is ignored." });
+			description.addDescription({ "Check if value of 'cur' is equal to " + std::to_string(value) + ".", "Since it is false, the statement is ignored." });
 		}
 
 		action.drawChange(&description, description.size() - 2, description.size() - 1);
@@ -1338,7 +1338,7 @@ void SLLVisualizer::eraseAtTheFront(bool head) {
 	// Code
 	action.drawMove(&code, 0, 1);
 
-	// New step: delete add
+	// New step: deleted del
 	action.addNewStep();
 
 	// Description

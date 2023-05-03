@@ -32,6 +32,10 @@ private:
 	Label deletedLabel;
 	Edge deletedEdge;
 
+	List <Node> deletedNodes;
+	List <Label> deletedLabels;
+	List <Edge> deletedEdges;
+
 	void randomStack(int size);
 	void manualStack(std::string listOfValues);
 	void create();
@@ -41,6 +45,8 @@ private:
 	void push(int value);
 
 	void pop();
+
+	void clear();
 };
 
 #endif

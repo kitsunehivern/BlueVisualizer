@@ -726,7 +726,7 @@ void QueueVisualizer::dequeue() {
 	// Code
 	action.drawMove(&code, 1, 2);
 
-	// New step: delete add
+	// New step: deleted del
 	action.addNewStep();
 
 	// Description
