@@ -112,6 +112,8 @@ public:
 	sf::Color boxColor2;
 	sf::Color boxColor3;
 	sf::Color boxColor4;
+	sf::Color boxColor5;
+	sf::Color boxColor6;
 	sf::Color boxTextColor1;
 	sf::Color boxTextColor2;
 	sf::Color seperatorLineColor1;

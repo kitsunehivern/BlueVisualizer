@@ -147,6 +147,7 @@
     <ClCompile Include="HeaderBox.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Label.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Motion.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="OptionBox.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Motion.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="OptionBox.h" />

@@ -73,7 +73,7 @@ void Assets::switchMode() {
 		normalNodeTextColor       = sf::Color(  0,   0,   0, 255);
 		highlightNodeTextColor1   = sf::Color(255, 255, 255, 255);
 		highlightNodeTextColor2   = sf::Color(255, 140,  40, 255);
-		insertedNodeCircleColor   = sf::Color( 80, 190, 105, 255);
+		insertedNodeCircleColor   = sf::Color( 90, 200,  90, 255);
 		erasedNodeCircleColor     = sf::Color(215,  80,  60, 255);
 
 		normalCellSquareColor     = sf::Color(  0,   0,   0, 255);
@@ -84,30 +84,32 @@ void Assets::switchMode() {
 		blurCellTextColor         = sf::Color(150, 150, 150, 255);
 		highlightCellTextColor1   = sf::Color(255, 255, 255, 255);
 		highlightCellTextColor2   = sf::Color(255, 140,  40, 255);
-		insertedCellSquareColor   = sf::Color( 80, 190, 105, 255);
-		insertedCellTextColor     = sf::Color( 80, 190, 105, 255);
+		insertedCellSquareColor   = sf::Color( 90, 200,  90, 255);
+		insertedCellTextColor     = sf::Color( 90, 200,  90, 255);
 		erasedCellSquareColor     = sf::Color(215,  80,  60, 255);
 		erasedCellTextColor       = sf::Color(215,  80,  60, 255);
 
-		labelColor                = sf::Color(255,   0,   0, 255);
+		labelColor                = sf::Color(250,  70,  70, 255);
 
 		normalEdgeColor           = sf::Color(  0,   0,   0, 255);
-		highlightEdgeColor        = sf::Color(255, 138,  39, 255);
-		insertedEdgeColor         = sf::Color( 80, 190, 105, 255);
+		highlightEdgeColor        = sf::Color(255, 140,  40, 255);
+		insertedEdgeColor         = sf::Color( 90, 200,  90, 255);
 		erasedEdgeColor           = sf::Color(215,  80,  60, 255);
 
-		boxColor1                 = sf::Color(170, 225, 250, 150);
-		boxColor2                 = sf::Color(240, 250, 250, 150);
-		boxColor3                 = sf::Color(  0, 190, 250, 150);
-		boxColor4                 = sf::Color(  0, 140, 190, 150);
+		boxColor1                 = sf::Color(160, 225, 250, 150);
+		boxColor2                 = sf::Color(240, 245, 245, 150);
+		boxColor3                 = sf::Color(105, 210, 255, 255);
+		boxColor4                 = sf::Color( 45, 125, 185, 255);
+		boxColor5                 = sf::Color( 70, 255, 140, 255);
+		boxColor6                 = sf::Color(255, 150, 150, 255);
 		boxTextColor1             = sf::Color(  0,   0,   0, 255);
-		boxTextColor2             = sf::Color(  0,   0,   0, 255);
+		boxTextColor2             = sf::Color(255, 255, 255, 255);
 		seperatorLineColor1       = sf::Color(120, 200, 220, 255);
 		seperatorLineColor2       = sf::Color(200, 215, 215, 255);
 	} else {
-		blankColor                = sf::Color(  0,   0,   0,   0);
-
 		mode = DARK;
 		backgroundSprite.setTexture(darkBackgroundTexture);
+
+		blankColor                = sf::Color(  0,   0,   0,   0);
 	}
 }

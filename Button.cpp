@@ -28,7 +28,13 @@ void Button::draw(sf::RenderWindow* window, Assets* assets) {
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
 		sprite->setColor(assets->boxColor4);	
 	} else {
-		sprite->setColor(assets->boxColor3);
+		if (name == "GO") {
+			sprite->setColor(assets->boxColor5);
+		} else if (name == "Unavailable") {
+			sprite->setColor(assets->boxColor6);
+		} else {
+			sprite->setColor(assets->boxColor3);
+		}
 	}
 
 	window->draw(*sprite);

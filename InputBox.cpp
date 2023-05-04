@@ -199,6 +199,12 @@ void InputBox::draw(sf::RenderWindow* window, Assets* assets) {
 		std::string currentString = valueName + " = " + value;
 		text->setString(currentString);
 		text->setCharacterSize(characterSize);
+		if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
+			text->setFillColor(assets->boxTextColor2);
+		} else {
+			text->setFillColor(assets->boxTextColor1);
+		}
+
 		if (text->getGlobalBounds().width > sprite->getGlobalBounds().width - 60) {
 			int stringLength = -1;
 			for (int left = 1, right = currentString.size(); left <= right; ) {
@@ -216,12 +222,6 @@ void InputBox::draw(sf::RenderWindow* window, Assets* assets) {
 			text->setString(currentString.substr(currentString.size() - stringLength, stringLength));
 			text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width, 0);
 			text->setPosition(position + sf::Vector2f(sprite->getGlobalBounds().width - 30, 10));
-			if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-				text->setFillColor(assets->boxTextColor2);
-			} else {
-				text->setFillColor(assets->boxTextColor1);
-			}
-
 			window->draw(*text);
 		} else {
 			text->setOrigin(0, 0);

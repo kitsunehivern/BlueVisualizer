@@ -175,7 +175,12 @@ void OptionBox::draw(sf::RenderWindow* window) {
 
 		Button messageButton;
 		messageButton.setSprite(&assets->skewBox560x60Sprite);
-		messageButton.setText(&assets->consolasBoldText, message.empty() ? "GO" : message, 30);
+		if (message.empty()) {
+			messageButton.setText(&assets->consolasBoldText, "GO", 30);
+		} else {
+			messageButton.setText(&assets->consolasBoldText, message, 30);
+		}
+
 		messageButton.setPosition(position + sf::Vector2f(300, 300));
 		messageButton.draw(window, assets);
 		
