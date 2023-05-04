@@ -34,11 +34,11 @@ void run() {
         //CLLVisualizer cll(&window, &assets);
         //cll.run();
 
-        StackVisualizer stack(&window, &assets);
-        stack.run();
+        //StackVisualizer stack(&window, &assets);
+        //stack.run();
 
-        //QueueVisualizer queue(&window, &assets);
-        //queue.run();
+        QueueVisualizer queue(&window, &assets);
+        queue.run();
 
         //StaticArrayVisualizer staticArray(&window, &assets);
         //staticArray.run();

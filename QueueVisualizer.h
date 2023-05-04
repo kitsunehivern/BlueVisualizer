@@ -32,6 +32,10 @@ private:
 	Label deletedLabel;
 	Edge deletedEdge;
 
+	List <Node> deletedNodes;
+	List <Label> deletedLabels;
+	List <Edge> deletedEdges;
+
 	void randomQueue(int size);
 	void manualQueue(std::string listOfValues);
 	void create();
@@ -42,6 +46,8 @@ private:
 	void enqueue(int value);
 
 	void dequeue();
+
+	void clear();
 };
 
 #endif
