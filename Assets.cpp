@@ -3,7 +3,7 @@
 Assets::Assets() {
 	loadAll();
 	fix();
-	mode = DARK;
+	mode = LIGHT;
 	switchMode();
 }
 
@@ -79,7 +79,6 @@ void Assets::switchMode() {
 		normalCellSquareColor     = sf::Color(  0,   0,   0, 255);
 		blurCellSquareColor       = sf::Color(150, 150, 150, 255);
 		highlightCellSquareColor1 = sf::Color(255, 140,  40, 255);
-		highlightCellSquareColor2 = sf::Color( 45, 185, 210, 255);
 		normalCellTextColor       = sf::Color(  0,   0,   0, 255);
 		blurCellTextColor         = sf::Color(150, 150, 150, 255);
 		highlightCellTextColor1   = sf::Color(255, 255, 255, 255);
@@ -111,5 +110,44 @@ void Assets::switchMode() {
 		backgroundSprite.setTexture(darkBackgroundTexture);
 
 		blankColor                = sf::Color(  0,   0,   0,   0);
+
+		normalNodeCircleColor     = sf::Color(255, 255, 255, 255);
+		highlightNodeCircleColor1 = sf::Color(255, 145,  55, 255);
+		highlightNodeCircleColor2 = sf::Color( 45, 185, 210, 255);
+		normalNodeTextColor       = sf::Color(255, 255, 255, 255);
+		highlightNodeTextColor1   = sf::Color(255, 255, 255, 255);
+		highlightNodeTextColor2   = sf::Color(255, 145,  55, 255);
+		insertedNodeCircleColor   = sf::Color( 90, 200,  90, 255);
+		erasedNodeCircleColor     = sf::Color(215,  80,  60, 255);
+
+		normalCellSquareColor     = sf::Color(255, 255, 255, 255);
+		blurCellSquareColor       = sf::Color(150, 150, 150, 255);
+		highlightCellSquareColor1 = sf::Color(255, 145,  55, 255);
+		normalCellTextColor       = sf::Color(255, 255, 255, 255);
+		blurCellTextColor         = sf::Color(150, 150, 150, 255);
+		highlightCellTextColor1   = sf::Color(255, 255, 255, 255);
+		highlightCellTextColor2   = sf::Color(255, 145,  55, 255);
+		insertedCellSquareColor   = sf::Color( 90, 200,  90, 255);
+		insertedCellTextColor     = sf::Color( 90, 200,  90, 255);
+		erasedCellSquareColor     = sf::Color(215,  80,  60, 255);
+		erasedCellTextColor       = sf::Color(215,  80,  60, 255);
+
+		labelColor                = sf::Color(255, 255, 255, 255);
+
+		normalEdgeColor           = sf::Color(255, 255, 255, 255);
+		highlightEdgeColor        = sf::Color(255, 145,  55, 255);
+		insertedEdgeColor         = sf::Color( 90, 200,  90, 255);
+		erasedEdgeColor           = sf::Color(215,  80,  60, 255);
+
+		boxColor1                 = sf::Color( 60, 125, 195, 150);
+		boxColor2                 = sf::Color( 40,  70, 115, 150);
+		boxColor3                 = sf::Color( 45, 125, 185, 255);
+		boxColor4                 = sf::Color(105, 210, 255, 255);
+		boxColor5                 = sf::Color( 45, 225, 120, 255);
+		boxColor6                 = sf::Color(230,  65,  80, 255);
+		boxTextColor1             = sf::Color(255, 255, 255, 255);
+		boxTextColor2             = sf::Color(  0,   0,   0, 255);
+		seperatorLineColor1       = sf::Color(110, 195, 250, 255);
+		seperatorLineColor2       = sf::Color( 60, 100, 145, 255);
 	}
 }
