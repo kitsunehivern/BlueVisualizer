@@ -3,7 +3,7 @@
 Assets::Assets() {
 	loadAll();
 	fix();
-	mode = LIGHT;
+	mode = DARK;
 	switchMode();
 }
 

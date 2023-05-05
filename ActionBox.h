@@ -169,7 +169,7 @@ private:
 
 	enum { PAUSED, CONTINUE, REPLAY } status;
 	enum { FORWARD, BACKWARD, NONE } direction;
-	enum { X1 = 1, X2 = 2, X4 = 4 } speed;
+	enum { X1 = 1, X2 = 2, X4 = 4, X8 = 8 } speed;
 	int currentStep, currentFrame;
 	std::vector <int> numberOfFrames; 
 	std::vector <std::vector <std::function <void(float, bool)> > > drawFunction;

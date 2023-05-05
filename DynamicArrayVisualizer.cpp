@@ -364,7 +364,7 @@ void DynamicArrayVisualizer::insertAtTheFront(int value) {
 	maxPosition2 = cells.size() - 2;
 
 	code.update({
-		"int* b = new int[++n];          ",
+		"int* b = new int[++n]{};        ",
 		"for (int k = 1; k <= n - 1; k++)",
 		"    b[k] = a[k - 1];            ",
 		"b[0] = v;                       ",
@@ -551,7 +551,7 @@ void DynamicArrayVisualizer::insertAtTheBack(int value) {
 	maxPosition2 = cells.size() - 2;
 
 	code.update({
-		"int* b = new int[++n];          ",
+		"int* b = new int[++n]{};        ",
 		"for (int k = 0; k <= n - 2; k++)",
 		"    b[k] = a[k];                ",
 		"b[n - 1] = v;                   ",
@@ -736,7 +736,7 @@ void DynamicArrayVisualizer::insertAtTheMiddle(int index, int value) {
 	maxPosition2 = cells.size() - 2;
 
 	code.update({
-		"int* b = new int[++n];              ",
+		"int* b = new int[++n]{};            ",
 		"for (int k = 0; k <= i - 1; k++)    ",
 		"    b[k] = a[k];                    ",
 		"for (int k = i + 1; k <= n - 1; k++)",
@@ -995,7 +995,7 @@ void DynamicArrayVisualizer::eraseAtTheFront() {
 	maxPosition2 = cells.size() - 2;
 
 	code.update({
-		"int* b = new int[--n];          ",
+		"int* b = new int[--n]{};        ",
 		"for (int k = 0; k <= n - 1; k++)",
 		"    b[k] = a[k + 1];            ",
 		"delete a; a = b;                "
@@ -1162,7 +1162,7 @@ void DynamicArrayVisualizer::eraseAtTheBack() {
 	maxPosition2 = cells.size() - 2;
 
 	code.update({
-		"int* b = new int[--n];          ",
+		"int* b = new int[--n]{};        ",
 		"for (int k = 0; k <= n - 1; k++)",
 		"    b[k] = a[k];                ",
 		"delete a; a = b;                "
@@ -1331,7 +1331,7 @@ void DynamicArrayVisualizer::eraseAtTheMiddle(int index) {
 	maxPosition2 = cells.size() - 2;
 
 	code.update({
-		"int* b = new int[--n];          ",
+		"int* b = new int[--n]{};        ",
 		"for (int k = 0; k <= i - 1; k++)",
 		"    b[k] = a[k];                ",
 		"for (int k = i; k <= n - 1; k++)",

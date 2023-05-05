@@ -511,15 +511,7 @@ void ActionBox::draw() {
 
 	window->draw(*speedBoxSprite);
 
-	if (speed == X1) {
-		index = 0;
-	} else if (speed == X2) {
-		index = 1;
-	} else {
-		index = 2;
-	}
-
-	speedSprite->setTextureRect(sf::IntRect(0, 40 * index, 100, 40));
+	speedSprite->setTextureRect(sf::IntRect(0, 40 * (int)_tzcnt_u32(speed), 100, 40));
 	speedSprite->setColor(assets->boxColor4);
 	speedSprite->setPosition(speedBoxSprite->getPosition());
 	if (positionInRect(sf::Mouse::getPosition(*window), speedBoxSprite->getGlobalBounds())) {
@@ -731,10 +723,12 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 			}
 
 			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 750, position.y + 10, 100, 40))) {
-				if (speed & X1) {
+				if (speed == X1) {
 					speed = X2;
-				} else if (speed & X2) {
+				} else if (speed == X2) {
 					speed = X4;
+				} else if (speed == X4) {
+					speed = X8;
 				} else {
 					speed = X1;
 				}
