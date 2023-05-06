@@ -7,8 +7,41 @@ ActionBox::ActionBox(sf::RenderWindow* window, Assets* assets, sf::Vector2f posi
 	this->window = window;
 	this->assets = assets;
 	this->position = position;
-	this->speed = X2;
+
+	std::ifstream fin("Data/speed.dat");
+	if (!fin.good()) {
+		speed = X2;
+	} else {
+		int value;
+		fin >> value;
+
+		switch (value) {
+		case 1:
+			speed = X1;
+			break;
+
+		default:
+			speed = X2;
+			break;
+
+		case 4:
+			speed = X4;
+			break;
+
+		case 8:
+			speed = X8;
+			break;
+		}
+	}
+	fin.close();
+
 	clearAllSteps();
+}
+
+ActionBox::~ActionBox() {
+	std::ofstream fout("Data/speed.dat");
+	fout << speed;
+	fout.close();
 }
 
 void ActionBox::addNewStep() {

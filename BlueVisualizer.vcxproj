@@ -122,12 +122,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;sfml-audio.lib;sfml-main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -145,6 +151,7 @@
     <ClCompile Include="DynamicArrayVisualizer.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="HeaderBox.cpp" />
+    <ClCompile Include="IllustrationBox.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -165,7 +172,6 @@
     <ClInclude Include="CircularEdge.h" />
     <ClInclude Include="CLLVisualizer.h" />
     <ClInclude Include="CodeBox.h" />
-    <ClInclude Include="Core.h" />
     <ClInclude Include="DescriptionBox.h" />
     <ClInclude Include="DLLVisualizer.h" />
     <ClInclude Include="DoublyEdge.h" />
@@ -173,6 +179,7 @@
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="HeaderBox.h" />
+    <ClInclude Include="IllustrationBox.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="List.h" />

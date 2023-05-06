@@ -22,6 +22,7 @@ class ActionBox {
 public:
 	ActionBox();
 	ActionBox(sf::RenderWindow* window, Assets* assets, sf::Vector2f position);
+	~ActionBox();
 
 	void addNewStep();
 	void abortAllSteps();

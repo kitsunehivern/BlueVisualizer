@@ -11,12 +11,12 @@ HeaderBox::HeaderBox(Assets* assets, std::string name, sf::Vector2f position) {
 
 bool HeaderBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
 	if (event->type == sf::Event::MouseButtonReleased) {
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 1520, position.y + 10, 40, 40))) {
-			assets->switchMode();
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y + 10, 40, 40))) {
+			return true;
 		}
 
-		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 20, position.y + 10, 40, 40))) {
-			return true;
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 1530, position.y + 10, 40, 40))) {
+			assets->switchMode();
 		}
 	}
 
@@ -40,7 +40,7 @@ void HeaderBox::draw(sf::RenderWindow* window) {
 	text->setPosition(boxSprite->getGlobalBounds().left + boxSprite->getGlobalBounds().width / 2, boxSprite->getGlobalBounds().top + boxSprite->getGlobalBounds().height / 2);
 	window->draw(*text);
 	
-	backSprite->setPosition(position + sf::Vector2f(20, 10));
+	backSprite->setPosition(position + sf::Vector2f(10, 10));
 	if (positionInRect(sf::Mouse::getPosition(*window), backSprite->getGlobalBounds())) {
 		backSprite->setColor(assets->boxColor4);
 	} else {
@@ -49,7 +49,7 @@ void HeaderBox::draw(sf::RenderWindow* window) {
 
 	window->draw(*backSprite);
 	
-	modeSprite->setPosition(position + sf::Vector2f(1520, 10));
+	modeSprite->setPosition(position + sf::Vector2f(1530, 10));
 	if (positionInRect(sf::Mouse::getPosition(*window), modeSprite->getGlobalBounds())) {
 		modeSprite->setColor(assets->boxColor4);
 	} else {

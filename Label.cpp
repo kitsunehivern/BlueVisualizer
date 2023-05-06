@@ -10,7 +10,8 @@ void Label::draw(sf::RenderWindow* window, sf::Text* text, sf::Color* color, std
 	if (!isDrawn) {
 		return;
 	}
-
+	
+	text->setCharacterSize(25);
 	text->setFillColor(*color);
 	text->setString(name);
 	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, 0);

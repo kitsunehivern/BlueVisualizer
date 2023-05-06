@@ -3,6 +3,7 @@
 
 #include "Global.h"
 #include "Assets.h"
+#include "IllustrationBox.h"
 
 struct Menu {
 public:
@@ -11,11 +12,13 @@ public:
 	int run();
 
 private:
-	sf::RenderWindow window;
+	sf::RenderWindow* window;
 	Assets* assets;
 
+	std::vector <IllustrationBox> illustrationBoxs;
+
 	void draw();
-	int handleEvent();
+	int handleEvent(sf::Event* event);
 };
 
 #endif

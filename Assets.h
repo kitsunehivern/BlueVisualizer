@@ -1,5 +1,5 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef ASSETS_H
+#define ASSETS_H
 
 #include "Global.h"
 
@@ -20,12 +20,16 @@ public:
 	// Texture
 	sf::Texture lightBackgroundTexture;
 	sf::Texture darkBackgroundTexture;
+	sf::Texture lightLogoTexture;
+	sf::Texture darkLogoTexture;
 	sf::Texture hollowCircleTexture;
 	sf::Texture solidCircleTexture;
 	sf::Texture hollowSquareTexture;
 	sf::Texture solidSquareTexture;
 	sf::Texture stickTexture;
 	sf::Texture arrowTexture;
+	sf::Texture box60x60Texture;
+	sf::Texture box320x240Texture;
 	sf::Texture box680x40Texture;
 	sf::Texture box680x300Texture;
 	sf::Texture box680x140Texture;
@@ -48,14 +52,32 @@ public:
 	sf::Texture progressBarTexture;
 	sf::Texture speedTexture;
 
+	sf::Texture	lightSLLTexture;
+	sf::Texture	darkSLLTexture;
+	sf::Texture	lightDLLTexture;
+	sf::Texture	darkDLLTexture;
+	sf::Texture	lightCLLTexture;
+	sf::Texture	darkCLLTexture;
+	sf::Texture	lightStackTexture;
+	sf::Texture	darkStackTexture;
+	sf::Texture	lightQueueTexture;
+	sf::Texture	darkQueueTexture;
+	sf::Texture	lightStaticArrayTexture;
+	sf::Texture	darkStaticArrayTexture;
+	sf::Texture	lightDynamicArrayTexture;
+	sf::Texture	darkDynamicArrayTexture;
+
 	// Sprite
 	sf::Sprite backgroundSprite;
+	sf::Sprite logoSprite;
 	sf::Sprite hollowCircleSprite;
 	sf::Sprite solidCircleSprite;
 	sf::Sprite hollowSquareSprite;
 	sf::Sprite solidSquareSprite;
 	sf::Sprite stickSprite;
 	sf::Sprite arrowSprite;
+	sf::Sprite box60x60Sprite;
+	sf::Sprite box320x240Sprite;
 	sf::Sprite box680x40Sprite;
 	sf::Sprite box680x300Sprite;
 	sf::Sprite box680x140Sprite;
@@ -75,6 +97,14 @@ public:
 	sf::Sprite statusButtonsSprite;
 	sf::Sprite progressBarSprite;
 	sf::Sprite speedSprite;
+
+	sf::Sprite SLLSprite;
+	sf::Sprite DLLSprite;
+	sf::Sprite CLLSprite;
+	sf::Sprite StackSprite;
+	sf::Sprite QueueSprite;
+	sf::Sprite StaticArraySprite;
+	sf::Sprite DynamicArraySprite;
 
 	// Color
 	sf::Color blankColor;
@@ -113,12 +143,14 @@ public:
 	sf::Color boxColor4;
 	sf::Color boxColor5;
 	sf::Color boxColor6;
+
 	sf::Color boxTextColor1;
 	sf::Color boxTextColor2;
 	sf::Color seperatorLineColor1;
 	sf::Color seperatorLineColor2;
 
 	Assets();
+	~Assets();
 
 	void switchMode();
 
