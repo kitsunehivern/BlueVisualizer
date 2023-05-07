@@ -12,6 +12,13 @@ void Menu::draw() {
 	assets->logoSprite.setPosition(400, 30);
 	window->draw(assets->logoSprite);
 
+	assets->hyperspaceItalicText.setString("Dinh Cao Minh Quan - 22125078");
+	assets->hyperspaceItalicText.setCharacterSize(30);
+	assets->hyperspaceItalicText.setOrigin(assets->hyperspaceItalicText.getLocalBounds().left + assets->hyperspaceItalicText.getLocalBounds().width / 2, 0);
+	assets->hyperspaceItalicText.setFillColor(assets->boxTextColor1);
+	assets->hyperspaceItalicText.setPosition(sf::Vector2f(800, 210));
+	window->draw(assets->hyperspaceItalicText);
+
 	for (int i = 0; i < illustrationBoxs.size(); i++) {
 		illustrationBoxs[i].draw(window, assets);
 	}

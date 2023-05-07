@@ -11,6 +11,7 @@ IllustrationBox::IllustrationBox(sf::Sprite* sprite, std::string name, sf::Vecto
 
 void IllustrationBox::draw(sf::RenderWindow* window, Assets* assets) {
 	sf::Sprite* boxSprite = &assets->box320x240Sprite;
+	sf::Text* text = &assets->hyperspaceItalicText;
 	
 	boxSprite->setPosition(position);
 	if (positionInRect(sf::Mouse::getPosition(*window), boxSprite->getGlobalBounds())) {
@@ -35,12 +36,12 @@ void IllustrationBox::draw(sf::RenderWindow* window, Assets* assets) {
 	seperatorLine.setPosition(position + sf::Vector2f(160, 180));
 	window->draw(seperatorLine);
 
-	assets->hyperspaceItalicText.setString(name);
-	assets->hyperspaceItalicText.setCharacterSize(25);
-	assets->hyperspaceItalicText.setOrigin(assets->hyperspaceItalicText.getLocalBounds().left + assets->hyperspaceItalicText.getLocalBounds().width / 2, 0);
-	assets->hyperspaceItalicText.setFillColor(assets->boxTextColor1);
-	assets->hyperspaceItalicText.setPosition(position + sf::Vector2f(160, 190));
-	window->draw(assets->hyperspaceItalicText);
+	text->setString(name);
+	text->setCharacterSize(25);
+	text->setOrigin(text->getLocalBounds().left + text->getLocalBounds().width / 2, 0);
+	text->setFillColor(assets->boxTextColor1);
+	text->setPosition(position + sf::Vector2f(160, 190));
+	window->draw(*text);
 }
 
 bool IllustrationBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
