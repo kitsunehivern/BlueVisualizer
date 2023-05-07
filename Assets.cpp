@@ -66,6 +66,7 @@ void Assets::loadAll() {
 	loadOne(&skewBox400x60Texture, &skewBox400x60Sprite, "Main/SkewBox400x60.png");
 	loadOne(&skewBox560x60Texture, &skewBox560x60Sprite, "Main/SkewBox560x60.png");
 	loadOne(&backButtonTexture, &backButtonSprite, "Main/BackButton.png");
+	loadOne(&quitButtonTexture, &quitButtonSprite, "Main/QuitButton.png");
 	loadOne(&modeButtonTexture, &modeButtonSprite, "Main/ModeButton.png");
 	loadOne(&prevButtonTexture, &prevButtonSprite, "Main/PrevNextButton.png");
 	loadOne(&nextButtonTexture, &nextButtonSprite, "Main/PrevNextButton.png");

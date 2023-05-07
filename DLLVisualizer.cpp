@@ -2068,6 +2068,36 @@ void DLLVisualizer::run() {
 	};
 
 	std::function <std::string(std::string, std::string, int*, int*, int*, int*)> validatorListOfIntegers = [](std::string name, std::string listOfValues, int* minSize, int* maxSize, int* lowerBound, int* upperBound) -> std::string {
+		for (int i = 0; i < (int)listOfValues.size() - 1; i++) {
+			if ('0' > listOfValues[i] || listOfValues[i] > '9') {
+				continue;
+			}
+
+			if (listOfValues[i + 1] != ' ') {
+				continue;
+			}
+
+			int j;
+			bool isAllSpace = true;
+			for (j = i + 2; j < listOfValues.size(); j++) {
+				if ('0' <= listOfValues[j] && listOfValues[j] <= '9') {
+					break;
+				}
+
+				isAllSpace &= (listOfValues[j] == ' ');
+			}
+
+			if (j == listOfValues.size()) {
+				break;
+			}
+
+			if (isAllSpace) {
+				return "Invalid format";
+			}
+
+			i = j - 1;
+		}
+		
 		std::string tmp;
 		for (auto character : listOfValues) {
 			if (character != ' ') {

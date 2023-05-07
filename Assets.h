@@ -42,6 +42,7 @@ public:
 	sf::Texture skewBox400x60Texture;
 	sf::Texture skewBox560x60Texture;
 	sf::Texture backButtonTexture;
+	sf::Texture quitButtonTexture;
 	sf::Texture modeButtonTexture;
 	sf::Texture prevButtonTexture;
 	sf::Texture nextButtonTexture;
@@ -90,6 +91,7 @@ public:
 	sf::Sprite skewBox400x60Sprite;
 	sf::Sprite skewBox560x60Sprite;
 	sf::Sprite backButtonSprite;
+	sf::Sprite quitButtonSprite;
 	sf::Sprite modeButtonSprite;
 	sf::Sprite prevButtonSprite;
 	sf::Sprite nextButtonSprite;

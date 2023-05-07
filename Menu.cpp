@@ -16,8 +16,20 @@ void Menu::draw() {
 		illustrationBoxs[i].draw(window, assets);
 	}
 
-	assets->box60x60Sprite.setPosition(1530, 10);
+	assets->box60x60Sprite.setPosition(10, 10);
 	assets->box60x60Sprite.setColor(assets->boxColor2);
+	window->draw(assets->box60x60Sprite);
+
+	assets->quitButtonSprite.setPosition(20, 20);
+	if (positionInRect(sf::Mouse::getPosition(*window), assets->quitButtonSprite.getGlobalBounds())) {
+		assets->quitButtonSprite.setColor(assets->boxColor4);
+	} else {
+		assets->quitButtonSprite.setColor(assets->boxColor3);
+	}
+
+	window->draw(assets->quitButtonSprite);
+
+	assets->box60x60Sprite.setPosition(1530, 10);
 	window->draw(assets->box60x60Sprite);
 
 	assets->modeButtonSprite.setPosition(1540, 20);
@@ -32,6 +44,10 @@ void Menu::draw() {
 
 int Menu::handleEvent(sf::Event* event) {
 	if (event->type == sf::Event::MouseButtonReleased) {
+		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(20, 20, 40, 40))) {
+			return -2;
+		}
+
 		if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(1540, 20, 40, 40))) {
 			assets->switchMode();
 			return -1;
@@ -72,6 +88,11 @@ int Menu::run() {
 			}
 
 			int temp = handleEvent(&event);
+			if (temp == -2) {
+				window->close();
+				return -1;
+			}
+
 			if (temp != -1) {
 				return temp;
 			}
