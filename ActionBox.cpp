@@ -775,6 +775,26 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 				goToPrevStep();
 			} else if (event->key.code == sf::Keyboard::Right) {
 				goToNextStep();
+			} else if (event->key.code == sf::Keyboard::Up) {
+				if (speed == X1) {
+					speed = X2;
+				} else if (speed == X2) {
+					speed = X4;
+				} else if (speed == X4) {
+					speed = X8;
+				} else {
+					speed = X1;
+				}
+			} else if (event->key.code == sf::Keyboard::Down) {
+				if (speed == X1) {
+					speed = X8;
+				} else if (speed == X2) {
+					speed = X1;
+				} else if (speed == X4) {
+					speed = X2;
+				} else {
+					speed = X4;
+				}
 			} else if (event->key.code == sf::Keyboard::Home) {
 				goToBeginning();
 			} else if (event->key.code == sf::Keyboard::End) {
