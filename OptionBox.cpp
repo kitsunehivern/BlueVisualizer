@@ -98,7 +98,12 @@ void OptionBox::draw(sf::RenderWindow* window) {
 
 		boxSprite->setTextureRect(sf::IntRect(0, lastHeight + 5, 280, height - 10));
 		boxSprite->setPosition(position.x, position.y + lastHeight + 5);
-		if (i == currentOption || positionInRect(sf::Mouse::getPosition(*window), boxSprite->getGlobalBounds())) {
+		if (positionInRect(sf::Mouse::getPosition(*window), boxSprite->getGlobalBounds())) {
+			boxSprite->setColor(assets->boxColor2);
+			assets->setCursor(2);
+		}
+		
+		if (i == currentOption) {
 			boxSprite->setColor(assets->boxColor2);
 		} else {
 			boxSprite->setColor(assets->boxColor1);
@@ -133,6 +138,7 @@ void OptionBox::draw(sf::RenderWindow* window) {
 		assets->prevButtonSprite.setPosition(position + sf::Vector2f(300, 20));
 		if (positionInRect(sf::Mouse::getPosition(*window), assets->prevButtonSprite.getGlobalBounds())) {
 			assets->prevButtonSprite.setColor(assets->boxColor4);
+			assets->setCursor(2);
 		} else {
 			assets->prevButtonSprite.setColor(assets->boxColor3);
 		}
@@ -142,6 +148,7 @@ void OptionBox::draw(sf::RenderWindow* window) {
 		assets->nextButtonSprite.setPosition(position + sf::Vector2f(800, 20));
 		if (positionInRect(sf::Mouse::getPosition(*window), assets->nextButtonSprite.getGlobalBounds())) {
 			assets->nextButtonSprite.setColor(assets->boxColor4);
+			assets->setCursor(2);
 		} else {
 			assets->nextButtonSprite.setColor(assets->boxColor3);
 		}

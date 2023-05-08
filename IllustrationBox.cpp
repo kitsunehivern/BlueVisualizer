@@ -16,6 +16,7 @@ void IllustrationBox::draw(sf::RenderWindow* window, Assets* assets) {
 	boxSprite->setPosition(position);
 	if (positionInRect(sf::Mouse::getPosition(*window), boxSprite->getGlobalBounds())) {
 		boxSprite->setColor(assets->boxColor2);
+		assets->setCursor(2);
 	} else {
 		boxSprite->setColor(assets->boxColor1);
 	}

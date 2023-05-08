@@ -30,6 +30,7 @@ void Menu::draw() {
 	assets->quitButtonSprite.setPosition(20, 20);
 	if (positionInRect(sf::Mouse::getPosition(*window), assets->quitButtonSprite.getGlobalBounds())) {
 		assets->quitButtonSprite.setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		assets->quitButtonSprite.setColor(assets->boxColor3);
 	}
@@ -42,6 +43,7 @@ void Menu::draw() {
 	assets->modeButtonSprite.setPosition(1540, 20);
 	if (positionInRect(sf::Mouse::getPosition(*window), assets->modeButtonSprite.getGlobalBounds())) {
 		assets->modeButtonSprite.setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		assets->modeButtonSprite.setColor(assets->boxColor3);
 	}
@@ -83,7 +85,9 @@ int Menu::run() {
 	while (window->isOpen()) {
 		window->clear();
 
+		assets->setCursor(0);
 		draw();
+		window->setMouseCursor(*assets->getCursor());
 
 		window->display();
 

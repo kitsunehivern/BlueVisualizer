@@ -8,7 +8,7 @@ Assets::Assets() {
 	if (!fin.good()) {
 		mode = LIGHT;
 	} else {
-		bool value;
+		int value;
 		fin >> value;
 
 		mode = !value ? LIGHT : DARK;
@@ -17,6 +17,8 @@ Assets::Assets() {
 
 	switchMode();
 	switchMode();
+
+	cursor = ARROW;
 }
 
 Assets::~Assets() {
@@ -34,6 +36,10 @@ void Assets::loadOne(sf::Texture* texture, sf::Sprite* sprite, std::string filen
 	assert(texture->loadFromFile("Images/" + filename));
 	texture->setSmooth(true);
 	sprite->setTexture(*texture, true);
+}
+
+void Assets::loadOne(sf::Cursor* cursor, sf::Cursor::Type type) {
+	assert(cursor->loadFromSystem(type));
 }
 
 void Assets::loadAll() {
@@ -89,6 +95,10 @@ void Assets::loadAll() {
 	loadOne(&darkStaticArrayTexture, &StaticArraySprite, "StaticArray/Dark.png");
 	loadOne(&lightDynamicArrayTexture, &DynamicArraySprite, "DynamicArray/Light.png");
 	loadOne(&darkDynamicArrayTexture, &DynamicArraySprite, "DynamicArray/Dark.png");
+
+	loadOne(&arrowCursor, sf::Cursor::Arrow);
+	loadOne(&textCursor, sf::Cursor::Text);
+	loadOne(&handCursor, sf::Cursor::Hand);
 }
 
 void Assets::fix() {
@@ -96,6 +106,34 @@ void Assets::fix() {
 	arrowSprite.setOrigin(0, 7.5f);
 	prevButtonSprite.setTextureRect(sf::IntRect(0, 0, 60, 60));
 	nextButtonSprite.setTextureRect(sf::IntRect(60, 0, 60, 60));
+}
+
+void Assets::setCursor(int type) {
+	if (type == 0) {
+		cursor = ARROW;
+	} else if (type == 1) {
+		cursor = TEXT;
+	} else if (type == 2) {
+		cursor = HAND;
+	} else {
+		assert(false);
+	}
+}
+
+sf::Cursor* Assets::getCursor() {
+	if (cursor == ARROW) {
+		return &arrowCursor;
+	}
+	
+	if (cursor == TEXT) {
+		return &textCursor;
+	}
+	
+	if (cursor == HAND) {
+		return &handCursor;
+	}
+
+	assert(false);
 }
 
 void Assets::switchMode() {

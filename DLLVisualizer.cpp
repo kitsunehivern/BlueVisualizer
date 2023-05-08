@@ -2240,10 +2240,12 @@ void DLLVisualizer::run() {
 	while (window->isOpen()) {
 		window->clear(sf::Color::White);
 
+		assets->setCursor(0);
 		window->draw(assets->backgroundSprite);
 		header.draw(window);
 		action.draw();
 		option.draw(window);
+		window->setMouseCursor(*assets->getCursor());
 
 		window->display();
 

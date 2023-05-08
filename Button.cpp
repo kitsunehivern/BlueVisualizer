@@ -26,7 +26,8 @@ sf::FloatRect Button::getGlobalBounds() {
 void Button::draw(sf::RenderWindow* window, Assets* assets) {
 	sprite->setPosition(position);
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
-		sprite->setColor(assets->boxColor4);	
+		sprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		if (name == "GO") {
 			sprite->setColor(assets->boxColor5);

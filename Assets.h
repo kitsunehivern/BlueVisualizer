@@ -151,16 +151,24 @@ public:
 	sf::Color seperatorLineColor1;
 	sf::Color seperatorLineColor2;
 
+	sf::Cursor arrowCursor;
+	sf::Cursor textCursor;
+	sf::Cursor handCursor;
+
 	Assets();
 	~Assets();
 
 	void switchMode();
+	void setCursor(int type);
+	sf::Cursor* getCursor();
 
 private:
 	enum { LIGHT, DARK } mode;
+	enum { ARROW, TEXT, HAND } cursor;
 
 	void loadOne(sf::Font* font, sf::Text* text, std::string filename);
 	void loadOne(sf::Texture* texture, sf::Sprite* sprite, std::string filename);
+	void loadOne(sf::Cursor* cursor, sf::Cursor::Type type);
 	void loadAll();
 	void fix();
 };

@@ -460,8 +460,9 @@ void ActionBox::draw() {
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(0, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(30, 15));
-	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 20, position.y + 10, 40, 40))) {
 		controlButtonsSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		controlButtonsSprite->setColor(assets->boxColor3);
 	}
@@ -470,8 +471,9 @@ void ActionBox::draw() {
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(20, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(90, 15));
-	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 80, position.y + 10, 40, 40))) {
 		controlButtonsSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		controlButtonsSprite->setColor(assets->boxColor3);
 	}
@@ -489,8 +491,9 @@ void ActionBox::draw() {
 
 	statusButtonsSprite->setTextureRect(sf::IntRect(30 * index, 0, 30, 30));
 	statusButtonsSprite->setPosition(position + sf::Vector2f(145, 15));
-	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 140, position.y + 10, 40, 40))) {
 		statusButtonsSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		statusButtonsSprite->setColor(assets->boxColor3);
 	}
@@ -499,8 +502,9 @@ void ActionBox::draw() {
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(40, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(210, 15));
-	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 200, position.y + 10, 40, 40))) {
 		controlButtonsSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		controlButtonsSprite->setColor(assets->boxColor3);
 	}
@@ -509,8 +513,9 @@ void ActionBox::draw() {
 
 	controlButtonsSprite->setTextureRect(sf::IntRect(60, 0, 20, 30));
 	controlButtonsSprite->setPosition(position + sf::Vector2f(270, 15));
-	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
+	if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 260, position.y + 10, 40, 40))) {
 		controlButtonsSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		controlButtonsSprite->setColor(assets->boxColor3);
 	}
@@ -520,6 +525,10 @@ void ActionBox::draw() {
 	progressBarSprite->setTextureRect(sf::IntRect(0, 0, 400, 20));
 	progressBarSprite->setColor(assets->boxColor3);
 	progressBarSprite->setPosition(position + sf::Vector2f(320, 20));
+	if (positionInRect(sf::Mouse::getPosition(*window), progressBarSprite->getGlobalBounds())) {
+		assets->setCursor(2);
+	}
+
 	window->draw(*progressBarSprite);
 
 	progressBarSprite->setTextureRect(sf::IntRect(0, 0, std::floor(400.f * getNumberOfFramePassed() / (120 * numberOfFrames.size())), 20));
@@ -538,6 +547,7 @@ void ActionBox::draw() {
 	speedBoxSprite->setPosition(position + sf::Vector2f(750, 10));
 	if (positionInRect(sf::Mouse::getPosition(*window), speedBoxSprite->getGlobalBounds())) {
 		speedBoxSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		speedBoxSprite->setColor(assets->boxColor3);
 	}
@@ -722,15 +732,15 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 		}
 	} else if (event->type == sf::Event::MouseButtonReleased) {
 		if (!mouseButtonHolding) {
-			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 10, position.y, 60, 60))) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 20, position.y + 10, 40, 40))) {
 				goToBeginning();
 			}
 
-			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 70, position.y, 60, 60))) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 80, position.y + 10, 40, 40))) {
 				goToPrevStep();
 			}
 
-			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 130, position.y, 60, 60))) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 140, position.y + 10, 40, 40))) {
 				if (status == PAUSED) {
 					if (direction == NONE) {
 						status = CONTINUE;
@@ -747,11 +757,11 @@ void ActionBox::handleEvent(sf::Event* event, OptionBox* option) {
 				}
 			}
 
-			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 190, position.y, 60, 60))) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 200, position.y + 10, 40, 40))) {
 				goToNextStep();
 			}
 
-			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 250, position.y, 60, 60))) {
+			if (positionInRect(sf::Mouse::getPosition(*window), sf::FloatRect(position.x + 260, position.y + 10, 40, 40))) {
 				goToEnding();
 			}
 

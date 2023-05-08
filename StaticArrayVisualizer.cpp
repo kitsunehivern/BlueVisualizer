@@ -899,8 +899,8 @@ void StaticArrayVisualizer::eraseAtTheMiddle(int index) {
 		action.addNewStep();
 
 		// Description
-		if (i == 0) {
-			description.addDescription({ "Iterate k from " + std::to_string(index) + " to " + std::to_string(size - 1) + ", k is now 0.", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
+		if (i == index) {
+			description.addDescription({ "Iterate k from " + std::to_string(index) + " to " + std::to_string(size - 1) + ", k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
 		} else if (i <= size - 1) {
 			description.addDescription({ "Increase k by 1, k is now " + std::to_string(i) + ".", "Since k <= " + std::to_string(size - 1) + ", the loop continues." });
 		} else {
@@ -1221,10 +1221,12 @@ void StaticArrayVisualizer::run() {
 	while (window->isOpen()) {
 		window->clear(sf::Color::White);
 
+		assets->setCursor(0);
 		window->draw(assets->backgroundSprite);
 		header.draw(window);
 		action.draw();
 		option.draw(window);
+		window->setMouseCursor(*assets->getCursor());
 
 		window->display();
 

@@ -177,6 +177,7 @@ void InputBox::draw(sf::RenderWindow* window, Assets* assets) {
 	sprite->setPosition(position);
 	if (positionInRect(sf::Mouse::getPosition(*window), sprite->getGlobalBounds())) {
 		sprite->setColor(assets->boxColor4);
+		assets->setCursor(1);
 	} else {
 		sprite->setColor(assets->boxColor3);
 	}

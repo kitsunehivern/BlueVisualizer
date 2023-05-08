@@ -43,6 +43,7 @@ void HeaderBox::draw(sf::RenderWindow* window) {
 	backSprite->setPosition(position + sf::Vector2f(10, 10));
 	if (positionInRect(sf::Mouse::getPosition(*window), backSprite->getGlobalBounds())) {
 		backSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		backSprite->setColor(assets->boxColor3);
 	}
@@ -52,6 +53,7 @@ void HeaderBox::draw(sf::RenderWindow* window) {
 	modeSprite->setPosition(position + sf::Vector2f(1530, 10));
 	if (positionInRect(sf::Mouse::getPosition(*window), modeSprite->getGlobalBounds())) {
 		modeSprite->setColor(assets->boxColor4);
+		assets->setCursor(2);
 	} else {
 		modeSprite->setColor(assets->boxColor3);
 	}
