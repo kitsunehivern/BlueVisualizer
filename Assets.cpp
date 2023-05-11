@@ -3,13 +3,14 @@
 Assets::Assets() {
 	loadAll();
 	fix();
-	
-	std::ifstream fin("Data/theme.dat");
+
+	std::ifstream fin;
+	fin.open("Data/theme.dat", std::ios::binary);
 	if (!fin.good()) {
 		mode = LIGHT;
 	} else {
-		int value;
-		fin >> value;
+		bool value;
+		fin.read((char*)&value, 1);
 
 		mode = !value ? LIGHT : DARK;
 	}
@@ -22,24 +23,35 @@ Assets::Assets() {
 }
 
 Assets::~Assets() {
-	std::ofstream fout("Data/theme.dat");
-	fout << (mode == LIGHT ? 0 : 1);
+	bool out = (mode == LIGHT) ? 0 : 1;
+	
+	std::ofstream fout;
+	fout.open("Data/theme.dat", std::ios::binary);
+	fout.write((char*)&out, 1);
 	fout.close();
 }
 
 void Assets::loadOne(sf::Font* font, sf::Text* text, std::string filename) {
-	assert(font->loadFromFile("Fonts/" + filename));
+	if (!font->loadFromFile("Fonts/" + filename)) {
+		assert(false);
+	}
+
 	text->setFont(*font);
 }
 
 void Assets::loadOne(sf::Texture* texture, sf::Sprite* sprite, std::string filename) {
-	assert(texture->loadFromFile("Images/" + filename));
+	if (!texture->loadFromFile("Images/" + filename)) {
+		assert(false);
+	}
+
 	texture->setSmooth(true);
 	sprite->setTexture(*texture, true);
 }
 
 void Assets::loadOne(sf::Cursor* cursor, sf::Cursor::Type type) {
-	assert(cursor->loadFromSystem(type));
+	if (!cursor->loadFromSystem(type)) {
+		assert(false);
+	}
 }
 
 void Assets::loadAll() {

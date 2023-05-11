@@ -157,7 +157,7 @@ public:
 
 	Assets();
 	~Assets();
-
+	
 	void switchMode();
 	void setCursor(int type);
 	sf::Cursor* getCursor();

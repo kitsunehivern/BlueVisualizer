@@ -98,6 +98,7 @@ void OptionBox::draw(sf::RenderWindow* window) {
 
 		boxSprite->setTextureRect(sf::IntRect(0, lastHeight + 5, 280, height - 10));
 		boxSprite->setPosition(position.x, position.y + lastHeight + 5);
+		boxSprite->setColor(assets->boxColor1);
 		if (positionInRect(sf::Mouse::getPosition(*window), boxSprite->getGlobalBounds())) {
 			boxSprite->setColor(assets->boxColor2);
 			assets->setCursor(2);
@@ -105,8 +106,6 @@ void OptionBox::draw(sf::RenderWindow* window) {
 		
 		if (i == currentOption) {
 			boxSprite->setColor(assets->boxColor2);
-		} else {
-			boxSprite->setColor(assets->boxColor1);
 		}
 
 		window->draw(*boxSprite);

@@ -8,12 +8,13 @@ ActionBox::ActionBox(sf::RenderWindow* window, Assets* assets, sf::Vector2f posi
 	this->assets = assets;
 	this->position = position;
 
-	std::ifstream fin("Data/speed.dat");
+	std::ifstream fin;
+	fin.open("Data/speed.dat", std::ios::binary);
 	if (!fin.good()) {
 		speed = X2;
 	} else {
 		int value;
-		fin >> value;
+		fin.read((char*)&value, 4);
 
 		switch (value) {
 		case 1:
@@ -39,8 +40,9 @@ ActionBox::ActionBox(sf::RenderWindow* window, Assets* assets, sf::Vector2f posi
 }
 
 ActionBox::~ActionBox() {
-	std::ofstream fout("Data/speed.dat");
-	fout << speed;
+	std::ofstream fout;
+	fout.open("Data/speed.dat", std::ios::binary);
+	fout.write((char*)&speed, 4);
 	fout.close();
 }
 

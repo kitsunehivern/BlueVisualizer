@@ -937,7 +937,7 @@ void StaticArrayVisualizer::eraseAtTheMiddle(int index) {
 		action.draw(&labels, &assets->labelColor);
 
 		// Code
-		if (i == 0) {
+		if (i == index) {
 			action.drawFadeIn(&code, 0);
 		} else {
 			action.drawMove(&code, 1, 0);

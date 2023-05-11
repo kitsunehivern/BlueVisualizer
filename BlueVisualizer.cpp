@@ -16,6 +16,13 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "BlueVisualizer", sf::Style::Close, settings);
     window.setFramerateLimit(60);
 
+    sf::Image icon;
+    if (!icon.loadFromFile("Images/Main/Icon.png")) {
+        assert(false);
+    }
+
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
     Assets assets;
 
     int current = -1;
