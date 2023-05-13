@@ -134,7 +134,7 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event* event) {
 				ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0";
 				ofn.lpstrFile = szFileName;
 				ofn.nMaxFile = MAX_PATH;
-				ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+				ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 				ofn.lpstrDefExt = L"txt";
 
 				if (GetOpenFileName(&ofn) == TRUE) {
