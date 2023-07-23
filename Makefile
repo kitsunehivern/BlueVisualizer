@@ -2,9 +2,9 @@
 
 # Compiler and compilation flags
 CC = g++
-CFLAGS = -std=c++14 -Wall -Wextra -g -DSFML_STATIC
+CFLAGS = -std=c++17 -Wall -Wextra -g -DSFML_STATIC
 
-# SFML
+# SFML (Static linking)
 SFML_INCLUDE = -IC:/SFML/include
 SFML_LIB = -LC:/SFML/lib -lsfml-graphics-s-d -lsfml-window-s-d -lsfml-system-s-d -lgdi32 -lwinmm -lopengl32 -lfreetype
 
@@ -14,7 +14,7 @@ OBJ_DIR = D:/BlueSimulator/obj
 TARGET = BlueSimulator
 
 # List of source files (add more as needed)
-SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
+SOURCES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/**/*.cpp)
 
 # Generate list of corresponding object files in the obj directory
 OBJECTS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
@@ -29,6 +29,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 # Rule to build the executable
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(SFML_LIB)
+
+# Create the obj directory if it doesn't exist
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 # Clean up the generated files
 clean:
