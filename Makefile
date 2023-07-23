@@ -2,11 +2,11 @@
 
 # Compiler and compilation flags
 CC = g++
-CFLAGS = -std=c++14 -Wall -Wextra -g
+CFLAGS = -std=c++14 -Wall -Wextra -g -DSFML_STATIC
 
 # SFML
 SFML_INCLUDE = -IC:/SFML/include
-SFML_LIB = -LC:/SFML/lib -lsfml-graphics-d -lsfml-window-d -lsfml-system-d
+SFML_LIB = -LC:/SFML/lib -lsfml-graphics-s-d -lsfml-window-s-d -lsfml-system-s-d -lgdi32 -lwinmm -lopengl32 -lfreetype
 
 # Directories
 SRC_DIR = D:/BlueSimulator/src
