@@ -23,4 +23,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
+namespace sfhelper {
+
+bool isMouseOver(sf::RenderWindow* window, sf::Vector2f position, sf::Vector2f size);
+
+}
+
 #endif // GLOBAL_HPP

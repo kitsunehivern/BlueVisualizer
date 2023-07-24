@@ -30,10 +30,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(SFML_LIB)
 
-# Create the obj directory if it doesn't exist
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
 # Clean up the generated files
 clean:
 	rm -f $(OBJ_DIR)/*.o $(TARGET)

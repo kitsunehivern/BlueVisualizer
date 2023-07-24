@@ -1,5 +1,5 @@
-#ifndef TextureHolder_HPP
-#define TextureHolder_HPP
+#ifndef ASSETS_HOLDER_HPP
+#define ASSETS_HOLDER_HPP
 
 #include "../Global.hpp"
 
@@ -7,6 +7,9 @@ namespace AssetsData {
     enum ImageName {
         hollowCircle,
         solidCircle,
+
+        inputBox,
+        randomBox,
     };
 
     enum FontName {
@@ -15,14 +18,19 @@ namespace AssetsData {
 
     enum ColorName {
         nodeCircleColor,
-        nodeFocusCircleColor1, // Foucs 1
-        nodeFocusCircleColor2, // Focus 2
-        nodeFocusCircleColor3, // Inserted
-        nodeFocusCircleColor4, // Erased
+        nodeCircleFocusColor1, // Foucs 1
+        nodeCircleFocusColor2, // Focus 2
+        nodeCircleFocusColor3, // Inserted
+        nodeCircleFocusColor4, // Erased
         nodeTextColor,
-        nodeFocusTextColor1, // Focus 1
-        nodeFocusTextColor2, // Focus 2
-        nodeInsertedCircleColor,
+        nodeTextFocusColor1, // Focus 1
+        nodeTextFocusColor2, // Focus 2
+
+        boxComponentColor,
+        boxColor,
+        boxFocusColor,
+        boxTextColor,
+        boxTextFocusColor,  
     };
 }
 
