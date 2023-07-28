@@ -36,16 +36,16 @@ void Node::draw(NodeData::Type type, NodeData::State state, std::vector<std::any
 
     switch (type) {
     case NodeData::hollow:
-        sprite.setTexture(*mAssetsHolder->get(AssetsData::hollowCircle));
+        sprite.setTexture(*mAssetsHolder->get(AssetsData::Image::hollowCircle));
         break;
     case NodeData::solid:
-        sprite.setTexture(*mAssetsHolder->get(AssetsData::solidCircle));
+        sprite.setTexture(*mAssetsHolder->get(AssetsData::Image::solidCircle));
         break;
     default:
         assert(false);
     }
 
-    sf::Text text(std::to_string(mValue), *mAssetsHolder->get(AssetsData::consolasBold), NodeData::textSize);
+    sf::Text text(std::to_string(mValue), *mAssetsHolder->get(AssetsData::Font::consolasBold), NodeData::textSize);
 
     switch (state) {
     case NodeData::none:

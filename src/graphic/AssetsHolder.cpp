@@ -17,30 +17,31 @@ AssetsHolder::~AssetsHolder() {
     }
 }
 
-void AssetsHolder::load(AssetsData::ImageName name, const std::string& filename) {
+void AssetsHolder::load(AssetsData::Image name, const std::string& filename) {
     sf::Texture* texture = new sf::Texture();
     texture->loadFromFile(filename);
+    texture->setSmooth(true);
     mImageMap[name] = texture;
 }
 
-sf::Texture* AssetsHolder::get(AssetsData::ImageName name) {
+sf::Texture* AssetsHolder::get(AssetsData::Image name) {
     return mImageMap[name];
 }
 
-void AssetsHolder::load(AssetsData::FontName name, const std::string& filename) {
+void AssetsHolder::load(AssetsData::Font name, const std::string& filename) {
     sf::Font* font = new sf::Font();
     font->loadFromFile(filename);
     mFontMap[name] = font;
 }
 
-sf::Font* AssetsHolder::get(AssetsData::FontName name) {
+sf::Font* AssetsHolder::get(AssetsData::Font name) {
     return mFontMap[name];
 }
 
-void AssetsHolder::set(AssetsData::ColorName name, sf::Color color) {
+void AssetsHolder::set(AssetsData::Color name, sf::Color color) {
     mLightColorMap[name] = new sf::Color(color);
 }
 
-sf::Color* AssetsHolder::get(AssetsData::ColorName name) {
+sf::Color* AssetsHolder::get(AssetsData::Color name) {
     return mLightColorMap[name];
 }

@@ -26,6 +26,9 @@
 namespace sfhelper {
 
 bool isMouseOver(sf::RenderWindow* window, sf::Vector2f position, sf::Vector2f size);
+bool isMouseOver(sf::RenderWindow* window, sf::FloatRect rect);
+sf::Vector2f getCenterPosition(sf::Vector2f position, sf::Vector2f size);
+sf::Vector2f getCenterPosition(sf::FloatRect rect);
 
 }
 

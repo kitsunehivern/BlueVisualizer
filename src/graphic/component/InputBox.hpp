@@ -6,19 +6,22 @@
 
 namespace InputBoxData {
     const float characterSize = 25.f;
-    const float inputBoxWidth = 300.f;
+    const float inputBoxWidth = 250.f;
     const float inputBoxHeight = 50.f;
     const float randomBoxWidth = 50.f;
     const float randomBoxHeight = 50.f;
-    const float fileBoxWidth = 350.f;
+    const float fileBoxWidth = 300.f;
     const float fileBoxHeight = 50.f;
-    const float textPositionX = 20.f;
-    const float textPositionY = 8.f;
+    const sf::Vector2f textPosition = sf::Vector2f(20.f, 8.f);
+    const int maxCharacter = 50;
 
     enum InputType {
         keyboard,
         file
     };
+
+    HWND hwnd;
+    TCHAR szFileName[MAX_PATH];
 }
 
 class InputBox : public sf::Drawable {
@@ -31,6 +34,7 @@ public:
     void setValidator(std::function<std::string(std::string, std::string)> validator);
     void setRandomizer(std::function<std::string()> randomizer);
 
+    void updateState(sf::RenderWindow* window);
     void handleEvent(sf::RenderWindow* window, sf::Event event);
 
 private:
@@ -50,6 +54,9 @@ private:
     sf::Clock mSelectedClock;
 
     bool mIsFileBoxFocused;
+
+    void insertCharacter(char character);
+    void deleteCharacter();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

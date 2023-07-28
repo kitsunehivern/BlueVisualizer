@@ -4,33 +4,39 @@
 #include "../Global.hpp"
 
 namespace AssetsData {
-    enum ImageName {
+    enum Image {
         hollowCircle,
         solidCircle,
 
         inputBox,
         randomBox,
+        fileBox,
+        randomIcon,
+        optionTable,
+        suboptionTable,
+        inputTable,
+        confirmBox,
     };
 
-    enum FontName {
-        consolasBold
+    enum Font {
+        consolasBold,
     };
 
-    enum ColorName {
-        nodeCircleColor,
-        nodeCircleFocusColor1, // Foucs 1
-        nodeCircleFocusColor2, // Focus 2
-        nodeCircleFocusColor3, // Inserted
-        nodeCircleFocusColor4, // Erased
-        nodeTextColor,
-        nodeTextFocusColor1, // Focus 1
-        nodeTextFocusColor2, // Focus 2
+    enum Color {
+        nodeCircle,
+        nodeCircleFocus1, // Foucs 1
+        nodeCircleFocus2, // Focus 2
+        nodeCircleFocus3, // Inserted
+        nodeCircleFocus4, // Erased
+        nodeText,
+        nodeTextFocus1, // Focus 1
+        nodeTextFocus2, // Focus 2
 
-        boxComponentColor,
-        boxColor,
-        boxFocusColor,
-        boxTextColor,
-        boxTextFocusColor,  
+        boxComponent,
+        box,
+        boxFocus,
+        boxText,
+        boxTextFocus,
     };
 }
 
@@ -39,19 +45,19 @@ public:
     AssetsHolder();
     ~AssetsHolder();
 
-    void load(AssetsData::ImageName name, const std::string& filename);
-    sf::Texture* get(AssetsData::ImageName name);
+    void load(AssetsData::Image name, const std::string& filename);
+    sf::Texture* get(AssetsData::Image name);
 
-    void load(AssetsData::FontName name, const std::string& filename);
-    sf::Font* get(AssetsData::FontName name);
+    void load(AssetsData::Font name, const std::string& filename);
+    sf::Font* get(AssetsData::Font name);
 
-    void set(AssetsData::ColorName name, sf::Color color);
-    sf::Color* get(AssetsData::ColorName name);
+    void set(AssetsData::Color name, sf::Color color);
+    sf::Color* get(AssetsData::Color name);
 
 private:
-    std::map<AssetsData::ImageName, sf::Texture*> mImageMap;
-    std::map<AssetsData::FontName, sf::Font*> mFontMap;
-    std::map<AssetsData::ColorName, sf::Color*> mLightColorMap;
+    std::map<AssetsData::Image, sf::Texture*> mImageMap;
+    std::map<AssetsData::Font, sf::Font*> mFontMap;
+    std::map<AssetsData::Color, sf::Color*> mLightColorMap;
 };
 
 #endif // TextureHolder_HPP
