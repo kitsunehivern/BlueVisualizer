@@ -16,3 +16,43 @@ sf::Vector2f sfhelper::getCenterPosition(sf::Vector2f position, sf::Vector2f siz
 sf::Vector2f sfhelper::getCenterPosition(sf::FloatRect rect) {
     return getCenterPosition(sf::Vector2f(rect.left, rect.top), sf::Vector2f(rect.width, rect.height));
 }
+
+sf::IntRect sfhelper::toIntRect(sf::FloatRect rect) {
+    return sf::IntRect(rect.left, rect.top, rect.width, rect.height);
+}
+
+sf::FloatRect sfhelper::toFloatRect(sf::IntRect rect) {
+    return sf::FloatRect(rect.left, rect.top, rect.width, rect.height);
+}
+
+char sfhelper::keyCodeToChar(sf::Keyboard::Key keyCode) {
+    if (keyCode >= sf::Keyboard::A && keyCode <= sf::Keyboard::Z) {
+        return keyCode - sf::Keyboard::A + 'a';
+    }
+
+    if (keyCode >= sf::Keyboard::Num0 && keyCode <= sf::Keyboard::Num9) {
+        return keyCode - sf::Keyboard::Num0 + '0';
+    }
+
+    if (keyCode >= sf::Keyboard::Numpad0 && keyCode <= sf::Keyboard::Numpad9) {
+        return keyCode - sf::Keyboard::Numpad0 + '0';
+    }
+
+    if (keyCode == sf::Keyboard::Space) {
+        return ' ';
+    }
+
+    if (keyCode == sf::Keyboard::Period) {
+        return '.';
+    }
+
+    if (keyCode == sf::Keyboard::Comma) {
+        return ',';
+    }
+
+    if (keyCode == sf::Keyboard::Dash) {
+        return '-';
+    }
+
+    return '\0';
+}

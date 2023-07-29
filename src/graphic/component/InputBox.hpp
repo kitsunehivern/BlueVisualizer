@@ -20,8 +20,10 @@ namespace InputBoxData {
         file
     };
 
-    HWND hwnd;
-    TCHAR szFileName[MAX_PATH];
+    namespace CharacterSet {
+        const std::set<char> alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+        const std::set<char> digit = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    }
 }
 
 class InputBox : public sf::Drawable {
@@ -30,9 +32,10 @@ public:
     InputBox(InputBoxData::InputType type, AssetsHolder* assets, sf::Vector2f position, std::string name);
 
     void setPosition(sf::Vector2f position);
-    void setValidCharacters(std::vector<char> validCharacters);
+    void setValidCharacters(std::set<char> validCharacters);
     void setValidator(std::function<std::string(std::string, std::string)> validator);
     void setRandomizer(std::function<std::string()> randomizer);
+    std::string getValue() const;
 
     void updateState(sf::RenderWindow* window);
     void handleEvent(sf::RenderWindow* window, sf::Event event);
@@ -44,7 +47,7 @@ private:
     sf::Vector2f mPosition;
     std::string mName;
     std::string mValue;
-    std::vector<char> mValidCharacters;
+    std::set<char> mValidCharacters;
     std::function<std::string(std::string, std::string)> mValidator;
     std::function<std::string()> mRandomizer;
 

@@ -16,6 +16,9 @@ namespace AssetsData {
         suboptionTable,
         inputTable,
         confirmBox,
+        controlBox,
+        controlButtons,
+        statusButtons,
     };
 
     enum Font {
@@ -23,6 +26,8 @@ namespace AssetsData {
     };
 
     enum Color {
+        none,
+
         nodeCircle,
         nodeCircleFocus1, // Foucs 1
         nodeCircleFocus2, // Focus 2
@@ -35,6 +40,10 @@ namespace AssetsData {
         boxComponent,
         box,
         boxFocus,
+        boxActive,
+        boxInvalid,
+        boxDisabled,
+
         boxText,
         boxTextFocus,
     };
@@ -47,12 +56,15 @@ public:
 
     void load(AssetsData::Image name, const std::string& filename);
     sf::Texture* get(AssetsData::Image name);
+    const sf::Texture* get(AssetsData::Image name) const;
 
     void load(AssetsData::Font name, const std::string& filename);
     sf::Font* get(AssetsData::Font name);
+    const sf::Font* get(AssetsData::Font name) const;
 
     void set(AssetsData::Color name, sf::Color color);
     sf::Color* get(AssetsData::Color name);
+    const sf::Color* get(AssetsData::Color name) const;
 
 private:
     std::map<AssetsData::Image, sf::Texture*> mImageMap;

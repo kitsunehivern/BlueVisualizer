@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <set>
 #include <map>
 #include <tuple>
 #include <math.h>
@@ -29,6 +30,9 @@ bool isMouseOver(sf::RenderWindow* window, sf::Vector2f position, sf::Vector2f s
 bool isMouseOver(sf::RenderWindow* window, sf::FloatRect rect);
 sf::Vector2f getCenterPosition(sf::Vector2f position, sf::Vector2f size);
 sf::Vector2f getCenterPosition(sf::FloatRect rect);
+sf::IntRect toIntRect(sf::FloatRect rect);
+sf::FloatRect toFloatRect(sf::IntRect rect);
+char keyCodeToChar(sf::Keyboard::Key keyCode);
 
 }
 

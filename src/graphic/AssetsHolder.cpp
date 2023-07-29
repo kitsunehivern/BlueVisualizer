@@ -28,6 +28,10 @@ sf::Texture* AssetsHolder::get(AssetsData::Image name) {
     return mImageMap[name];
 }
 
+const sf::Texture* AssetsHolder::get(AssetsData::Image name) const {
+    return mImageMap.at(name);
+}
+
 void AssetsHolder::load(AssetsData::Font name, const std::string& filename) {
     sf::Font* font = new sf::Font();
     font->loadFromFile(filename);
@@ -38,10 +42,18 @@ sf::Font* AssetsHolder::get(AssetsData::Font name) {
     return mFontMap[name];
 }
 
+const sf::Font* AssetsHolder::get(AssetsData::Font name) const {
+    return mFontMap.at(name);
+}
+
 void AssetsHolder::set(AssetsData::Color name, sf::Color color) {
     mLightColorMap[name] = new sf::Color(color);
 }
 
 sf::Color* AssetsHolder::get(AssetsData::Color name) {
     return mLightColorMap[name];
+}
+
+const sf::Color* AssetsHolder::get(AssetsData::Color name) const {
+    return mLightColorMap.at(name);
 }

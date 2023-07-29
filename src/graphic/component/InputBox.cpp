@@ -10,11 +10,11 @@ InputBox::InputBox(InputBoxData::InputType type, AssetsHolder* assets, sf::Vecto
     mPosition = position;
     mName = name;
     mValue = "";
-    mValidCharacters = std::vector<char>();
+    mValidCharacters = std::set<char>();
     mValidator = [](std::string value, std::string name) -> std::string {
         std::swap(value, name); // no warning hehe
         return "";
-    };
+    };  
 
     mRandomizer = []() -> std::string {
         return "";
@@ -31,9 +31,8 @@ void InputBox::setPosition(sf::Vector2f position) {
     mPosition = position;
 }
 
-void InputBox::setValidCharacters(std::vector<char> validCharacters) {
-    sort(validCharacters.begin(), validCharacters.end());
-    mValidCharacters = validCharacters;
+void InputBox::setValidCharacters(std::set<char> validCharacters) {
+    mValidCharacters.insert(validCharacters.begin(), validCharacters.end());
 }
 
 void InputBox::setValidator(std::function<std::string(std::string, std::string)> validator) {
@@ -42,6 +41,10 @@ void InputBox::setValidator(std::function<std::string(std::string, std::string)>
 
 void InputBox::setRandomizer(std::function<std::string()> randomizer) {
     mRandomizer = randomizer;
+}
+
+std::string InputBox::getValue() const {
+    return mValue;
 }
 
 void InputBox::updateState(sf::RenderWindow* window) {
@@ -70,7 +73,7 @@ void InputBox::updateState(sf::RenderWindow* window) {
 }
 
 void InputBox::insertCharacter(char character) {
-    if (mValue.size() < InputBoxData::maxCharacter && (mValidCharacters.empty() || std::binary_search(mValidCharacters.begin(), mValidCharacters.end(), character))) {
+    if (mValue.size() < InputBoxData::maxCharacter && character != '\0' && (mValidCharacters.empty() || mValidCharacters.find(character) != mValidCharacters.end())) {
         mValue.push_back(character);
     }
 }
@@ -80,6 +83,9 @@ void InputBox::deleteCharacter() {
         mValue.pop_back();
     }
 }
+
+HWND hwnd;
+TCHAR szFileName[MAX_PATH];
 
 void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
     if (mType == InputBoxData::keyboard) {
@@ -102,16 +108,7 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                 if (event.key.code == sf::Keyboard::BackSpace) {
                     deleteCharacter();
                 } else {
-                    char character = '?';
-                    if (event.key.code >= sf::Keyboard::A && event.key.code <= sf::Keyboard::Z) {
-                        character = event.key.code - sf::Keyboard::A + 'a';
-                    } else if (event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) {
-                        character = event.key.code - sf::Keyboard::Num0 + '0';
-                    } else if (event.key.code >= sf::Keyboard::Numpad0 && event.key.code <= sf::Keyboard::Numpad9) {
-                        character = event.key.code - sf::Keyboard::Numpad0 + '0';
-                    }
-
-                    insertCharacter(character);
+                    insertCharacter(sfhelper::keyCodeToChar(event.key.code));
                 }
             }
         }
@@ -122,9 +119,9 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                     OPENFILENAME ofn;
                     ZeroMemory(&ofn, sizeof(ofn));
                     ofn.lStructSize = sizeof(ofn);
-                    ofn.hwndOwner = InputBoxData::hwnd;
+                    ofn.hwndOwner = hwnd;
                     ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0";
-                    ofn.lpstrFile = InputBoxData::szFileName;
+                    ofn.lpstrFile = szFileName;
                     ofn.nMaxFile = MAX_PATH;
                     ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
                     ofn.lpstrDefExt = L"txt";
