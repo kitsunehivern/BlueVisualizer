@@ -6,7 +6,10 @@
 namespace AssetsData {
     enum Image {
         hollowCircle,
-        solidCircle,
+        filledCircle,
+        hollowSquare,
+        filledSquare,
+        markedSquare,
 
         inputBox,
         randomBox,
@@ -19,6 +22,9 @@ namespace AssetsData {
         controlBox,
         controlButtons,
         statusButtons,
+        videoBar,
+        codeBox,
+        codeBar,
     };
 
     enum Font {
@@ -28,11 +34,11 @@ namespace AssetsData {
     enum Color {
         none,
 
-        nodeCircle,
-        nodeCircleFocus1, // Foucs 1
-        nodeCircleFocus2, // Focus 2
-        nodeCircleFocus3, // Inserted
-        nodeCircleFocus4, // Erased
+        node,
+        nodeFocus1, // Foucs 1
+        nodeFocus2, // Focus 2
+        nodeFocus3, // Inserted
+        nodeFocus4, // Erased
         nodeText,
         nodeTextFocus1, // Focus 1
         nodeTextFocus2, // Focus 2

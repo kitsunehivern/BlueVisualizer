@@ -7,7 +7,6 @@ OptionBox::OptionBox(AssetsHolder* assets) {
     mAssets = assets;
     mOptionIndex = 0;
     mConfirmButton = Button(mAssets, AssetsData::Image::confirmBox, OptionBoxData::Input::tablePosition + OptionBoxData::Input::confirmBoxPosition,  ButtonData::ColorSet::set2);
-    mConfirmButton.setText("Confirm");
 }
 
 void OptionBox::addOption(const std::string& option) {
@@ -24,8 +23,10 @@ void OptionBox::addSuboption(const std::string& suboption, std::function<bool()>
     mInputBoxList.back().push_back(std::vector<InputBox>());
 }
 
-void OptionBox::addSuboptionInputBox(InputBoxData::InputType type, std::string name) {
-    mInputBoxList.back().back().push_back(InputBox(type, mAssets, sf::Vector2f(0.f, 0.f), name));
+void OptionBox::addSuboptionInputBox(std::string name, std::function<std::string(std::string, std::string)> validator, std::function<std::string()> randomizer) {
+    mInputBoxList.back().back().push_back(InputBox(InputBoxData::InputType::keyboard, mAssets, sf::Vector2f(0.f, 0.f), name));
+    mInputBoxList.back().back().back().setValidator(validator);
+    mInputBoxList.back().back().back().setRandomizer(randomizer);
 }
 
 void OptionBox::processOption() {
@@ -58,11 +59,33 @@ std::vector<std::string> OptionBox::getValues() const {
     return values;
 }
 
+std::string OptionBox::getValue(int optionIndex, int suboptionIndex, int inputBoxIndex) const {
+    return mInputBoxList[optionIndex][suboptionIndex][inputBoxIndex].getValue();
+}
+
 void OptionBox::updateState(sf::RenderWindow* window) {
-    for (int i = 0; i < (int)mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]].size(); i++) {
-        mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].updateState(window);
+    mError.clear();
+    if (!mSuboptionConditionList[mOptionIndex][mSuboptionIndex[mOptionIndex]]()) {
+        mError = "Unavailable";
+        mConfirmButton.setDisabled(true);
+    } else {
+        mConfirmButton.setDisabled(false);
     }
 
+    for (int i = 0; i < (int)mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]].size(); i++) {
+        mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].updateState(window);
+        if (mError.empty()) {
+            mError = mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].getError();
+        }
+    }
+
+    if (!mError.empty()) {
+        mConfirmButton.setInvalid(true);
+    } else {
+        mConfirmButton.setInvalid(false);
+    }
+
+    mConfirmButton.setText(mError.empty() ? "Confirm" : mError);
     mConfirmButton.updateState(window);
 }
 

@@ -43,6 +43,10 @@ void InputBox::setRandomizer(std::function<std::string()> randomizer) {
     mRandomizer = randomizer;
 }
 
+std::string InputBox::getError() const {
+    return mValidator(mValue, mName);
+}
+
 std::string InputBox::getValue() const {
     return mValue;
 }
@@ -99,7 +103,11 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                 }
                 
                 if (sfhelper::isMouseOver(window, sf::Vector2f(mPosition.x + InputBoxData::inputBoxWidth, mPosition.y), sf::Vector2f(InputBoxData::randomBoxWidth, InputBoxData::randomBoxHeight))) {
-                    mValue = mRandomizer();
+                    try {
+                        mValue = mRandomizer();
+                    } catch (std::exception& e) {
+                        mValue.clear();
+                    }
                 }
             }
         } else if (event.type == sf::Event::KeyPressed) {

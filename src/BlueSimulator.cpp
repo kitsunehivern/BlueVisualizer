@@ -1,6 +1,6 @@
 #include "Global.hpp"
 #include "graphic/AssetsHolder.hpp"
-#include "graphic/scene/AVLTree.hpp"
+#include "graphic/scene/HashTable.hpp"
 
 int main() {
     sf::ContextSettings settings;
@@ -11,7 +11,11 @@ int main() {
 
     AssetsHolder assets;
     assets.load(AssetsData::Image::hollowCircle, "assets/image/object/HollowCircle.png");
-    assets.load(AssetsData::Image::solidCircle, "assets/image/object/SolidCircle.png");
+    assets.load(AssetsData::Image::filledCircle, "assets/image/object/FilledCircle.png");
+    assets.load(AssetsData::Image::hollowSquare, "assets/image/object/HollowSquare.png");
+    assets.load(AssetsData::Image::filledSquare, "assets/image/object/FilledSquare.png");
+    assets.load(AssetsData::Image::markedSquare, "assets/image/object/MarkedSquare.png");
+
     assets.load(AssetsData::Image::inputBox, "assets/image/component/InputBox.png");
     assets.load(AssetsData::Image::fileBox, "assets/image/component/FileBox.png");
     assets.load(AssetsData::Image::randomBox, "assets/image/component/RandomBox.png");
@@ -23,16 +27,19 @@ int main() {
     assets.load(AssetsData::Image::controlBox, "assets/image/component/ControlBox.png");
     assets.load(AssetsData::Image::controlButtons, "assets/image/component/ControlButtons.png");
     assets.load(AssetsData::Image::statusButtons, "assets/image/component/StatusButtons.png");
+    assets.load(AssetsData::Image::videoBar, "assets/image/component/VideoBar.png");
+    assets.load(AssetsData::Image::codeBox, "assets/image/component/CodeBox.png");
+    assets.load(AssetsData::Image::codeBar, "assets/image/component/CodeBar.png");
 
     assets.load(AssetsData::Font::consolasBold, "assets/font/consolas_bold.ttf");
 
     assets.set(AssetsData::Color::none, sf::Color(0, 0, 0, 0));
 
-    assets.set(AssetsData::Color::nodeCircle, sf::Color(0, 0, 0, 255));
-    assets.set(AssetsData::Color::nodeCircleFocus1, sf::Color(255, 140, 40, 255));
-    assets.set(AssetsData::Color::nodeCircleFocus2, sf::Color(45, 185, 210, 255));
-    assets.set(AssetsData::Color::nodeCircleFocus3, sf::Color(90, 200, 90, 255));
-    assets.set(AssetsData::Color::nodeCircleFocus4, sf::Color(215, 80, 60, 255));
+    assets.set(AssetsData::Color::node, sf::Color(0, 0, 0, 255));
+    assets.set(AssetsData::Color::nodeFocus1, sf::Color(255, 140, 40, 255));
+    assets.set(AssetsData::Color::nodeFocus2, sf::Color(45, 185, 210, 255));
+    assets.set(AssetsData::Color::nodeFocus3, sf::Color(90, 200, 90, 255));
+    assets.set(AssetsData::Color::nodeFocus4, sf::Color(215, 80, 60, 255));
     assets.set(AssetsData::Color::nodeText, sf::Color(0, 0, 0, 255));
     assets.set(AssetsData::Color::nodeTextFocus1, sf::Color(255, 255, 255, 255));
     assets.set(AssetsData::Color::nodeTextFocus2, sf::Color(255, 140, 40, 255));
@@ -46,8 +53,8 @@ int main() {
     assets.set(AssetsData::Color::boxInvalid, sf::Color(255, 150, 150, 255));
     assets.set(AssetsData::Color::boxDisabled, sf::Color(150, 150, 150, 255));
 
-    AVLTree AVL(&window, &assets);
-    AVL.run();
+    HashTable HT(&window, &assets);
+    HT.run();
 
     return EXIT_SUCCESS;
 }

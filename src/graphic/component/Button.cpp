@@ -31,33 +31,32 @@ Button::Button(AssetsHolder* assets, AssetsData::Image image, sf::Vector2f posit
     mImageRect = sf::FloatRect(sf::Vector2f(0.f, 0.f), sf::Vector2f(mAssets->get(mImage)->getSize().x, mAssets->get(mImage)->getSize().y));
     mPosition = position;
     mColor = color;
+    mIsDisabled = false;
+    mIsInvalid = false;
     mState = ButtonData::State::normal;
     mText = "";
-
-    mCondition = []() { return true; };
-    mValidator = []() { return true; };
 }
 
 void Button::setImageRect(sf::FloatRect rect) {
     mImageRect = rect;
 }
 
+void Button::setDisabled(bool isDisabled) {
+    mIsDisabled = isDisabled;
+}
+
+void Button::setInvalid(bool isInvalid) {
+    mIsInvalid = isInvalid;
+}
+
 void Button::setText(std::string text) {
     mText = text;
 }
 
-void Button::setCondition(std::function <bool()> condition) {
-    mCondition = condition;
-}
-
-void Button::setValidator(std::function <bool()> validator) {
-    mValidator = validator;
-}
-
 void Button::updateState(sf::RenderWindow* window) {
-    if (!mCondition()) {
+    if (mIsDisabled) {
        mState = ButtonData::State::disabled;
-    } else if (!mValidator()) {
+    } else if (mIsInvalid) {
         mState = ButtonData::State::invalid;
     } else if (sfhelper::isMouseOver(window, mPosition, mImageRect.getSize())) {
        mState = ButtonData::State::focused;

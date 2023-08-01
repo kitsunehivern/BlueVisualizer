@@ -19,7 +19,10 @@ AssetsHolder::~AssetsHolder() {
 
 void AssetsHolder::load(AssetsData::Image name, const std::string& filename) {
     sf::Texture* texture = new sf::Texture();
-    texture->loadFromFile(filename);
+    if (!texture->loadFromFile(filename)) {
+        assert(false);
+    }
+
     texture->setSmooth(true);
     mImageMap[name] = texture;
 }
@@ -34,7 +37,10 @@ const sf::Texture* AssetsHolder::get(AssetsData::Image name) const {
 
 void AssetsHolder::load(AssetsData::Font name, const std::string& filename) {
     sf::Font* font = new sf::Font();
-    font->loadFromFile(filename);
+    if (!font->loadFromFile(filename)) {
+        assert(false);
+    }
+    
     mFontMap[name] = font;
 }
 

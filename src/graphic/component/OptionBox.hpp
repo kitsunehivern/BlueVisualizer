@@ -51,11 +51,13 @@ public:
 
     void addOption(const std::string& option);
     void addSuboption(const std::string& suboption, std::function<bool()> condition);
-    void addSuboptionInputBox(InputBoxData::InputType type, std::string name);
+    void addSuboptionInputBox(std::string name, std::function<std::string(std::string, std::string)> validator, std::function<std::string()> randomizer);
+    void addSuboptionFileBox(std::string name); 
     void processOption(); // please call this when finish adding options and suboptions
 
     std::pair<int, int> getOption() const;
     std::vector<std::string> getValues() const;
+    std::string getValue(int optionIndex, int suboptionIndex, int inputBoxIndex) const;
 
     void updateState(sf::RenderWindow* window);
     bool handleEvent(sf::RenderWindow* window, sf::Event event);
@@ -68,6 +70,8 @@ private:
     std::vector<int> mSuboptionIndex;
     std::vector<std::vector<std::function<bool()>>> mSuboptionConditionList;
     std::vector<std::vector<std::vector<InputBox>>> mInputBoxList;
+    
+    std::string mError;
     Button mConfirmButton;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

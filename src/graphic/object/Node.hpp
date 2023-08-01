@@ -2,44 +2,46 @@
 #define NODE_HPP
 
 #include "../../Global.hpp"
-#include "../AssetsHolder.hpp"
+#include "../Animation.hpp"
 
 namespace NodeData {
-    const float nodeSize = 50.f;
+    const sf::Vector2f nodeSize = sf::Vector2f(50.f, 50.f);
     const float textSize = 25.f;
+
+    enum Shape {
+        circle,
+        square,
+    };
 
     enum Type {
         hollow,
-        solid
-    };
-
-    enum State {
-        none,
-        fadeIn,
-        fadeOut,
-        move,
-        changeColor,
-        changeValue
+        filled,
+        marked,
     };
 }
 
 class Node {
 public:
     Node();
-    Node(sf::RenderWindow* window, AssetsHolder* assetsHolder);
+    Node(std::string value, sf::Vector2f position);
 
-    int getValue();
-    void setValue(int value);
+    std::string getValue();
+    void setValue(std::string value);
 
     sf::Vector2f getPosition();
     void setPosition(sf::Vector2f position);
 
-    void draw(NodeData::Type type, NodeData::State state, std::vector<std::any> args, float ratioTime, bool fakeDraw = false);
+    void draw(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);
+    void drawFadeIn(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);
+    void drawFadeOut(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);
+    void drawValueFadeIn(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);
+    void drawValueFadeOut(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);    
+    void drawChangePosition(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, sf::Vector2f oldPosition, sf::Vector2f newPosition, float ratioTime, bool fakeDraw);
+    void drawChangeValue(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, std::string oldValue, std::string newValue, float ratioTime, bool fakeDraw);
+    void drawChangeColor(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* oldNodeColor, sf::Color* newNodeColor, sf::Font* valueFont, sf::Color* oldValueColor, sf::Color* newValueColor, float ratioTime, bool fakeDraw);
 
 private:
-    sf::RenderWindow* mWindow;
-    AssetsHolder* mAssetsHolder;
-    int mValue;
+    std::string mValue;
     sf::Vector2f mPosition;
 };
 

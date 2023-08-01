@@ -23,6 +23,8 @@ namespace InputBoxData {
     namespace CharacterSet {
         const std::set<char> alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
         const std::set<char> digit = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        const std::set<char> mark = {',', '.', ';'};
+        const std::set<char> space = {' '};
     }
 }
 
@@ -35,6 +37,7 @@ public:
     void setValidCharacters(std::set<char> validCharacters);
     void setValidator(std::function<std::string(std::string, std::string)> validator);
     void setRandomizer(std::function<std::string()> randomizer);
+    std::string getError() const;
     std::string getValue() const;
 
     void updateState(sf::RenderWindow* window);

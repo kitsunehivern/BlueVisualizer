@@ -54,9 +54,9 @@ public:
     Button(AssetsHolder* assets, AssetsData::Image image, sf::Vector2f position, ButtonColor color);
 
     void setImageRect(sf::FloatRect rect);
+    void setDisabled(bool isDisabled);
+    void setInvalid(bool isInvalid);
     void setText(std::string text);
-    void setCondition(std::function <bool()> condition);
-    void setValidator(std::function <bool()> validator);
 
     void updateState(sf::RenderWindow* window);
     bool handleEvent(sf::RenderWindow* window, sf::Event event);
@@ -67,11 +67,10 @@ private:
     sf::FloatRect mImageRect;
     sf::Vector2f mPosition;
     ButtonColor mColor;
+    bool mIsDisabled;
+    bool mIsInvalid;
     ButtonData::State mState;
     std::string mText;
-
-    std::function <bool()> mCondition;
-    std::function <bool()> mValidator;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
