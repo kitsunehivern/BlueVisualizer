@@ -36,7 +36,7 @@ void Node::draw(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* n
     nodeSprite.setPosition(mPosition);
     window->draw(nodeSprite);
 
-    sf::Text valueText(mValue, *valueFont, NodeData::textSize);
+    sf::Text valueText(mValue, *valueFont, NodeData::characterSize);
     valueText.setFillColor(*valueColor);
     valueText.setOrigin(sfhelper::getCenterPosition(valueText.getLocalBounds()));
     valueText.setPosition(sfhelper::getCenterPosition(nodeSprite.getGlobalBounds()));

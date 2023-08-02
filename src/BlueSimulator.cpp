@@ -30,6 +30,8 @@ int main() {
     assets.load(AssetsData::Image::videoBar, "assets/image/component/VideoBar.png");
     assets.load(AssetsData::Image::codeBox, "assets/image/component/CodeBox.png");
     assets.load(AssetsData::Image::codeBar, "assets/image/component/CodeBar.png");
+    assets.load(AssetsData::Image::speedButton, "assets/image/component/SpeedButton.png");
+    assets.load(AssetsData::Image::speed, "assets/image/component/Speed.png");
 
     assets.load(AssetsData::Font::consolasBold, "assets/font/consolas_bold.ttf");
 
@@ -46,12 +48,14 @@ int main() {
 
     assets.set(AssetsData::Color::boxComponent, sf::Color(240, 245, 245, 150));
     assets.set(AssetsData::Color::box, sf::Color(105, 210, 255, 255));
-    assets.set(AssetsData::Color::boxFocus, sf::Color( 45, 125, 185, 255));
-    assets.set(AssetsData::Color::boxText, sf::Color(0, 0, 0, 255));
-    assets.set(AssetsData::Color::boxTextFocus, sf::Color(255, 255, 255, 255));
+    assets.set(AssetsData::Color::boxFocus, sf::Color(45, 125, 185, 255));
     assets.set(AssetsData::Color::boxActive, sf::Color(70, 255, 140, 255));
     assets.set(AssetsData::Color::boxInvalid, sf::Color(255, 150, 150, 255));
-    assets.set(AssetsData::Color::boxDisabled, sf::Color(150, 150, 150, 255));
+    assets.set(AssetsData::Color::boxDisabled, sf::Color(180, 180, 180, 255));
+    assets.set(AssetsData::Color::boxText, sf::Color(0, 0, 0, 255));
+    assets.set(AssetsData::Color::boxTextFocus, sf::Color(255, 255, 255, 255));
+
+    assets.set(AssetsData::Color::label, sf::Color(255, 40, 40, 255));
 
     HashTable HT(&window, &assets);
     HT.run();

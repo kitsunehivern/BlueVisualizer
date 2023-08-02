@@ -34,7 +34,8 @@ Button::Button(AssetsHolder* assets, AssetsData::Image image, sf::Vector2f posit
     mIsDisabled = false;
     mIsInvalid = false;
     mState = ButtonData::State::normal;
-    mText = "";
+    mHasTextInside = false;
+    mHasImageInside = false;
 }
 
 void Button::setImageRect(sf::FloatRect rect) {
@@ -49,8 +50,19 @@ void Button::setInvalid(bool isInvalid) {
     mIsInvalid = isInvalid;
 }
 
-void Button::setText(std::string text) {
-    mText = text;
+void Button::setTextInside(std::string text) {
+    mHasTextInside = true;
+    mTextInside = text;
+}
+
+void Button::setImageInside(AssetsData::Image image) {
+    mHasImageInside = true;
+    mImageInside = image;
+    mImageInsideRect = sf::FloatRect(sf::Vector2f(0.f, 0.f), sf::Vector2f(mAssets->get(mImageInside)->getSize().x, mAssets->get(mImageInside)->getSize().y));
+}
+
+void Button::setImageInsideRect(sf::FloatRect rect) {
+    mImageInsideRect = rect;
 }
 
 void Button::updateState(sf::RenderWindow* window) {
@@ -86,9 +98,20 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     sprite.setPosition(mPosition);
     target.draw(sprite, states);
 
-    sf::Text text(mText, *mAssets->get(AssetsData::Font::consolasBold), ButtonData::characterSize);
-    text.setFillColor(*mAssets->get(mColor.get(mState).second));
-    text.setOrigin(sfhelper::getCenterPosition(text.getLocalBounds()));
-    text.setPosition(sfhelper::getCenterPosition(mPosition, mImageRect.getSize()));
-    target.draw(text, states);
+    if (mHasTextInside) {
+        sf::Text textInside(mTextInside, *mAssets->get(AssetsData::Font::consolasBold), ButtonData::characterSize);
+        textInside.setFillColor(*mAssets->get(mColor.get(mState).second));
+        textInside.setOrigin(sfhelper::getCenterPosition(textInside.getLocalBounds()));
+        textInside.setPosition(sfhelper::getCenterPosition(mPosition, mImageRect.getSize()));
+        target.draw(textInside, states);
+    }
+
+    if (mHasImageInside) {
+        sf::Sprite spriteInside(*mAssets->get(mImageInside));
+        spriteInside.setTextureRect(sfhelper::toIntRect(mImageInsideRect));
+        spriteInside.setColor(*mAssets->get(mColor.get(mState).second));
+        spriteInside.setOrigin(sfhelper::getCenterPosition(spriteInside.getLocalBounds()));
+        spriteInside.setPosition(sfhelper::getCenterPosition(mPosition, mImageRect.getSize()));
+        target.draw(spriteInside, states);
+    }
 }

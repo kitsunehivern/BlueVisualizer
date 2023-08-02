@@ -85,7 +85,7 @@ void OptionBox::updateState(sf::RenderWindow* window) {
         mConfirmButton.setInvalid(false);
     }
 
-    mConfirmButton.setText(mError.empty() ? "Confirm" : mError);
+    mConfirmButton.setTextInside(mError.empty() ? "Confirm" : mError);
     mConfirmButton.updateState(window);
 }
 

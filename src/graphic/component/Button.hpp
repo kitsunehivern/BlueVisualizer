@@ -45,6 +45,13 @@ namespace ButtonData {
             std::make_pair(AssetsData::Color::boxInvalid, AssetsData::Color::boxText),
             std::make_pair(AssetsData::Color::boxDisabled, AssetsData::Color::boxText)
         );
+
+        const ButtonColor set3(
+            std::make_pair(AssetsData::Color::box, AssetsData::Color::boxFocus),
+            std::make_pair(AssetsData::Color::boxFocus, AssetsData::Color::box),
+            std::make_pair(AssetsData::Color::none, AssetsData::Color::none),
+            std::make_pair(AssetsData::Color::none, AssetsData::Color::none)
+        );
     }
 } 
 
@@ -56,7 +63,9 @@ public:
     void setImageRect(sf::FloatRect rect);
     void setDisabled(bool isDisabled);
     void setInvalid(bool isInvalid);
-    void setText(std::string text);
+    void setTextInside(std::string text);
+    void setImageInside(AssetsData::Image image);
+    void setImageInsideRect(sf::FloatRect rect);
 
     void updateState(sf::RenderWindow* window);
     bool handleEvent(sf::RenderWindow* window, sf::Event event);
@@ -70,7 +79,11 @@ private:
     bool mIsDisabled;
     bool mIsInvalid;
     ButtonData::State mState;
-    std::string mText;
+    bool mHasTextInside;
+    std::string mTextInside;
+    bool mHasImageInside;
+    AssetsData::Image mImageInside;
+    sf::FloatRect mImageInsideRect;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

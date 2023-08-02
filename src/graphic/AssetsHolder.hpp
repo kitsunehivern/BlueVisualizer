@@ -25,6 +25,8 @@ namespace AssetsData {
         videoBar,
         codeBox,
         codeBar,
+        speedButton,
+        speed,
     };
 
     enum Font {
@@ -49,9 +51,10 @@ namespace AssetsData {
         boxActive,
         boxInvalid,
         boxDisabled,
-
         boxText,
         boxTextFocus,
+
+        label,
     };
 }
 

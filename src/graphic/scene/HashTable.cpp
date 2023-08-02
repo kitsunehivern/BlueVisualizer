@@ -15,12 +15,23 @@ std::vector<Node*> HashTable::getNodes(int left, int right) {
     return nodes;
 }
 
+std::vector<Label*> HashTable::getLabels(int left, int right) {
+    std::vector<Label*> labels;
+    for (int i = left; i <= right; i++) {
+        labels.push_back(&mLabels[i]);
+    }
+
+    return labels;
+}
+
 void HashTable::create(int capacity, int size) {
     mCapacity = capacity;
     mSize = size;
     mTable.resize(mCapacity);
+    mLabels.resize(mCapacity);
     for (int i = 0; i < mCapacity; i++) {
         mTable[i] = Node("", HashTableData::position + sf::Vector2f(i % HashTableData::maxSizePerLine * HashTableData::space.x, i / HashTableData::maxSizePerLine * HashTableData::space.y));
+        mLabels[i] = Label(&mTable[i], std::to_string(i));
     }
 
     for (int i = 0; i < mSize; i++) {
@@ -37,7 +48,147 @@ void HashTable::create(int capacity, int size) {
 
     addNewStep();
     drawFadeIn(getNodes(0, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+    drawFadeIn(getLabels(0, mCapacity - 1), AssetsData::Color::label);
     drawCode();
+}
+
+void HashTable::search(int key) {
+    mCode.update({
+        "i = v mod c, k = 0",
+        "while k < c and a[i] != EMPTY:",
+        "    if a[i] == key:",
+        "        return FOUND",
+        "    i = (i + 1) mod c, k += 1",
+        "return NOT_FOUND"
+    });
+
+    int hashkey = key % mCapacity, firstHashkey = hashkey, count = 0;
+    while (true) {
+        addNewStep();
+        if (count == mCapacity) {
+            draw(getNodes(0, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+        } else {
+            if (hashkey >= firstHashkey) {
+                draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+                draw(getNodes(firstHashkey, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+                draw(getNodes(hashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            } else {
+                draw(getNodes(0, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+                draw(getNodes(hashkey, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+                draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            }
+            drawFadeIn({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        }
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+        if (count == 0) {
+            drawCodeFadeIn(1);
+        } else {
+            drawCodeChangeLine(4, 1);
+        }
+
+        if (!(count < mCapacity && mTable[hashkey].getValue() != HashTableData::emptyValue)) {
+            break;
+        }
+
+        addNewStep();
+        if (hashkey >= firstHashkey) {
+            draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            draw(getNodes(firstHashkey, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            draw(getNodes(hashkey + 1, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+        } else {
+            draw(getNodes(0, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            draw(getNodes(hashkey + 1, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+        }
+        draw({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+        drawCodeChangeLine(1, 2);
+
+        if (mTable[hashkey].getValue() == std::to_string(key)) {
+            addNewStep();
+            if (hashkey >= firstHashkey) {
+                draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+                draw(getNodes(firstHashkey, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+                draw(getNodes(hashkey + 1, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            } else {
+                draw(getNodes(0, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+                draw(getNodes(hashkey + 1, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+                draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            }
+            draw({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+            draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+            drawCodeChangeLine(2, 3);
+
+            addNewStep();
+            if (hashkey >= firstHashkey) {
+                draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+                drawChangeColor(getNodes(firstHashkey, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+                draw(getNodes(hashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            } else {
+                drawChangeColor(getNodes(0, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+                draw(getNodes(hashkey, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+                drawChangeColor(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+            }
+            drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+            draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+            drawCodeFadeOut(3);
+
+            return;
+        }
+
+        addNewStep();
+        if (hashkey >= firstHashkey) {
+            draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            draw(getNodes(firstHashkey, hashkey), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            draw(getNodes(hashkey + 1, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+        } else {
+            draw(getNodes(0, hashkey), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            draw(getNodes(hashkey + 1, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+        }
+        drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+        drawCodeChangeLine(2, 4);
+
+        hashkey = (hashkey + 1) % mCapacity;
+        count++;
+    }
+
+    addNewStep();
+    if (count == mCapacity) {
+        draw(getNodes(0, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+    } else {
+        if (hashkey >= firstHashkey) {
+            draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            draw(getNodes(firstHashkey, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            draw(getNodes(hashkey + 1, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+        } else {
+            draw(getNodes(0, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+            draw(getNodes(hashkey + 1, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
+        }
+        draw({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+    }
+    draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+    drawCodeChangeLine(1, 5);
+
+    addNewStep();
+    if (count == mCapacity) {
+        drawChangeColor(getNodes(0, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+    } else {
+        if (hashkey >= firstHashkey) {
+            draw(getNodes(0, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            drawChangeColor(getNodes(firstHashkey, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+            draw(getNodes(hashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+        } else {
+            drawChangeColor(getNodes(0, hashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+            draw(getNodes(hashkey, firstHashkey - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::node, AssetsData::Color::nodeText);
+            drawChangeColor(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+        }
+        drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+    }
+    draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
+    drawCodeFadeOut(5);
 }
 
 void HashTable::insert(int key) {
@@ -61,6 +212,7 @@ void HashTable::insert(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
         }
         drawFadeIn({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         if (hashkey == firstHashkey) {
             drawCodeFadeIn(1);
         } else {
@@ -82,6 +234,7 @@ void HashTable::insert(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
         }
         drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         drawCodeChangeLine(1, 2);
 
         hashkey = (hashkey + 1) % mCapacity;
@@ -98,6 +251,7 @@ void HashTable::insert(int key) {
         draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
     }
     drawChangeValue({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1, { mTable[hashkey].getValue() }, { std::to_string(key) });
+    draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
     drawCodeChangeLine(1, 3);
     mSize++;
 
@@ -112,6 +266,7 @@ void HashTable::insert(int key) {
         drawChangeColor(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
     }
     drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+    draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
     drawCodeFadeOut(3);
 }
 
@@ -141,7 +296,7 @@ void HashTable::erase(int key) {
             }
             drawFadeIn({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
         }
-
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         if (count == 0) {
             drawCodeFadeIn(1);
         } else {
@@ -163,6 +318,7 @@ void HashTable::erase(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
         }
         draw({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         drawCodeChangeLine(1, 2);
 
         if (mTable[hashkey].getValue() == std::to_string(key)) {
@@ -177,6 +333,7 @@ void HashTable::erase(int key) {
                 draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
             }
             drawChangeValue({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1, { mTable[hashkey].getValue() }, { HashTableData::deletedValue });
+            draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
             drawCodeChangeLine(2, 3);
             mSize--;
 
@@ -194,6 +351,7 @@ void HashTable::erase(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus2);
         }
         drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         drawCodeChangeLine(2, 4);
 
         hashkey = (hashkey + 1) % mCapacity;
@@ -203,6 +361,7 @@ void HashTable::erase(int key) {
     addNewStep();
     if (count == mCapacity) {
         drawChangeColor(getNodes(0, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         drawCodeFadeOut(1);
     } else {
         if (hashkey >= firstHashkey) {
@@ -215,7 +374,7 @@ void HashTable::erase(int key) {
             drawChangeColor(getNodes(firstHashkey, mCapacity - 1), NodeData::Shape::square, NodeData::Type::hollow, AssetsData::Color::nodeFocus1, AssetsData::Color::node, AssetsData::Color::nodeTextFocus2, AssetsData::Color::nodeText);
         }
         drawFadeOut({ &mTable[hashkey] }, NodeData::Shape::square, NodeData::Type::filled, AssetsData::Color::nodeFocus1, AssetsData::Color::nodeTextFocus1);
-
+        draw(getLabels(0, mCapacity - 1), AssetsData::Color::label);
         if (mTable[hashkey].getValue() == HashTableData::emptyValue) {
             drawCodeFadeOut(1);
         } else {
@@ -304,6 +463,7 @@ void HashTable::run() {
                 case 1: // Search
                     switch (option.second) {
                     case 0:
+                        search(std::stoi(values[0]));
                         break;
                     }
 

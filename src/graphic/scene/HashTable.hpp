@@ -29,10 +29,13 @@ private:
     int mCapacity;
     int mSize;
     std::vector<Node> mTable;
+    std::vector<Label> mLabels;
 
     std::vector<Node*> getNodes(int left, int right);
+    std::vector<Label*> getLabels(int left, int right);
 
     void create(int capcity, int size);
+    void search(int key);
     void insert(int key);
     void erase(int key);
 };

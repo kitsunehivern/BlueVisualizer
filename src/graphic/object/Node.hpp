@@ -6,7 +6,7 @@
 
 namespace NodeData {
     const sf::Vector2f nodeSize = sf::Vector2f(50.f, 50.f);
-    const float textSize = 25.f;
+    const float characterSize = 25.f;
 
     enum Shape {
         circle,

@@ -21,9 +21,14 @@ Visualizer::Visualizer(sf::RenderWindow* window, AssetsHolder* assets) {
     mBackButton.setImageRect(ControlBoxData::backButtonTextureRect);
 
     mStatusButton = Button(assets, AssetsData::Image::statusButtons, ControlBoxData::controlBoxPosition + ControlBoxData::statusButtonRect.getPosition(), ButtonData::ColorSet::set1);
+	mStatusButton.setImageRect(ControlBoxData::pausedButtonTextureRect);
+
+    mSpeed = X2;
+	mSpeedButton = Button(assets, AssetsData::Image::speedButton, ControlBoxData::controlBoxPosition + ControlBoxData::speedButtonRect.getPosition(), ButtonData::ColorSet::set3);
+	mSpeedButton.setImageInside(AssetsData::Image::speed);
+	mSpeedButton.setImageInsideRect(ControlBoxData::speedX2TextureRect);
 
 	mIsVideoBarHolding = false;
-    mSpeed = X2;
 }
 
 void Visualizer::addNewStep() {
@@ -79,7 +84,7 @@ void Visualizer::goToPrevStep() {
 	if (mStatus == PAUSED || mStatus == REPLAY) {
 		if (mDirection == BACKWARD) {
             for (auto draw : mDrawFunctions[mCurrentStep]) {
-                draw(0.0f, false);
+                draw(0.f, false);
             }
 
             mCurrentFrame = 0;
@@ -205,6 +210,31 @@ void Visualizer::drawChangeColor(std::vector<Node*> nodes, NodeData::Shape shape
 	}
 }
 
+void Visualizer::draw(std::vector<Label*> labels, AssetsData::Color labelColor) {
+	for (auto label : labels) {
+		mDrawFunctions.back().push_back(std::bind(&Label::draw, label, mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawFadeIn(std::vector<Label*> labels, AssetsData::Color labelColor) {
+	for (auto label : labels) {
+		mDrawFunctions.back().push_back(std::bind(&Label::drawFadeIn, label, mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawFadeOut(std::vector<Label*> labels, AssetsData::Color labelColor) {
+	for (auto label : labels) {
+		mDrawFunctions.back().push_back(std::bind(&Label::drawFadeOut, label, mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawChangeName(std::vector<Label*> labels, AssetsData::Color labelColor, std::vector<std::string> oldNames, std::vector<std::string> newNames) {
+	assert(labels.size() == oldNames.size() && labels.size() == newNames.size());
+	for (int i = 0; i < (int)labels.size(); i++) {
+		mDrawFunctions.back().push_back(std::bind(&Label::drawChangeName, labels[i], mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), oldNames[i], newNames[i], std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
 void Visualizer::drawCode() {
 	mDrawFunctions.back().push_back(std::bind(&CodeBox::draw, mCode, mWindow, mAssets->get(AssetsData::Image::codeBox), mAssets->get(AssetsData::Color::boxComponent), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(AssetsData::Color::boxText), std::placeholders::_1, std::placeholders::_2));
 }
@@ -317,6 +347,8 @@ void Visualizer::updateState() {
     } else {
         mStatusButton.setImageRect(ControlBoxData::pausedButtonTextureRect);
     }
+
+	mSpeedButton.updateState(mWindow);
 }
 
 bool Visualizer::handleEvent(sf::Event event) {
@@ -394,6 +426,22 @@ bool Visualizer::handleEvent(sf::Event event) {
 		}
 	}
 
+	if (mSpeedButton.handleEvent(mWindow, event)) {
+		if (mSpeed == X1) {
+			mSpeed = X2;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX2TextureRect);
+		} else if (mSpeed == X2) {
+			mSpeed = X4;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX4TextureRect);
+		} else if (mSpeed == X4) {
+			mSpeed = X8;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX8TextureRect);
+		} else {
+			mSpeed = X1;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX1TextureRect);
+		}
+	}
+
 	return mOption.handleEvent(mWindow, event);
 }
 
@@ -427,6 +475,8 @@ void Visualizer::draw() {
 		seperatorLine.setPosition(ControlBoxData::controlBoxPosition + ControlBoxData::videoBarRect.getPosition() + sf::Vector2f(std::floor(ControlBoxData::videoBarRect.getSize().x * i / (int)mDrawFunctions.size()), ControlBoxData::videoBarRect.getSize().y / 2));
 		mWindow->draw(seperatorLine);
 	}
+
+	mWindow->draw(mSpeedButton);
 
 	for (auto draw : mDrawFunctions[mCurrentStep]) {
 		draw(mCurrentFrame / (float)VisualizerData::FPS, false);
