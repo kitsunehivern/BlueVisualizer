@@ -144,69 +144,102 @@ void Visualizer::goToSpecificFrame(int step, int frame) {
 	mCurrentFrame = frame;
 }
 
-sf::Texture* Visualizer::getNodeTexture(NodeData::Shape shape, NodeData::Type type) {
-    if (shape == NodeData::Shape::circle) {
-        if (type == NodeData::Type::hollow) {
+sf::Texture* Visualizer::getNodeTexture(Shape shape, Type type) {
+    if (shape == Shape::circle) {
+        if (type == Type::hollow) {
             return mAssets->get(AssetsData::Image::hollowCircle);
-        } else if (type == NodeData::Type::filled) {
+        } else if (type == Type::filled) {
             return mAssets->get(AssetsData::Image::filledCircle);
         }
     } else {
-        if (type == NodeData::Type::hollow) {
+        if (type == Type::hollow) {
             return mAssets->get(AssetsData::Image::hollowSquare);
-        } else if (type == NodeData::Type::filled) {
+        } else if (type == Type::filled) {
             return mAssets->get(AssetsData::Image::filledSquare);
-        } else if (type == NodeData::Type::marked) {
-			return mAssets->get(AssetsData::Image::markedSquare);
-		}
+        }
     }
 
 	assert(false);
     return nullptr;
 }
 
-void Visualizer::draw(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor) {
+void Visualizer::draw(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor) {
 	for (auto node : nodes) {
-		mDrawFunctions.back().push_back(std::bind(&Node::draw, node, mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::draw, node, mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawFadeIn(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor) {
+void Visualizer::drawFadeIn(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor) {
 	for (auto node : nodes) {
-		mDrawFunctions.back().push_back(std::bind(&Node::drawFadeIn, node, mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawFadeIn, node, mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawFadeOut(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor) {
+void Visualizer::drawFadeOut(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor) {
 	for (auto node : nodes) {
-		mDrawFunctions.back().push_back(std::bind(&Node::drawFadeOut, node, mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawFadeOut, node, mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawChangePosition(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<sf::Vector2f> oldPositions, std::vector<sf::Vector2f> newPositions) {
+void Visualizer::drawChangePosition(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<sf::Vector2f> oldPositions, std::vector<sf::Vector2f> newPositions) {
 	assert(nodes.size() == oldPositions.size() && nodes.size() == newPositions.size());
 	for (int i = 0; i < (int)nodes.size(); i++) {
-		mDrawFunctions.back().push_back(std::bind(&Node::drawChangePosition, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), oldPositions[i], newPositions[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangePosition, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), oldPositions[i], newPositions[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawChangeValue(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<std::string> oldValues, std::vector<std::string> newValues) {
+void Visualizer::drawChangeValue(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<std::string> oldValues, std::vector<std::string> newValues) {
 	assert(nodes.size() == oldValues.size() && nodes.size() == newValues.size());
 	for (int i = 0; i < (int)nodes.size(); i++) {
-		mDrawFunctions.back().push_back(std::bind(&Node::drawChangeValue, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), oldValues[i], newValues[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangeValue, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), oldValues[i], newValues[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawChangeColor(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, std::vector<AssetsData::Color> oldNodeColor, std::vector<AssetsData::Color> newNodeColor, std::vector<AssetsData::Color> oldValueColor, std::vector<AssetsData::Color> newValueColor) {
+void Visualizer::drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, std::vector<AssetsData::Color> oldNodeColor, std::vector<AssetsData::Color> newNodeColor, std::vector<AssetsData::Color> oldValueColor, std::vector<AssetsData::Color> newValueColor) {
 	assert(nodes.size() == oldNodeColor.size() && nodes.size() == newNodeColor.size() && nodes.size() == oldValueColor.size() && nodes.size() == newValueColor.size());
 	for (int i = 0; i < (int)nodes.size(); i++) {
-		mDrawFunctions.back().push_back(std::bind(&Node::drawChangeColor, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(oldNodeColor[i]), mAssets->get(newNodeColor[i]), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(oldValueColor[i]), mAssets->get(newValueColor[i]), std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangeColor, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(oldNodeColor[i]), mAssets->get(newNodeColor[i]), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(oldValueColor[i]), mAssets->get(newValueColor[i]), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawChangeColor(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color oldNodeColor, AssetsData::Color newNodeColor, AssetsData::Color oldValueColor, AssetsData::Color newValueColor) {
+void Visualizer::drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color oldNodeColor, AssetsData::Color newNodeColor, AssetsData::Color oldValueColor, AssetsData::Color newValueColor) {
 	for (auto node : nodes) {
-		mDrawFunctions.back().push_back(std::bind(&Node::drawChangeColor, node, mWindow, getNodeTexture(shape, type), mAssets->get(oldNodeColor), mAssets->get(newNodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(oldValueColor), mAssets->get(newValueColor), std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangeColor, node, mWindow, getNodeTexture(shape, type), mAssets->get(oldNodeColor), mAssets->get(newNodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(oldValueColor), mAssets->get(newValueColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::draw, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFadeIn, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawSlideIn, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawSlideOut, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color oldColor, Color newColor) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawChangeColor, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
@@ -387,7 +420,7 @@ bool Visualizer::handleEvent(sf::Event event) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			mIsVideoBarHolding = false;
 		}
-	} else if (event.type == sf::Event::KeyPressed) {
+	} else if (event.type == sf::Event::KeyPressed && !mOption.isAnyInputBoxSelected()) {
 		switch (event.key.code) {
 		case sf::Keyboard::Home:
 			goToBeginning();
@@ -420,6 +453,8 @@ bool Visualizer::handleEvent(sf::Event event) {
 				mStatus = CONTINUE;
 				mDirection = FORWARD;
 			}
+
+			break;
 
 		default:
 			break;

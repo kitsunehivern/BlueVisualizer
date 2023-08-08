@@ -9,7 +9,7 @@ namespace AssetsData {
         filledCircle,
         hollowSquare,
         filledSquare,
-        markedSquare,
+        stick,
 
         inputBox,
         randomBox,

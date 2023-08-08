@@ -55,6 +55,7 @@ public:
     void addSuboptionFileBox(std::string name); 
     void processOption(); // please call this when finish adding options and suboptions
 
+    bool isAnyInputBoxSelected() const;
     std::pair<int, int> getOption() const;
     std::vector<std::string> getValues() const;
     std::string getValue(int optionIndex, int suboptionIndex, int inputBoxIndex) const;

@@ -37,6 +37,7 @@ public:
     void setValidCharacters(std::set<char> validCharacters);
     void setValidator(std::function<std::string(std::string, std::string)> validator);
     void setRandomizer(std::function<std::string()> randomizer);
+    bool isInputBoxSelected() const;
     std::string getError() const;
     std::string getValue() const;
 

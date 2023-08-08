@@ -1,6 +1,7 @@
 #include "Global.hpp"
 #include "graphic/AssetsHolder.hpp"
 #include "graphic/scene/HashTable.hpp"
+#include "graphic/scene/AVLTree.hpp"
 
 int main() {
     sf::ContextSettings settings;
@@ -10,28 +11,29 @@ int main() {
     window.setFramerateLimit(60);
 
     AssetsHolder assets;
-    assets.load(AssetsData::Image::hollowCircle, "assets/image/object/HollowCircle.png");
-    assets.load(AssetsData::Image::filledCircle, "assets/image/object/FilledCircle.png");
-    assets.load(AssetsData::Image::hollowSquare, "assets/image/object/HollowSquare.png");
-    assets.load(AssetsData::Image::filledSquare, "assets/image/object/FilledSquare.png");
-    assets.load(AssetsData::Image::markedSquare, "assets/image/object/MarkedSquare.png");
+    std::string imageDir = "assets/image/";
+    assets.load(AssetsData::Image::hollowCircle, imageDir + "object/HollowCircle.png");
+    assets.load(AssetsData::Image::filledCircle, imageDir + "object/FilledCircle.png");
+    assets.load(AssetsData::Image::hollowSquare, imageDir + "object/HollowSquare.png");
+    assets.load(AssetsData::Image::filledSquare, imageDir + "object/FilledSquare.png");
+    assets.load(AssetsData::Image::stick, imageDir + "object/Stick.png");
 
-    assets.load(AssetsData::Image::inputBox, "assets/image/component/InputBox.png");
-    assets.load(AssetsData::Image::fileBox, "assets/image/component/FileBox.png");
-    assets.load(AssetsData::Image::randomBox, "assets/image/component/RandomBox.png");
-    assets.load(AssetsData::Image::randomIcon, "assets/image/component/RandomIcon.png");
-    assets.load(AssetsData::Image::optionTable, "assets/image/component/OptionTable.png");
-    assets.load(AssetsData::Image::suboptionTable, "assets/image/component/SuboptionTable.png");
-    assets.load(AssetsData::Image::inputTable, "assets/image/component/InputTable.png");
-    assets.load(AssetsData::Image::confirmBox, "assets/image/component/ConfirmBox.png");
-    assets.load(AssetsData::Image::controlBox, "assets/image/component/ControlBox.png");
-    assets.load(AssetsData::Image::controlButtons, "assets/image/component/ControlButtons.png");
-    assets.load(AssetsData::Image::statusButtons, "assets/image/component/StatusButtons.png");
-    assets.load(AssetsData::Image::videoBar, "assets/image/component/VideoBar.png");
-    assets.load(AssetsData::Image::codeBox, "assets/image/component/CodeBox.png");
-    assets.load(AssetsData::Image::codeBar, "assets/image/component/CodeBar.png");
-    assets.load(AssetsData::Image::speedButton, "assets/image/component/SpeedButton.png");
-    assets.load(AssetsData::Image::speed, "assets/image/component/Speed.png");
+    assets.load(AssetsData::Image::inputBox, imageDir + "component/InputBox.png");
+    assets.load(AssetsData::Image::fileBox, imageDir + "component/FileBox.png");
+    assets.load(AssetsData::Image::randomBox, imageDir + "component/RandomBox.png");
+    assets.load(AssetsData::Image::randomIcon, imageDir + "component/RandomIcon.png");
+    assets.load(AssetsData::Image::optionTable, imageDir + "component/OptionTable.png");
+    assets.load(AssetsData::Image::suboptionTable, imageDir + "component/SuboptionTable.png");
+    assets.load(AssetsData::Image::inputTable, imageDir + "component/InputTable.png");
+    assets.load(AssetsData::Image::confirmBox, imageDir + "component/ConfirmBox.png");
+    assets.load(AssetsData::Image::controlBox, imageDir + "component/ControlBox.png");
+    assets.load(AssetsData::Image::controlButtons, imageDir + "component/ControlButtons.png");
+    assets.load(AssetsData::Image::statusButtons, imageDir + "component/StatusButtons.png");
+    assets.load(AssetsData::Image::videoBar, imageDir + "component/VideoBar.png");
+    assets.load(AssetsData::Image::codeBox, imageDir + "component/CodeBox.png");
+    assets.load(AssetsData::Image::codeBar, imageDir + "component/CodeBar.png");
+    assets.load(AssetsData::Image::speedButton, imageDir + "component/SpeedButton.png");
+    assets.load(AssetsData::Image::speed, imageDir + "component/Speed.png");
 
     assets.load(AssetsData::Font::consolasBold, "assets/font/consolas_bold.ttf");
 
@@ -57,8 +59,11 @@ int main() {
 
     assets.set(AssetsData::Color::label, sf::Color(255, 40, 40, 255));
 
-    HashTable HT(&window, &assets);
-    HT.run();
+    // HashTable HT(&window, &assets);
+    // HT.run();
+
+    AVLTree AVL(&window, &assets);
+    AVL.run();
 
     return EXIT_SUCCESS;
 }

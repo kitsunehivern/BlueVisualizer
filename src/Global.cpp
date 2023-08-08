@@ -17,6 +17,10 @@ sf::Vector2f sfhelper::getCenterPosition(sf::FloatRect rect) {
     return getCenterPosition(sf::Vector2f(rect.left, rect.top), sf::Vector2f(rect.width, rect.height));
 }
 
+float sfhelper::getDistance(sf::Vector2f position1, sf::Vector2f position2) {
+    return std::sqrt((position1.x - position2.x) * (position1.x - position2.x) + (position1.y - position2.y) * (position1.y - position2.y));
+}
+
 sf::IntRect sfhelper::toIntRect(sf::FloatRect rect) {
     return sf::IntRect(rect.left, rect.top, rect.width, rect.height);
 }

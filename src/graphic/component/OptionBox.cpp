@@ -46,6 +46,16 @@ void OptionBox::processOption() {
     }
 }
 
+bool OptionBox::isAnyInputBoxSelected() const {
+    for (int i = 0; i < (int)mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]].size(); i++) {
+        if (mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].isInputBoxSelected()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 std::pair<int, int> OptionBox::getOption() const {
     return std::make_pair(mOptionIndex, mSuboptionIndex[mOptionIndex]);
 }

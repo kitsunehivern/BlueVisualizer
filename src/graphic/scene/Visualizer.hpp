@@ -7,7 +7,8 @@
 #include "../AssetsHolder.hpp"
 #include "../component/OptionBox.hpp"
 #include "../component/CodeBox.hpp"
-#include "../object/Node.hpp"
+#include "../object/GraphicNode.hpp"
+#include "../object/GraphicEdge.hpp"
 #include "../object/Label.hpp"
 
 namespace ControlBoxData {
@@ -45,6 +46,10 @@ namespace VisualizerData {
 
 class Visualizer {
 protected:
+    typedef GraphicNodeData::Shape Shape;
+    typedef GraphicNodeData::Type Type;
+    typedef AssetsData::Color Color;
+
     Visualizer();
     Visualizer(sf::RenderWindow* window, AssetsHolder* assets);
 
@@ -52,18 +57,24 @@ protected:
     void abortAllSteps();
     void clearAllSteps();
 
-    void draw(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor);
-    void drawFadeIn(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor);
-    void drawFadeOut(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor);
-    void drawChangePosition(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<sf::Vector2f> oldPositions, std::vector<sf::Vector2f> newPositions);
-    void drawChangeValue(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<std::string> oldValues, std::vector<std::string> newValues);
-    void drawChangeColor(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, std::vector<AssetsData::Color> oldNodeColor, std::vector<AssetsData::Color> newNodeColor, std::vector<AssetsData::Color> oldValueColor, std::vector<AssetsData::Color> newValueColor);
-    void drawChangeColor(std::vector<Node*> nodes, NodeData::Shape shape, NodeData::Type type, AssetsData::Color oldNodeColor, AssetsData::Color newNodeColor, AssetsData::Color oldValueColor, AssetsData::Color newValueColor);
+    void draw(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color nodeColor, Color valueColor);
+    void drawFadeIn(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color nodeColor, Color valueColor);
+    void drawFadeOut(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color nodeColor, Color valueColor);
+    void drawChangePosition(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color nodeColor, Color valueColor, std::vector<sf::Vector2f> oldPositions, std::vector<sf::Vector2f> newPositions);
+    void drawChangeValue(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color nodeColor, Color valueColor, std::vector<std::string> oldValues, std::vector<std::string> newValues);
+    void drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, std::vector<Color> oldNodeColor, std::vector<Color> newNodeColor, std::vector<Color> oldValueColor, std::vector<Color> newValueColor);
+    void drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color oldNodeColor, Color newNodeColor, Color oldValueColor, Color newValueColor);
 
-    void draw(std::vector<Label*> labels, AssetsData::Color color);
-    void drawFadeIn(std::vector<Label*> labels, AssetsData::Color color);
-    void drawFadeOut(std::vector<Label*> labels, AssetsData::Color color);
-    void drawChangeName(std::vector<Label*> labels, AssetsData::Color color, std::vector<std::string> oldNames, std::vector<std::string> newNames);
+    void drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
+    void drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
+    void drawEdgeSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
+    void drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
+    void drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color oldColor, Color newColor);
+
+    void draw(std::vector<Label*> labels, Color color);
+    void drawFadeIn(std::vector<Label*> labels, Color color);
+    void drawFadeOut(std::vector<Label*> labels, Color color);
+    void drawChangeName(std::vector<Label*> labels, Color color, std::vector<std::string> oldNames, std::vector<std::string> newNames);
 
     void drawCode();
     void drawCodeFadeIn(int focusLine);
@@ -75,10 +86,6 @@ protected:
     void draw();
 
 protected:
-    typedef NodeData::Shape Shape;
-    typedef NodeData::Type Type;
-    typedef AssetsData::Color Color;
-
     sf::RenderWindow* mWindow;
     AssetsHolder* mAssets;
     OptionBox mOption;
@@ -98,7 +105,7 @@ protected:
     int mCurrentStep, mCurrentFrame;
     std::vector<std::vector<std::function<void(float, bool)>>> mDrawFunctions;
 
-    sf::Texture* getNodeTexture(NodeData::Shape shape, NodeData::Type type);
+    sf::Texture* getNodeTexture(Shape shape, Type type);
     
 	int getNumberOfFramePassed();
 	void goToNextStep();

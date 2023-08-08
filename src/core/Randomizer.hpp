@@ -8,6 +8,9 @@
 
 namespace Randomizer {
 
+static std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+
+template<typename T> T random(T min, T max);
 std::string integerInRange(int min, int max);
 std::string integerInRange(int* min, int* max);
 std::string integerInRange(int* min, int max);

@@ -1,14 +1,12 @@
 #include "Randomizer.hpp"
 
-std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
-
 template<typename T>
-T random(T min, T max) {
-    return std::uniform_int_distribution<T>(min, max)(rng);
+T Randomizer::random(T min, T max) {
+    return std::uniform_int_distribution<T>(min, max)(Randomizer::rng);
 }
 
 std::string Randomizer::integerInRange(int min, int max) {
-    return std::to_string(random(min, max));
+    return std::to_string(Randomizer::random(min, max));
 }
 
 std::string Randomizer::integerInRange(int* min, int* max) {

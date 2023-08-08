@@ -43,6 +43,10 @@ void InputBox::setRandomizer(std::function<std::string()> randomizer) {
     mRandomizer = randomizer;
 }
 
+bool InputBox::isInputBoxSelected() const {
+    return mIsInputBoxSelected;
+}
+
 std::string InputBox::getError() const {
     return mValidator(mValue, mName);
 }

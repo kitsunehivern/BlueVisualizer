@@ -3,7 +3,7 @@
 Label::Label() {
 }
 
-Label::Label(Node* node, std::string name) {
+Label::Label(GraphicNode* node, std::string name) {
     mNode = node;
     mName = name;
 }
@@ -18,7 +18,7 @@ void Label::draw(sf::RenderWindow* window, sf::Font* font, sf::Color* color, flo
     sf::Text labelText(mName, *font, LabelData::characterSize);
     labelText.setFillColor(*color);
     labelText.setOrigin(sfhelper::getCenterPosition(labelText.getLocalBounds()).x, 0.f);
-    labelText.setPosition(sfhelper::getCenterPosition(mNode->getPosition(), NodeData::nodeSize).x, mNode->getPosition().y + LabelData::postionOffset);
+    labelText.setPosition(sfhelper::getCenterPosition(mNode->getPosition(), GraphicNodeData::nodeSize).x, mNode->getPosition().y + LabelData::postionOffset);
     window->draw(labelText);
 }
 
