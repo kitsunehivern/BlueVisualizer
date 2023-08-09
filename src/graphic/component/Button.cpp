@@ -78,7 +78,7 @@ void Button::updateState(sf::RenderWindow* window) {
 }
 
 bool Button::handleEvent(sf::RenderWindow* window, sf::Event event) {
-    if (event.type == sf::Event::MouseButtonPressed) {
+    if (event.type == sf::Event::MouseButtonReleased) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (sfhelper::isMouseOver(window, mPosition, mImageRect.getSize())) {
                 return mState == ButtonData::State::focused;

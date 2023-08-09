@@ -23,14 +23,19 @@ public:
 
 private:
     void setPositions();
-    std::vector<GraphicNode*> getGraphicNodes(Node* root);
     int getBalanceFactor(Node* node);
     Node* leftRotate(Node* node);
     Node* rightRotate(Node* node);
+
+    void drawAllNode(Node* node);
+    void drawAllNodeFadeIn(Node* node);
     void drawAllEdge(Node* node);
     void drawAllEdgeFadeIn(Node* node);
 
+    void drawReformat();
+
     void create(int n);
+    void insert(int value);
 };
 
 #endif // AVL_TREE_HPP

@@ -22,9 +22,9 @@ public:
 
 protected:
     Node* mRoot;
+    int mSize;
 
 private:
-    int mSize;
     
     void deleteNode(Node* node);
 };

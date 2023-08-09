@@ -80,15 +80,13 @@ void GraphicNode::drawValueFadeOut(sf::RenderWindow* window, sf::Texture* nodeTe
     drawValueFadeIn(window, nodeTexture, nodeColor, valueFont, valueColor, 1.f - ratioTime, fakeDraw);
 }
 
-void GraphicNode::drawChangePosition(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, sf::Vector2f oldPosition, sf::Vector2f newPosition, float ratioTime, bool fakeDraw) {
+void GraphicNode::drawChangePosition(sf::Vector2f oldPosition, sf::Vector2f newPosition, float ratioTime, bool fakeDraw) {
 	mPosition.x = oldPosition.x + Animation::Bezier(ratioTime) * (newPosition.x - oldPosition.x);
 	mPosition.y = oldPosition.y + Animation::Bezier(ratioTime) * (newPosition.y - oldPosition.y);
     
     if (fakeDraw) {
         return;
     }
-    
-    draw(window, nodeTexture, nodeColor, valueFont, valueColor, ratioTime, fakeDraw);
 }
 
 void GraphicNode::drawChangeValue(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, std::string oldValue, std::string newValue, float ratioTime, bool fakeDraw) {

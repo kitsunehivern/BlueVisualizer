@@ -17,6 +17,8 @@ namespace GraphicNodeData {
         hollow,
         filled,
     };
+
+    const sf::Vector2f initialPosition = sf::Vector2f(0.f, 0.f);
 }
 
 class GraphicNode {
@@ -35,7 +37,7 @@ public:
     void drawFadeOut(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);
     void drawValueFadeIn(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);
     void drawValueFadeOut(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);    
-    void drawChangePosition(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, sf::Vector2f oldPosition, sf::Vector2f newPosition, float ratioTime, bool fakeDraw);
+    void drawChangePosition(sf::Vector2f oldPosition, sf::Vector2f newPosition, float ratioTime, bool fakeDraw);
     void drawChangeValue(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, std::string oldValue, std::string newValue, float ratioTime, bool fakeDraw);
     void drawChangeColor(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* oldNodeColor, sf::Color* newNodeColor, sf::Font* valueFont, sf::Color* oldValueColor, sf::Color* newValueColor, float ratioTime, bool fakeDraw);
 

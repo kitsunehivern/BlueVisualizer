@@ -181,10 +181,14 @@ void Visualizer::drawFadeOut(std::vector<GraphicNode*> nodes, Shape shape, Type 
 	}
 }
 
-void Visualizer::drawChangePosition(std::vector<GraphicNode*> nodes, Shape shape, Type type, AssetsData::Color nodeColor, AssetsData::Color valueColor, std::vector<sf::Vector2f> oldPositions, std::vector<sf::Vector2f> newPositions) {
+void Visualizer::drawChangePosition(std::vector<GraphicNode*> nodes, std::vector<sf::Vector2f> oldPositions, std::vector<sf::Vector2f> newPositions) {
 	assert(nodes.size() == oldPositions.size() && nodes.size() == newPositions.size());
 	for (int i = 0; i < (int)nodes.size(); i++) {
-		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangePosition, nodes[i], mWindow, getNodeTexture(shape, type), mAssets->get(nodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(valueColor), oldPositions[i], newPositions[i], std::placeholders::_1, std::placeholders::_2));
+		if (oldPositions[i] == GraphicNodeData::initialPosition) {
+			oldPositions[i] = newPositions[i];
+		}
+
+		mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangePosition, nodes[i], oldPositions[i], newPositions[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
@@ -240,6 +244,13 @@ void Visualizer::drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, Graphic
 	for (auto pnode : pnodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawChangeColor, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawChangeNode, &edge, mWindow, pnode.first, pnode.second.first, pnode.second.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 

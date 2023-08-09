@@ -45,6 +45,9 @@ namespace AssetsData {
         nodeTextFocus1, // Focus 1
         nodeTextFocus2, // Focus 2
 
+        edge,
+        edgeFocus,
+
         boxComponent,
         box,
         boxFocus,

@@ -48,6 +48,9 @@ int main() {
     assets.set(AssetsData::Color::nodeTextFocus1, sf::Color(255, 255, 255, 255));
     assets.set(AssetsData::Color::nodeTextFocus2, sf::Color(255, 140, 40, 255));
 
+    assets.set(AssetsData::Color::edge, sf::Color(0, 0, 0, 255));
+    assets.set(AssetsData::Color::edgeFocus, sf::Color(255, 140, 40, 255));
+
     assets.set(AssetsData::Color::boxComponent, sf::Color(240, 245, 245, 150));
     assets.set(AssetsData::Color::box, sf::Color(105, 210, 255, 255));
     assets.set(AssetsData::Color::boxFocus, sf::Color(45, 125, 185, 255));
