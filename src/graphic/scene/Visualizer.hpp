@@ -64,6 +64,7 @@ protected:
     void drawChangeValue(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color nodeColor, Color valueColor, std::vector<std::string> oldValues, std::vector<std::string> newValues);
     void drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, std::vector<Color> oldNodeColor, std::vector<Color> newNodeColor, std::vector<Color> oldValueColor, std::vector<Color> newValueColor);
     void drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color oldNodeColor, Color newNodeColor, Color oldValueColor, Color newValueColor);
+    void drawChangeValueColor(GraphicNode* node, Shape shape, Type type, Color oldNodeColor, Color newNodeColor, Color oldValueColor, Color newValueColor, std::string oldValues, std::string newValues);
 
     void drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
     void drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
@@ -71,6 +72,7 @@ protected:
     void drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
     void drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color oldColor, Color newColor);
     void drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
+    void drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
 
     void draw(std::vector<Label*> labels, Color color);
     void drawFadeIn(std::vector<Label*> labels, Color color);

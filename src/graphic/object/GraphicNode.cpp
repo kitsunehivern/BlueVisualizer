@@ -124,3 +124,31 @@ void GraphicNode::drawChangeColor(sf::RenderWindow* window, sf::Texture* nodeTex
     
     draw(window, nodeTexture, &curNodeColor, valueFont, &curValueColor, ratioTime, fakeDraw);
 }
+
+void GraphicNode::drawChangeValueColor(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* oldNodeColor, sf::Color* newNodeColor, sf::Font* valueFont, sf::Color* oldValueColor, sf::Color* newValueColor, std::string oldValue, std::string newValue, float ratioTime, bool fakeDraw) {
+    if (fakeDraw) {
+        return;
+    }
+
+	sf::Color curNodeColor = *oldNodeColor;
+	curNodeColor.r += std::round(Animation::Bezier(ratioTime) * (newNodeColor->r - (int)oldNodeColor->r));
+	curNodeColor.g += std::round(Animation::Bezier(ratioTime) * (newNodeColor->g - (int)oldNodeColor->g));
+	curNodeColor.b += std::round(Animation::Bezier(ratioTime) * (newNodeColor->b - (int)oldNodeColor->b));
+	curNodeColor.a += std::round(Animation::Bezier(ratioTime) * (newNodeColor->a - (int)oldNodeColor->a));
+
+	sf::Color curValueColor = *oldValueColor;
+	curValueColor.r += std::round(Animation::Bezier(ratioTime) * (newValueColor->r - (int)oldValueColor->r));
+	curValueColor.g += std::round(Animation::Bezier(ratioTime) * (newValueColor->g - (int)oldValueColor->g));
+	curValueColor.b += std::round(Animation::Bezier(ratioTime) * (newValueColor->b - (int)oldValueColor->b));
+	curValueColor.a += std::round(Animation::Bezier(ratioTime) * (newValueColor->a - (int)oldValueColor->a));
+
+    if (ratioTime <= 0.5f) {
+        mValue = oldValue;
+        curValueColor *= sf::Color(255, 255, 255, std::round(Animation::Bezier(1.f - ratioTime * 2.f) * 255));
+        draw(window, nodeTexture, &curNodeColor, valueFont, &curValueColor, ratioTime, fakeDraw);
+    } else {
+        mValue = newValue;
+        curValueColor *= sf::Color(255, 255, 255, std::round(Animation::Bezier((ratioTime - 0.5f) * 2.f) * 255));
+        draw(window, nodeTexture, &curNodeColor, valueFont, &curValueColor, ratioTime, fakeDraw);
+    }
+}

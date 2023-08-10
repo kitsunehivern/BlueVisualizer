@@ -22,6 +22,8 @@ public:
     void run();
 
 private:
+    Node* mErasedNode;
+
     void setPositions();
     int getBalanceFactor(Node* node);
     Node* leftRotate(Node* node);
@@ -34,8 +36,12 @@ private:
 
     void drawReformat();
 
+    void freeMemory();
+
     void create(int n);
+    void search(int value);
     void insert(int value);
+    void erase(int value);
 };
 
 #endif // AVL_TREE_HPP

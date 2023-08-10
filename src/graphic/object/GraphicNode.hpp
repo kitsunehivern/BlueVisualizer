@@ -40,6 +40,7 @@ public:
     void drawChangePosition(sf::Vector2f oldPosition, sf::Vector2f newPosition, float ratioTime, bool fakeDraw);
     void drawChangeValue(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, std::string oldValue, std::string newValue, float ratioTime, bool fakeDraw);
     void drawChangeColor(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* oldNodeColor, sf::Color* newNodeColor, sf::Font* valueFont, sf::Color* oldValueColor, sf::Color* newValueColor, float ratioTime, bool fakeDraw);
+    void drawChangeValueColor(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* oldNodeColor, sf::Color* newNodeColor, sf::Font* valueFont, sf::Color* oldValueColor, sf::Color* newValueColor, std::string oldValue, std::string newValue, float ratioTime, bool fakeDraw);
 
 private:
     std::string mValue;

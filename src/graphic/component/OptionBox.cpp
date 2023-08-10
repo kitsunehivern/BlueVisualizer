@@ -100,6 +100,10 @@ void OptionBox::updateState(sf::RenderWindow* window) {
 }
 
 bool OptionBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
+    for (int i = 0; i < (int)mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]].size(); i++) {
+        mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].handleEvent(window, event);
+    }
+
     if (event.type == sf::Event::MouseButtonReleased) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (sfhelper::isMouseOver(window, OptionBoxData::Option::tablePosition + OptionBoxData::Option::prevButtonRect.getPosition(), OptionBoxData::Option::prevButtonRect.getSize())) {
@@ -112,10 +116,12 @@ bool OptionBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                 mSuboptionIndex[mOptionIndex] = std::min(mSuboptionIndex[mOptionIndex] + 1, (int)mSuboptionList[mOptionIndex].size() - 1);
             }
         }
-    }
-
-    for (int i = 0; i < (int)mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]].size(); i++) {
-        mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].handleEvent(window, event);
+    } else if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Enter) {
+            if (mConfirmButton.getState() == ButtonData::State::normal || mConfirmButton.getState() == ButtonData::State::focused) {
+                return true;
+            }
+        }
     }
 
     return mConfirmButton.handleEvent(window, event);

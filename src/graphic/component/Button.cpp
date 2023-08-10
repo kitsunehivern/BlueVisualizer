@@ -65,6 +65,10 @@ void Button::setImageInsideRect(sf::FloatRect rect) {
     mImageInsideRect = rect;
 }
 
+ButtonData::State Button::getState() const {
+    return mState;
+}
+
 void Button::updateState(sf::RenderWindow* window) {
     if (mIsDisabled) {
        mState = ButtonData::State::disabled;

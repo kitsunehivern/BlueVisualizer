@@ -212,6 +212,10 @@ void Visualizer::drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, T
 	}
 }
 
+void Visualizer::drawChangeValueColor(GraphicNode* node, Shape shape, Type type, Color oldNodeColor, Color newNodeColor, Color oldValueColor, Color newValueColor, std::string oldValues, std::string newValues) {
+	mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangeValueColor, node, mWindow, getNodeTexture(shape, type), mAssets->get(oldNodeColor), mAssets->get(newNodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(oldValueColor), mAssets->get(newValueColor), oldValues, newValues, std::placeholders::_1, std::placeholders::_2));
+}
+
 void Visualizer::drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
 	for (auto pnode : pnodes) {
 		GraphicEdge edge;
@@ -251,6 +255,13 @@ void Visualizer::drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pai
 	for (auto pnode : pnodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawChangeNode, &edge, mWindow, pnode.first, pnode.second.first, pnode.second.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawSlideOutChangeNode, &edge, mWindow, pnode.first, pnode.second.first, pnode.second.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
@@ -431,44 +442,46 @@ bool Visualizer::handleEvent(sf::Event event) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			mIsVideoBarHolding = false;
 		}
-	} else if (event.type == sf::Event::KeyPressed && !mOption.isAnyInputBoxSelected()) {
-		switch (event.key.code) {
-		case sf::Keyboard::Home:
-			goToBeginning();
-			break;
-
-		case sf::Keyboard::Left:
-			goToPrevStep();
-			break;
-
-		case sf::Keyboard::Right:
-			goToNextStep();
-			break;
-
-		case sf::Keyboard::End:
-			goToEnding();
-			break;
-
-		case sf::Keyboard::Space:
-			if (mStatus == PAUSED) {
-				if (mDirection == NONE) {
-					mStatus = CONTINUE;
-				} else {
-					mDirection = NONE;
-				}
-			} else if (mStatus == CONTINUE) {
-				mStatus = PAUSED;
-				mDirection = NONE;
-			} else if (mStatus == REPLAY) {
+	} else if (event.type == sf::Event::KeyPressed) {
+		if (!mOption.isAnyInputBoxSelected()) {
+			switch (event.key.code) {
+			case sf::Keyboard::Home:
 				goToBeginning();
-				mStatus = CONTINUE;
-				mDirection = FORWARD;
+				break;
+
+			case sf::Keyboard::Left:
+				goToPrevStep();
+				break;
+
+			case sf::Keyboard::Right:
+				goToNextStep();
+				break;
+
+			case sf::Keyboard::End:
+				goToEnding();
+				break;
+
+			case sf::Keyboard::Space:
+				if (mStatus == PAUSED) {
+					if (mDirection == NONE) {
+						mStatus = CONTINUE;
+					} else {
+						mDirection = NONE;
+					}
+				} else if (mStatus == CONTINUE) {
+					mStatus = PAUSED;
+					mDirection = NONE;
+				} else if (mStatus == REPLAY) {
+					goToBeginning();
+					mStatus = CONTINUE;
+					mDirection = FORWARD;
+				}
+
+				break;
+
+			default:
+				break;
 			}
-
-			break;
-
-		default:
-			break;
 		}
 	}
 

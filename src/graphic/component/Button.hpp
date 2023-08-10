@@ -67,6 +67,7 @@ public:
     void setImageInside(AssetsData::Image image);
     void setImageInsideRect(sf::FloatRect rect);
 
+    ButtonData::State getState() const;
     void updateState(sf::RenderWindow* window);
     bool handleEvent(sf::RenderWindow* window, sf::Event event);
 
