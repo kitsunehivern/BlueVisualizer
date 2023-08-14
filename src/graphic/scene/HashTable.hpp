@@ -30,10 +30,10 @@ private:
     int mCapacity;
     int mSize;
     std::vector<GraphicNode> mTable;
-    std::vector<Label> mLabels;
 
     std::vector<GraphicNode*> getNodes(int left, int right);
-    std::vector<Label*> getLabels(int left, int right);
+    void drawAllLabels();
+    void drawAllLabelsFadeIn();
 
     void create(int capcity, int size);
     void search(int key);

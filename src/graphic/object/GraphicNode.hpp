@@ -24,7 +24,7 @@ namespace GraphicNodeData {
 class GraphicNode {
 public:
     GraphicNode();
-    GraphicNode(std::string value, sf::Vector2f position = sf::Vector2f(0.f, 0.f));
+    GraphicNode(std::string value, sf::Vector2f position = GraphicNodeData::initialPosition);
 
     std::string getValue();
     void setValue(std::string value);

@@ -9,7 +9,7 @@
 #include "../component/CodeBox.hpp"
 #include "../object/GraphicNode.hpp"
 #include "../object/GraphicEdge.hpp"
-#include "../object/Label.hpp"
+#include "../object/GraphicLabel.hpp"
 
 namespace ControlBoxData {
     const float tableWidth = 880.f;
@@ -73,11 +73,13 @@ protected:
     void drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color oldColor, Color newColor);
     void drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
     void drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
+    void drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
 
-    void draw(std::vector<Label*> labels, Color color);
-    void drawFadeIn(std::vector<Label*> labels, Color color);
-    void drawFadeOut(std::vector<Label*> labels, Color color);
-    void drawChangeName(std::vector<Label*> labels, Color color, std::vector<std::string> oldNames, std::vector<std::string> newNames);
+    void drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
+    void drawLabelFadeIn(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
+    void drawLabelFadeOut(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
+    void drawLabelChangeName(std::vector<GraphicNode*> nodes, std::vector<std::string> oldNames, std::vector<std::string> newNames, Color color);
+    void drawLabelFixed(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
 
     void drawCode();
     void drawCodeFadeIn(int focusLine);

@@ -3,72 +3,8 @@
 AVLTree::AVLTree() {
 }
 
-AVLTree::AVLTree(sf::RenderWindow* window, AssetsHolder* assets) : Visualizer(window, assets) {
+AVLTree::AVLTree(sf::RenderWindow* window, AssetsHolder* assets) : BinaryTreeVisualizer(window, assets) {
     mErasedNode = nullptr;
-}
-
-void AVLTree::setPositions() {
-    std::function<sf::Vector2f(Node* node)> getSubtreeRange = [&](Node* node) {
-        if (node == nullptr) {
-            return sf::Vector2f(1e9, -1e9);
-        }
-
-        return sf::Vector2f(std::min(node->value.getPosition().x, getSubtreeRange(node->left).x), std::max(node->value.getPosition().x, getSubtreeRange(node->right).y));
-    };
-
-    std::function<void(Node*, sf::Vector2f)> offsetSubtree = [&](Node* node, sf::Vector2f offset) {
-        if (node == nullptr) {
-            return;
-        }
-
-        node->value.setPosition(node->value.getPosition() + offset);
-        if (node->left != nullptr) {
-            offsetSubtree(node->left, offset);
-        }
-        if (node->right != nullptr) {
-            offsetSubtree(node->right, offset);
-        }
-    };
-
-    std::function<void(Node*)> setSubtreePosition = [&](Node* node) {
-        if (node->left != nullptr) {
-            setSubtreePosition(node->left);
-        }
-        if (node->right != nullptr) {
-            setSubtreePosition(node->right);
-        }
-
-        if (node->right == nullptr && node->left == nullptr) {
-            node->value.setPosition(sf::Vector2f(0.f, 0.f));
-        } else if (node->left == nullptr) {
-            sf::Vector2f rightSubtreeRange = getSubtreeRange(node->right);
-            node->value.setPosition(sf::Vector2f(rightSubtreeRange.x - AVLTreeData::space.x, node->right->value.getPosition().y - AVLTreeData::space.y));
-        } else if (node->right == nullptr) {
-            sf::Vector2f leftSubtreeRange = getSubtreeRange(node->left);
-            node->value.setPosition(sf::Vector2f(leftSubtreeRange.y + AVLTreeData::space.x, node->left->value.getPosition().y - AVLTreeData::space.y));
-        } else {
-            int deltaY = node->right->value.getPosition().y - node->left->value.getPosition().y;
-            offsetSubtree(node->right, sf::Vector2f(0.f, -deltaY));
-
-            sf::Vector2f leftSubtreeRange = getSubtreeRange(node->left);
-            sf::Vector2f rightSubtreeRange = getSubtreeRange(node->right);
-            int deltaX = rightSubtreeRange.x - leftSubtreeRange.y - 2 * AVLTreeData::space.x;
-            offsetSubtree(node->right, sf::Vector2f(-deltaX, 0.f));
-            rightSubtreeRange = getSubtreeRange(node->right);
-
-            node->value.setPosition(sf::Vector2f((leftSubtreeRange.y + rightSubtreeRange.x) / 2.f, node->right->value.getPosition().y - AVLTreeData::space.y));
-        }
-    };
-
-    if (mRoot == nullptr) {
-        return;
-    }
-    
-    setSubtreePosition(mRoot);
-
-    sf::Vector2f treeRange = getSubtreeRange(mRoot);
-    offsetSubtree(mRoot, sf::Vector2f(((float)mWindow->getSize().x - (treeRange.y - treeRange.x)) / 2.f - treeRange.x, AVLTreeData::treePositionY - mRoot->value.getPosition().y));
-    offsetSubtree(mRoot, sf::Vector2f(-GraphicNodeData::nodeSize.x / 2.f, -GraphicNodeData::nodeSize.y / 2.f));
 }
 
 int AVLTree::getBalanceFactor(Node* node) {
@@ -95,89 +31,6 @@ BinaryTree<GraphicNode>::Node* AVLTree::rightRotate(Node* node) {
     return newRoot;
 }
 
-void AVLTree::drawAllNode(Node* node) {
-    if (node == nullptr) {
-        return;
-    }
-
-    draw({ &node->value }, Shape::circle, Type::hollow, Color::node, Color::nodeText);
-
-    drawAllNode(node->left);
-    drawAllNode(node->right);
-}
-
-void AVLTree::drawAllNodeFadeIn(Node* node) {
-    if (node == nullptr) {
-        return;
-    }
-
-    drawFadeIn({ &node->value }, Shape::circle, Type::hollow, Color::node, Color::nodeText);
-
-    drawAllNodeFadeIn(node->left);
-    drawAllNodeFadeIn(node->right);
-}
-
-void AVLTree::drawAllEdge(Node* node) {
-    if (node == nullptr) {
-        return;
-    }
-
-    if (node->left != nullptr) {
-        drawEdge({ std::make_pair(&node->value, &node->left->value) }, Color::edge);
-    }
-
-    if (node->right != nullptr) {
-        drawEdge({ std::make_pair(&node->value, &node->right->value) }, Color::edge);
-    }
-
-    drawAllEdge(node->left);
-    drawAllEdge(node->right);
-}
-
-void AVLTree::drawAllEdgeFadeIn(Node* node) {
-    if (node == nullptr) {
-        return;
-    }
-
-    if (node->left != nullptr) {
-        drawEdgeFadeIn({ std::make_pair(&node->value, &node->left->value) }, Color::node);
-    }
-
-    if (node->right != nullptr) {
-        drawEdgeFadeIn({ std::make_pair(&node->value, &node->right->value) }, Color::node);
-    }
-
-    drawAllEdgeFadeIn(node->left);
-    drawAllEdgeFadeIn(node->right);
-}
-
-void AVLTree::drawReformat() {
-    std::vector<GraphicNode*> graphicNodes;
-    std::function<void(Node*)> getGraphicNodeInOrder = [&](Node* node) {
-        if (node == nullptr) {
-            return;
-        }
-
-        getGraphicNodeInOrder(node->left);
-        graphicNodes.push_back(&node->value);
-        getGraphicNodeInOrder(node->right);
-    }; getGraphicNodeInOrder(mRoot);
-
-    std::vector<sf::Vector2f> oldPositions;
-    for (GraphicNode* graphicNode : graphicNodes) {
-        oldPositions.push_back(graphicNode->getPosition());
-    }
-
-    setPositions();
-
-    std::vector<sf::Vector2f> newPositions;
-    for (GraphicNode* graphicNode : graphicNodes) {
-        newPositions.push_back(graphicNode->getPosition());
-    }
-
-    drawChangePosition(graphicNodes, oldPositions, newPositions);
-}
-
 void AVLTree::freeMemory() {
     if (mErasedNode) {
         delete mErasedNode;
@@ -185,10 +38,10 @@ void AVLTree::freeMemory() {
     }
 }
 
-void AVLTree::create(int n) {
+void AVLTree::create(int size) {
     clear();
     std::set<int> tempValues;
-    while ((int)tempValues.size() < n) {
+    while ((int)tempValues.size() < size) {
         tempValues.insert(Randomizer::random(AVLTreeData::minValue, AVLTreeData::maxValue));
     }
 
@@ -274,8 +127,7 @@ void AVLTree::search(int value) {
 
     int lastCase = -1;
 
-    addNewStep();
-    drawReformat();
+    addNewStep();   
     drawAllNode(mRoot);
     drawAllEdge(mRoot);
     if (std::stoi(mRoot->value.getValue()) == value) {
@@ -1803,7 +1655,7 @@ void AVLTree::run() {
     mOption.processOption();
 
     clearAllSteps();
-    create(10);
+    create(15);
 
     while (mWindow->isOpen()) {
         updateState();

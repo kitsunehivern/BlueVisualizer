@@ -2,6 +2,7 @@
 #include "graphic/AssetsHolder.hpp"
 #include "graphic/scene/HashTable.hpp"
 #include "graphic/scene/AVLTree.hpp"
+#include "graphic/scene/BinaryHeap.hpp"
 
 int main() {
     sf::ContextSettings settings;
@@ -65,8 +66,11 @@ int main() {
     // HashTable HT(&window, &assets);
     // HT.run();
 
-    AVLTree AVL(&window, &assets);
-    AVL.run();
+    // AVLTree AVL(&window, &assets);
+    // AVL.run();
+
+    BinaryHeap BH(&window, &assets);
+    BH.run();
 
     return EXIT_SUCCESS;
 }

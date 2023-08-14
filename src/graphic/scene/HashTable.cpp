@@ -15,23 +15,24 @@ std::vector<GraphicNode*> HashTable::getNodes(int left, int right) {
     return nodes;
 }
 
-std::vector<Label*> HashTable::getLabels(int left, int right) {
-    std::vector<Label*> labels;
-    for (int i = left; i <= right; i++) {
-        labels.push_back(&mLabels[i]);
+void HashTable::drawAllLabels() {
+    for (int i = 0; i < mCapacity; i++) {
+        drawLabel({ &mTable[i] }, { std::to_string(i) }, Color::label);
     }
+}
 
-    return labels;
+void HashTable::drawAllLabelsFadeIn() {
+    for (int i = 0; i < mCapacity; i++) {
+        drawLabelFadeIn({ &mTable[i] }, { std::to_string(i) }, Color::label);
+    }
 }
 
 void HashTable::create(int capacity, int size) {
     mCapacity = capacity;
     mSize = size;
     mTable.resize(mCapacity);
-    mLabels.resize(mCapacity);
     for (int i = 0; i < mCapacity; i++) {
         mTable[i] = GraphicNode("", HashTableData::position + sf::Vector2f(i % HashTableData::maxSizePerLine * HashTableData::space.x, i / HashTableData::maxSizePerLine * HashTableData::space.y));
-        mLabels[i] = Label(&mTable[i], std::to_string(i));
     }
 
     for (int i = 0; i < mSize; i++) {
@@ -48,7 +49,7 @@ void HashTable::create(int capacity, int size) {
 
     addNewStep();
     drawFadeIn(getNodes(0, mCapacity - 1), Shape::square, Type::hollow,Color::node,Color::nodeText);
-    drawFadeIn(getLabels(0, mCapacity - 1),Color::label);
+    drawAllLabelsFadeIn();
     drawCode();
 }
 
@@ -79,7 +80,7 @@ void HashTable::search(int key) {
             }
             drawFadeIn({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
         }
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         if (count == 0) {
             drawCodeFadeIn(1);
         } else {
@@ -101,7 +102,7 @@ void HashTable::search(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
         }
         draw({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         drawCodeChangeLine(1, 2);
 
         if (mTable[hashkey].getValue() == std::to_string(key)) {
@@ -116,7 +117,7 @@ void HashTable::search(int key) {
                 draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
             }
             draw({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-            draw(getLabels(0, mCapacity - 1),Color::label);
+            drawAllLabels();
             drawCodeChangeLine(2, 3);
 
             addNewStep();
@@ -130,7 +131,7 @@ void HashTable::search(int key) {
                 drawChangeColor(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::node,Color::nodeTextFocus2,Color::nodeText);
             }
             drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-            draw(getLabels(0, mCapacity - 1),Color::label);
+            drawAllLabels();
             drawCodeFadeOut(3);
 
             return;
@@ -147,7 +148,7 @@ void HashTable::search(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
         }
         drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         drawCodeChangeLine(2, 4);
 
         hashkey = (hashkey + 1) % mCapacity;
@@ -169,7 +170,7 @@ void HashTable::search(int key) {
         }
         draw({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
     }
-    draw(getLabels(0, mCapacity - 1),Color::label);
+    drawAllLabels();
     drawCodeChangeLine(1, 5);
 
     addNewStep();
@@ -187,7 +188,7 @@ void HashTable::search(int key) {
         }
         drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
     }
-    draw(getLabels(0, mCapacity - 1),Color::label);
+    drawAllLabels();
     drawCodeFadeOut(5);
 }
 
@@ -212,7 +213,7 @@ void HashTable::insert(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
         }
         drawFadeIn({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         if (hashkey == firstHashkey) {
             drawCodeFadeIn(1);
         } else {
@@ -234,7 +235,7 @@ void HashTable::insert(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
         }
         drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         drawCodeChangeLine(1, 2);
 
         hashkey = (hashkey + 1) % mCapacity;
@@ -251,7 +252,7 @@ void HashTable::insert(int key) {
         draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
     }
     drawChangeValue({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1, { mTable[hashkey].getValue() }, { std::to_string(key) });
-    draw(getLabels(0, mCapacity - 1),Color::label);
+    drawAllLabels();
     drawCodeChangeLine(1, 3);
     mSize++;
 
@@ -266,7 +267,7 @@ void HashTable::insert(int key) {
         drawChangeColor(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::node,Color::nodeTextFocus2,Color::nodeText);
     }
     drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-    draw(getLabels(0, mCapacity - 1),Color::label);
+    drawAllLabels();
     drawCodeFadeOut(3);
 }
 
@@ -296,7 +297,7 @@ void HashTable::erase(int key) {
             }
             drawFadeIn({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
         }
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         if (count == 0) {
             drawCodeFadeIn(1);
         } else {
@@ -318,7 +319,7 @@ void HashTable::erase(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
         }
         draw({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         drawCodeChangeLine(1, 2);
 
         if (mTable[hashkey].getValue() == std::to_string(key)) {
@@ -333,7 +334,7 @@ void HashTable::erase(int key) {
                 draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
             }
             drawChangeValue({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1, { mTable[hashkey].getValue() }, { HashTableData::deletedValue });
-            draw(getLabels(0, mCapacity - 1),Color::label);
+            drawAllLabels();
             drawCodeChangeLine(2, 3);
             mSize--;
 
@@ -351,7 +352,7 @@ void HashTable::erase(int key) {
             draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
         }
         drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         drawCodeChangeLine(2, 4);
 
         hashkey = (hashkey + 1) % mCapacity;
@@ -361,7 +362,7 @@ void HashTable::erase(int key) {
     addNewStep();
     if (count == mCapacity) {
         drawChangeColor(getNodes(0, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::node,Color::nodeTextFocus2,Color::nodeText);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         drawCodeFadeOut(1);
     } else {
         if (hashkey >= firstHashkey) {
@@ -374,7 +375,7 @@ void HashTable::erase(int key) {
             drawChangeColor(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::node,Color::nodeTextFocus2,Color::nodeText);
         }
         drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
-        draw(getLabels(0, mCapacity - 1),Color::label);
+        drawAllLabels();
         if (mTable[hashkey].getValue() == HashTableData::emptyValue) {
             drawCodeFadeOut(1);
         } else {

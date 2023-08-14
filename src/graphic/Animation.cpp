@@ -13,7 +13,7 @@ float Animation::easeInOut(float ratioTime) {
 }
 
 float Animation::Bezier(float ratioTime) {
-    return 3 * ratioTime * ratioTime - 2 * ratioTime * ratioTime * ratioTime;
+    return 3.f * ratioTime * ratioTime - 2.f * ratioTime * ratioTime * ratioTime;
 }
 
 float Animation::linear(float ratioTime) {

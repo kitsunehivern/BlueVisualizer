@@ -265,28 +265,50 @@ void Visualizer::drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, 
 	}
 }
 
-void Visualizer::draw(std::vector<Label*> labels, AssetsData::Color labelColor) {
-	for (auto label : labels) {
-		mDrawFunctions.back().push_back(std::bind(&Label::draw, label, mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+void Visualizer::drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
+	for (auto pnode : pnodes) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFixed, &edge, mWindow, *pnode.first, *pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawFadeIn(std::vector<Label*> labels, AssetsData::Color labelColor) {
-	for (auto label : labels) {
-		mDrawFunctions.back().push_back(std::bind(&Label::drawFadeIn, label, mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+void Visualizer::drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, AssetsData::Color labelColor) {
+	assert(nodes.size() == names.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
+		GraphicLabel label;
+		mDrawFunctions.back().push_back(std::bind(&GraphicLabel::draw, &label, mWindow, nodes[i], names[i], mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawFadeOut(std::vector<Label*> labels, AssetsData::Color labelColor) {
-	for (auto label : labels) {
-		mDrawFunctions.back().push_back(std::bind(&Label::drawFadeOut, label, mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+void Visualizer::drawLabelFadeIn(std::vector<GraphicNode*> nodes, std::vector<std::string> names, AssetsData::Color labelColor) {
+	assert(nodes.size() == names.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
+		GraphicLabel label;
+		mDrawFunctions.back().push_back(std::bind(&GraphicLabel::drawFadeIn, &label, mWindow, nodes[i], names[i], mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawChangeName(std::vector<Label*> labels, AssetsData::Color labelColor, std::vector<std::string> oldNames, std::vector<std::string> newNames) {
-	assert(labels.size() == oldNames.size() && labels.size() == newNames.size());
-	for (int i = 0; i < (int)labels.size(); i++) {
-		mDrawFunctions.back().push_back(std::bind(&Label::drawChangeName, labels[i], mWindow, mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), oldNames[i], newNames[i], std::placeholders::_1, std::placeholders::_2));
+void Visualizer::drawLabelFadeOut(std::vector<GraphicNode*> nodes, std::vector<std::string> names, AssetsData::Color labelColor) {
+	assert(nodes.size() == names.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
+		GraphicLabel label;
+		mDrawFunctions.back().push_back(std::bind(&GraphicLabel::drawFadeOut, &label, mWindow, nodes[i], names[i], mAssets->get(AssetsData::Font::consolasBold), mAssets->get(labelColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawLabelChangeName(std::vector<GraphicNode*> nodes, std::vector<std::string> oldNames, std::vector<std::string> newNames, Color color) {
+	assert(nodes.size() == oldNames.size() && nodes.size() == newNames.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
+		GraphicLabel label;
+		mDrawFunctions.back().push_back(std::bind(&GraphicLabel::drawChangeName, &label, mWindow, nodes[i], oldNames[i], newNames[i], mAssets->get(AssetsData::Font::consolasBold), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawLabelFixed(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color) {
+	assert(nodes.size() == names.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
+		GraphicLabel label;
+		mDrawFunctions.back().push_back(std::bind(&GraphicLabel::drawFixed, &label, mWindow, *nodes[i], names[i], mAssets->get(AssetsData::Font::consolasBold), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
