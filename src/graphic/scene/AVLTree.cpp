@@ -67,7 +67,6 @@ void AVLTree::create(int size) {
         } else {
             path.back()->right = new Node(GraphicNode(std::to_string(value), GraphicNodeData::initialPosition));
         }
-        mSize++;
 
         while (!path.empty()) {
             Node* current = path.back();
@@ -270,7 +269,6 @@ void AVLTree::insert(int value) {
 
     if (mRoot == nullptr) {
         mRoot = new Node(GraphicNode(std::to_string(value), GraphicNodeData::initialPosition));
-        mSize++;
         setPositions();
 
         addNewStep();
@@ -398,7 +396,6 @@ void AVLTree::insert(int value) {
         } else {
             current = path.back()->right = new Node(GraphicNode(std::to_string(value), GraphicNodeData::initialPosition));
         }
-        mSize++;
 
         addNewStep();
         drawReformat();
@@ -934,8 +931,6 @@ void AVLTree::erase(int value) {
     }
 
     if (exist) {
-        mSize--;
-
         if (size() == 0) {
             mErasedNode = mRoot;
             mRoot = nullptr;

@@ -40,7 +40,7 @@ void BinaryTreeVisualizer::setPositions() {
         }
 
         if (node->right == nullptr && node->left == nullptr) {
-            node->value.setPosition(sf::Vector2f(0.f, 0.f));
+            node->value.setPosition(GraphicNodeData::initialPosition);
         } else if (node->left == nullptr) {
             sf::Vector2f rightSubtreeRange = getSubtreeRange(node->right);
             node->value.setPosition(sf::Vector2f(rightSubtreeRange.x - BinaryTreeVisualizerData::space.x, node->right->value.getPosition().y - BinaryTreeVisualizerData::space.y));
@@ -48,12 +48,12 @@ void BinaryTreeVisualizer::setPositions() {
             sf::Vector2f leftSubtreeRange = getSubtreeRange(node->left);
             node->value.setPosition(sf::Vector2f(leftSubtreeRange.y + BinaryTreeVisualizerData::space.x, node->left->value.getPosition().y - BinaryTreeVisualizerData::space.y));
         } else {
-            int deltaY = node->right->value.getPosition().y - node->left->value.getPosition().y;
+            float deltaY = node->right->value.getPosition().y - node->left->value.getPosition().y;
             offsetSubtree(node->right, sf::Vector2f(0.f, -deltaY));
 
             sf::Vector2f leftSubtreeRange = getSubtreeRange(node->left);
             sf::Vector2f rightSubtreeRange = getSubtreeRange(node->right);
-            int deltaX = rightSubtreeRange.x - leftSubtreeRange.y - 2 * BinaryTreeVisualizerData::space.x;
+            float deltaX = rightSubtreeRange.x - leftSubtreeRange.y - 2 * BinaryTreeVisualizerData::space.x;
             offsetSubtree(node->right, sf::Vector2f(-deltaX, 0.f));
             rightSubtreeRange = getSubtreeRange(node->right);
 
@@ -74,15 +74,15 @@ void BinaryTreeVisualizer::setPositions() {
 
 void BinaryTreeVisualizer::drawReformat() {
     std::vector<GraphicNode*> graphicNodes;
-    std::function<void(Node*)> getGraphicNodeInOrder = [&](Node* node) {
+    std::function<void(Node*)> getGraphicNode = [&](Node* node) {
         if (node == nullptr) {
             return;
         }
 
-        getGraphicNodeInOrder(node->left);
         graphicNodes.push_back(&node->value);
-        getGraphicNodeInOrder(node->right);
-    }; getGraphicNodeInOrder(mRoot);
+        getGraphicNode(node->left);
+        getGraphicNode(node->right);
+    }; getGraphicNode(mRoot);
 
     std::vector<sf::Vector2f> oldPositions;
     for (GraphicNode* graphicNode : graphicNodes) {

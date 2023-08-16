@@ -22,10 +22,9 @@ public:
 
 protected:
     Node* mRoot;
-    int mSize;
 
 private:
-    
+    int getSize(Node* node) const;
     void deleteNode(Node* node);
 };
 
@@ -39,7 +38,6 @@ BinaryTree<T>::Node::Node(const T& inital) {
 template<class T>
 BinaryTree<T>::BinaryTree() {
     mRoot = nullptr;
-    mSize = 0;
 }
 
 template<class T>
@@ -49,7 +47,7 @@ BinaryTree<T>::~BinaryTree() {
 
 template<class T>
 int BinaryTree<T>::size() const {
-    return mSize;
+    return getSize(mRoot);
 }
 
 template<class T>
@@ -68,7 +66,15 @@ template<class T>
 void BinaryTree<T>::clear() {
     deleteNode(mRoot);
     mRoot = nullptr;
-    mSize = 0;
+}
+
+template<class T>
+int BinaryTree<T>::getSize(Node* node) const {
+    if (node == nullptr) {
+        return 0;
+    }
+
+    return 1 + getSize(node->left) + getSize(node->right);
 }
 
 template<class T>
