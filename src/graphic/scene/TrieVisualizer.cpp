@@ -14,6 +14,14 @@ TrieVisualizer::TrieVisualizer() : Visualizer() {
 
 TrieVisualizer::TrieVisualizer(sf::RenderWindow* window, AssetsHolder* assets) : Visualizer(window, assets) {
     mRoot = nullptr;
+    mErasedNodes.clear();
+}
+
+void TrieVisualizer::freeMemory() {
+    for (auto node : mErasedNodes) {
+        delete node;
+    }
+    mErasedNodes.clear();
 }
 
 void TrieVisualizer::deleteTree() {
@@ -94,8 +102,8 @@ void TrieVisualizer::setPositions() {
             }
 
             previousChildPositionX = getSubtreeRange(child.second).y;
-            subtreeRange.x = std::min(subtreeRange.x, getSubtreeRange(child.second).x);
-            subtreeRange.y = std::max(subtreeRange.y, getSubtreeRange(child.second).y);
+            subtreeRange.x = std::min(subtreeRange.x, child.second->value.getPosition().x);
+            subtreeRange.y = std::max(subtreeRange.y, child.second->value.getPosition().x);
         }
 
         node->value.setPosition(sf::Vector2f((subtreeRange.x + subtreeRange.y) / 2.f, firstChildPositionY - TrieVisualizerData::space.y));
@@ -187,8 +195,6 @@ void TrieVisualizer::drawAllNodeExceptChild(Node* node, char childLetter) {
         return;
     }
 
-    assert(node->children.count(childLetter));
-
     for (auto& child : node->children) {
         if (child.first != childLetter) {
             drawAllNode(child.second);
@@ -222,8 +228,6 @@ void TrieVisualizer::drawAllEdgeExceptChild(Node* node, char childLetter) {
     if (node == nullptr) {
         return;
     }
-
-    assert(node->children.count(childLetter));
 
     for (auto& child : node->children) {
         if (child.first != childLetter) {
@@ -270,15 +274,13 @@ void TrieVisualizer::search(std::string str) {
     mCode.update({
         "Node cur = root",
         "for each c in s:",
-        "    if cur.child[c] == NULL:",
-        "        return NOT_FOUND",
+        "    if cur.child[c] == NULL: return NOT_FOUND",
         "    cur = cur.child[c]",
-        "if cur.leaf == TRUE: return FOUND",
-        "else: return NOT_FOUND"
+        "if cur.leaf: return FOUND",
+        "return NOT_FOUND"
     });
 
     addNewStep();
-    drawReformat();
     drawAllEdge(mRoot);
     drawAllNode(mRoot);
     drawFadeIn({ &mRoot->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
@@ -288,22 +290,6 @@ void TrieVisualizer::search(std::string str) {
     Node* current = mRoot;
     path.push_back(current);
     for (char letter : str) {
-        addNewStep();
-        for (int i = 0; i < (int)path.size() - 1; i++) {
-            drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
-            draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
-            drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
-            drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
-        }
-        drawAllEdge(path.back());
-        draw({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
-        drawAllNodeExceptRoot(path.back());
-        if (current == mRoot) {
-            drawCodeChangeLine(0, 2);
-        } else {
-            drawCodeChangeLine(4, 2);
-        }
-
         if (!current->children.count(letter)) {
             addNewStep();
             for (int i = 0; i < (int)path.size() - 1; i++) {
@@ -316,7 +302,11 @@ void TrieVisualizer::search(std::string str) {
             draw({ &path.back()->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
             drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
             drawAllNodeExceptRoot(path.back());
-            drawCodeChangeLine(2, 3);
+            if ((int)path.size() == 1) {
+                drawCodeChangeLine(0, 2);
+            } else {
+                drawCodeChangeLine(3, 2);
+            }
 
             addNewStep();
             for (int i = 0; i < (int)path.size() - 1; i++) {
@@ -336,7 +326,7 @@ void TrieVisualizer::search(std::string str) {
                 drawChangeColor({ &path.back()->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::node, Color::nodeTextFocus2, Color::nodeText);
             }
             drawAllNodeExceptRoot(path.back());
-            drawCodeFadeOut(3);
+            drawCodeFadeOut(2);
 
             return;
         }
@@ -361,7 +351,11 @@ void TrieVisualizer::search(std::string str) {
         drawAllEdge(path.back());
         drawAllNode(path.back());
         drawFadeIn({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
-        drawCodeChangeLine(2, 4);
+        if ((int)path.size() == 2) {
+            drawCodeChangeLine(0, 3);
+        } else {
+            drawCodeChangeLine(3, 3);
+        }
     }
 
     addNewStep();
@@ -375,10 +369,10 @@ void TrieVisualizer::search(std::string str) {
     drawAllNodeExceptRoot(path.back());
     if (current->marked) {
         drawChangeColor({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeFocus2, Color::nodeTextFocus1, Color::nodeTextFocus1);
-        drawCodeChangeLine(4, 5);
+        drawCodeChangeLine(3, 4);
     } else {
         draw({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
-        drawCodeChangeLine(4, 6);
+        drawCodeChangeLine(3, 5);
     }
     
     addNewStep();
@@ -396,10 +390,10 @@ void TrieVisualizer::search(std::string str) {
     drawAllNode(path.back());
     if (current->marked) {
         drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus2, Color::nodeTextFocus1);
-        drawCodeFadeOut(5);
+        drawCodeFadeOut(4);
     } else {
         drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
-        drawCodeFadeOut(6);
+        drawCodeFadeOut(5);
     }
 }
 
@@ -424,22 +418,6 @@ void TrieVisualizer::insert(std::string str) {
     Node* current = mRoot;
     path.push_back(current);
     for (char letter : str) {
-        addNewStep();
-        for (int i = 0; i < (int)path.size() - 1; i++) {
-            drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
-            draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
-            drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
-            drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
-        }
-        drawAllEdge(path.back());
-        draw({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
-        drawAllNodeExceptRoot(path.back());
-        if (current == mRoot) {
-            drawCodeChangeLine(0, 2);
-        } else {
-            drawCodeChangeLine(4, 2);
-        }
-
         bool hasChild = true;
         if (!current->children.count(letter)) {
             hasChild = false;
@@ -458,7 +436,11 @@ void TrieVisualizer::insert(std::string str) {
             draw({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
             drawAllNodeExceptChild(path.back(), letter);
             drawFadeIn({ &path.back()->children[letter]->value }, Shape::circle, Type::hollow, Color::node, Color::nodeText);
-            drawCodeChangeLine(2, 3);
+            if ((int)path.size() == 1) {
+                drawCodeChangeLine(0, 3);
+            } else {
+                drawCodeChangeLine(4, 3);
+            }
         }
 
         current = current->children[letter];
@@ -482,7 +464,11 @@ void TrieVisualizer::insert(std::string str) {
         drawAllNode(path.back());
         drawFadeIn({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
         if (hasChild) {
-            drawCodeChangeLine(2, 4);
+            if ((int)path.size() == 2) {
+                drawCodeChangeLine(0, 4);
+            } else {
+                drawCodeChangeLine(4, 4);
+            }
         } else {
             drawCodeChangeLine(3, 4);
         }
@@ -519,7 +505,207 @@ void TrieVisualizer::insert(std::string str) {
     drawAllNode(path.back());
     drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus2, Color::nodeTextFocus1);
     drawCodeFadeOut(5);
-} 
+}
+
+void TrieVisualizer::erase(std::string str) {
+    mCode.update({
+        "if i == len(s):",
+        "    if cur.leaf: cur.leaf = FALSE",
+        "        return isEmpty(cur.child)",
+        "    return FALSE",
+        "if erase(cur.child[s[i]], s, i + 1):",
+        "    delete cur.child[s[i]]",
+        "return isEmpty(cur.child) and !cur.leaf",
+    });
+
+    addNewStep();
+    drawReformat();
+    drawAllEdge(mRoot);
+    drawAllNode(mRoot);
+    drawFadeIn({ &mRoot->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+    drawCodeFadeIn(4);
+
+    std::vector<Node*> path;
+    Node* current = mRoot;
+    path.push_back(current);
+    for (char letter : str) {
+        if (!current->children.count(letter)) {
+            addNewStep();
+            for (int i = 0; i < (int)path.size() - 1; i++) {
+                drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+                drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+            }
+            drawAllEdge(path.back());
+            draw({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+            drawAllNodeExceptRoot(path.back());
+            drawCodeChangeLine(4, 6);
+
+            while ((int)path.size() >= 2) {
+                addNewStep();
+                for (int i = 0; i < (int)path.size() - 1; i++) {
+                    if (i == (int)path.size() - 2) {
+                        drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edge);
+                        drawEdgeSlideOut({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                        draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                        drawFadeIn({ &path[i]->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+                    } else {
+                        drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                        draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                    }
+                    drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+                    drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+                }
+                drawAllEdge(path.back());
+                drawAllNode(path.back());
+                drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+                drawCodeChangeLine(6, 6);
+
+                path.pop_back();
+            }
+
+            addNewStep();
+            drawAllEdge(mRoot);
+            drawAllNode(mRoot);
+            drawFadeOut({ &mRoot->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+            drawCodeFadeOut(6);
+
+            return;
+        }
+
+        current = current->children[letter];
+        path.push_back(current);
+
+        addNewStep();
+        for (int i = 0; i < (int)path.size() - 1; i++) {
+            if (i == (int)path.size() - 2) {
+                drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edge);
+                drawEdgeSlideIn({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                drawFadeOut({ &path[i]->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+            } else {
+                drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+            }
+            drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+            drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+        }
+        drawAllEdge(path.back());
+        drawAllNode(path.back());
+        drawFadeIn({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+        drawCodeChangeLine(4, 4);
+    }
+
+    addNewStep();
+    for (int i = 0; i < (int)path.size() - 1; i++) {
+        drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+        draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+        drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+        drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+    }
+    drawAllEdge(path.back());
+    draw({ &path.back()->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+    drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+    drawAllNodeExceptRoot(path.back());
+    if (current->marked) {
+        drawCodeChangeLine(4, 2);
+    } else {
+        drawCodeChangeLine(4, 3);
+    }
+
+    addNewStep();
+    for (int i = 0; i < (int)path.size() - 1; i++) {
+        drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+        draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+        drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+        drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+    }
+    drawAllEdge(path.back());
+    draw({ &path.back()->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+    drawFadeIn({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+    drawAllNodeExceptRoot(path.back());
+    if (current->marked) {
+        drawCodeChangeLine(2, 6);
+    } else {
+        drawCodeChangeLine(3, 6);
+    }
+
+    bool nodeErased = false;
+    if (current->marked) {
+        current->marked = false;
+        bool firstErased = true;
+        while ((int)path.size() >= 2 && path.back()->children.empty() && !path.back()->marked) {
+            nodeErased = true;
+
+            mErasedNodes.push_back(path.back());
+            path.pop_back();
+            path.back()->children.erase(mErasedNodes.back()->value.getValue().front());
+
+            addNewStep();
+            drawReformat();
+            for (int i = 0; i < (int)path.size(); i++) {
+                if (i == (int)path.size() - 1) {
+                    drawEdgeSlideOut({ std::make_pair(&path[i]->value, &mErasedNodes.back()->value) }, Color::edgeFocus);
+                    draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                    drawFadeIn({ &path[i]->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+                    drawAllEdge(path[i]);
+                    drawAllNodeExceptRoot(path[i]);
+                } else {
+                    drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                    draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                    drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+                    drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+                }
+            }
+            drawFadeOut({ &mErasedNodes.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+            if (firstErased) {
+                drawCodeChangeLine(6, 5);
+                firstErased = false;
+            } else {
+                drawCodeChangeLine(5, 5);
+            }
+        }
+    }
+
+    while ((int)path.size() >= 2) {
+        addNewStep();
+        for (int i = 0; i < (int)path.size() - 1; i++) {
+            if (i == (int)path.size() - 2) {
+                drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edge);
+                drawEdgeSlideOut({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+                drawFadeIn({ &path[i]->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+            } else {
+                drawEdge({ std::make_pair(&path[i]->value, &path[i + 1]->value) }, Color::edgeFocus);
+                draw({ &path[i]->value }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::nodeTextFocus2);
+            }
+            drawAllEdgeExceptChild(path[i], path[i + 1]->value.getValue().front());
+            drawAllNodeExceptChild(path[i], path[i + 1]->value.getValue().front());
+        }
+        drawAllEdge(path.back());
+        drawAllNode(path.back());
+        drawFadeOut({ &path.back()->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+        if (nodeErased) {
+            drawCodeChangeLine(5, 6);
+            nodeErased = false;
+        } else {
+            drawCodeChangeLine(6, 6);
+        }
+
+        path.pop_back();
+    }
+
+    addNewStep();
+    drawAllEdge(mRoot);
+    drawAllNode(mRoot);
+    drawFadeOut({ &mRoot->value }, Shape::circle, Type::filled, Color::nodeFocus1, Color::nodeTextFocus1);
+    if (nodeErased) {
+        drawCodeFadeOut(5);
+    } else {
+        drawCodeFadeOut(6);
+    }
+}
 
 void TrieVisualizer::run() {
     std::function<bool()> conditionNone = [&]() { return true; };
@@ -546,6 +732,13 @@ void TrieVisualizer::run() {
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::stringOfLowercaseLetters), TrieVisualizerData::minLength, TrieVisualizerData::maxLength)
     );
 
+    mOption.addOption("Erase");
+    mOption.addSuboption("", conditionNone);
+    mOption.addSuboptionInputBox("s",
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isStringWithLowercaseLetters), std::placeholders::_1, std::placeholders::_2, TrieVisualizerData::minLength, TrieVisualizerData::maxLength),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::stringOfLowercaseLetters), TrieVisualizerData::minLength, TrieVisualizerData::maxLength)
+    );
+
     mOption.processOption();
 
     clearAllSteps();
@@ -557,12 +750,15 @@ void TrieVisualizer::run() {
         sf::Event event;
         while (mWindow->pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                freeMemory();
                 mWindow->close();
             }
 
             if (handleEvent(event)) {
                 abortAllSteps();
                 clearAllSteps();
+
+                freeMemory();
 
                 std::pair<int, int> option = mOption.getOption();
                 std::vector<std::string> values = mOption.getValues();
@@ -594,6 +790,15 @@ void TrieVisualizer::run() {
                     switch (option.second) {
                     case 0:
                         insert(values[0]);
+                        break;
+                    }
+
+                    break;
+
+                case 3: // Erase
+                    switch (option.second) {
+                    case 0:
+                        erase(values[0]);
                         break;
                     }
 

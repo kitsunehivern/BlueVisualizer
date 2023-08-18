@@ -31,6 +31,9 @@ private:
     };
 
     Node* mRoot;
+    std::vector<Node*> mErasedNodes;
+
+    void freeMemory();
     
     void deleteTree();
 
@@ -48,6 +51,7 @@ private:
     void create(int number);
     void search(std::string str);
     void insert(std::string str);
+    void erase(std::string str);
 };
 
 #endif // TRIE_VISUALIZER_HPP

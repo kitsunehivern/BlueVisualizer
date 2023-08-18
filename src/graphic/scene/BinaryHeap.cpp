@@ -150,14 +150,14 @@ void BinaryHeap::insert(int value) {
     if (mHeapType == BinaryHeapData::HeapType::MaxHeap) {
         mCode.update({
             "a.append(v)",
-            "i = a.size() - 1",
+            "i = len(a) - 1",
             "while i > 0 and a[i] > a[par(i)]:",
             "    swap(a[i], a[par(i)]), i = par(i)",
         });
     } else {
         mCode.update({
             "a.append(v)",
-            "i = a.size() - 1",
+            "i = len(a) - 1",
             "while i > 0 and a[i] < a[par(i)]:",
             "    swap(a[i], a[par(i)]), i = par(i)",
         });
@@ -820,7 +820,7 @@ void BinaryHeap::erase(int index) {
     drawAllNode(pathNode.back()->right);
     drawAllEdge(pathNode.back());
     drawAllLabel(mRoot, 0);
-    drawCodeFadeIn(0);
+    drawCodeChangeLine(0, 0);
 
     Node* lastNode = nullptr;
     while (true) {
