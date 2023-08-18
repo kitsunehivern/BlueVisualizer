@@ -16,6 +16,7 @@ std::string isIntegerInRange(std::string value, std::string name, int min, int* 
 std::string isIntegerInRange(std::string value, std::string name, std::function<int()> min, std::function<int()> max);
 std::string isListOfInteger(std::string list, std::string name);
 std::string isListOfIntegerInRange(std::string list, std::string name, int min, int max);
+std::string isStringWithLowercaseLetters(std::string str, std::string name, int minSize, int maxSize);
 
 }
 

@@ -103,3 +103,17 @@ std::string Validator::isListOfIntegerInRange(std::string list, std::string name
 
     return "";
 }
+
+std::string Validator::isStringWithLowercaseLetters(std::string str, std::string name, int minSize, int maxSize) {
+    for (auto& letter : str) {
+        if (letter < 'a' || letter > 'z') {
+            return name + " is not a string with lowercase letters";
+        }
+    }
+
+    if ((int)str.size() < minSize || (int)str.size() > maxSize) {
+        return "Size of " + name + " is out of range [" + std::to_string(minSize) + ", " + std::to_string(maxSize) + "]";
+    }
+
+    return "";
+}

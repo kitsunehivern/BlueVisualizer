@@ -3,6 +3,7 @@
 #include "graphic/scene/HashTable.hpp"
 #include "graphic/scene/AVLTree.hpp"
 #include "graphic/scene/BinaryHeap.hpp"
+#include "graphic/scene/TrieVisualizer.hpp"
 
 int main() {
     sf::ContextSettings settings;
@@ -48,6 +49,7 @@ int main() {
     assets.set(AssetsData::Color::nodeText, sf::Color(0, 0, 0, 255));
     assets.set(AssetsData::Color::nodeTextFocus1, sf::Color(255, 255, 255, 255));
     assets.set(AssetsData::Color::nodeTextFocus2, sf::Color(255, 140, 40, 255));
+    assets.set(AssetsData::Color::nodeTextFocus3, sf::Color(45, 185, 210, 255));
 
     assets.set(AssetsData::Color::edge, sf::Color(0, 0, 0, 255));
     assets.set(AssetsData::Color::edgeFocus, sf::Color(255, 140, 40, 255));
@@ -69,8 +71,11 @@ int main() {
     // AVLTree AVL(&window, &assets);
     // AVL.run();
 
-    BinaryHeap BH(&window, &assets);
-    BH.run();
+    // BinaryHeap BH(&window, &assets);
+    // BH.run();
+
+    TrieVisualizer trie(&window, &assets);
+    trie.run();
 
     return EXIT_SUCCESS;
 }

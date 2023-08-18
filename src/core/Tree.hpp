@@ -8,7 +8,7 @@ class Tree {
 public:
     struct Node {
         T value;
-        std::map<T, Node*> children;
+        std::map<int, Node*> children;
 
         Node(const T& inital = T());
     };
@@ -35,8 +35,7 @@ private:
 template<class T>
 Tree<T>::Node::Node(const T& inital) {
     value = inital;
-    left = nullptr;
-    right = nullptr;
+    children.clear();
 }
 
 template<class T>

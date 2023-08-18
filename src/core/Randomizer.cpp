@@ -40,3 +40,16 @@ std::string Randomizer::listOfIntegerInRange(int size, int min, int max) {
 std::string Randomizer::listOfIntegerInRange(int size, int* min, int* max) {
     return Randomizer::listOfIntegerInRange(size, *min, *max);
 }
+
+std::string Randomizer::stringOfLowercaseLetters(int size) {
+    std::string str = "";
+    for (int i = 0; i < size; i++) {
+        str += Randomizer::random('a', 'z');
+    }
+
+    return str;
+}
+
+std::string Randomizer::stringOfLowercaseLetters(int minSize, int maxSize) {
+    return Randomizer::stringOfLowercaseLetters(Randomizer::random(minSize, maxSize));
+}

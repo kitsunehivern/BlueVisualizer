@@ -18,6 +18,8 @@ std::string integerInRange(int min, int* max);
 std::string integerInRange(std::function<int()> min, std::function<int()> max);
 std::string listOfIntegerInRange(int size, int min, int max);
 std::string listOfIntegerInRange(int size, int* min, int* max);
+std::string stringOfLowercaseLetters(int size);
+std::string stringOfLowercaseLetters(int minSize, int maxSize);
 
 }
 
