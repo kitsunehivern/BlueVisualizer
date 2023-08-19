@@ -1,9 +1,9 @@
 #include "Global.hpp"
 #include "graphic/AssetsHolder.hpp"
-#include "graphic/scene/HashTable.hpp"
-#include "graphic/scene/AVLTree.hpp"
-#include "graphic/scene/BinaryHeap.hpp"
-#include "graphic/scene/TrieVisualizer.hpp"
+#include "graphic/visualizer/HashTableVisualizer.hpp"
+#include "graphic/visualizer/AVLTreeVisualizer.hpp"
+#include "graphic/visualizer/BinaryHeapVisualizer.hpp"
+#include "graphic/visualizer/TrieVisualizer.hpp"
 
 int main() {
     sf::ContextSettings settings;
@@ -65,13 +65,13 @@ int main() {
 
     assets.set(AssetsData::Color::label, sf::Color(255, 40, 40, 255));
 
-    // HashTable HT(&window, &assets);
+    // HashTableVisualizer HT(&window, &assets);
     // HT.run();
 
-    // AVLTree AVL(&window, &assets);
+    // AVLTreeVisualizer AVL(&window, &assets);
     // AVL.run();
 
-    // BinaryHeap BH(&window, &assets);
+    // BinaryHeapVisualizer BH(&window, &assets);
     // BH.run();
 
     TrieVisualizer trie(&window, &assets);

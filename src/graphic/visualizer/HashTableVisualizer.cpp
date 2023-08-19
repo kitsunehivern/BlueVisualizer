@@ -1,12 +1,12 @@
-#include "HashTable.hpp"
+#include "HashTableVisualizer.hpp"
 
-HashTable::HashTable() {
+HashTableVisualizer::HashTableVisualizer() {
 }
 
-HashTable::HashTable(sf::RenderWindow* window, AssetsHolder* assets) : Visualizer(window, assets) {
+HashTableVisualizer::HashTableVisualizer(sf::RenderWindow* window, AssetsHolder* assets) : Visualizer(window, assets) {
 }
 
-std::vector<GraphicNode*> HashTable::getNodes(int left, int right) {
+std::vector<GraphicNode*> HashTableVisualizer::getNodes(int left, int right) {
     std::vector<GraphicNode*> nodes;
     for (int i = left; i <= right; i++) {
         nodes.push_back(&mTable[i]);
@@ -15,28 +15,28 @@ std::vector<GraphicNode*> HashTable::getNodes(int left, int right) {
     return nodes;
 }
 
-void HashTable::drawAllLabels() {
+void HashTableVisualizer::drawAllLabels() {
     for (int i = 0; i < mCapacity; i++) {
         drawLabel({ &mTable[i] }, { std::to_string(i) }, Color::label);
     }
 }
 
-void HashTable::drawAllLabelsFadeIn() {
+void HashTableVisualizer::drawAllLabelsFadeIn() {
     for (int i = 0; i < mCapacity; i++) {
         drawLabelFadeIn({ &mTable[i] }, { std::to_string(i) }, Color::label);
     }
 }
 
-void HashTable::create(int capacity, int size) {
+void HashTableVisualizer::create(int capacity, int size) {
     mCapacity = capacity;
     mSize = size;
     mTable.resize(mCapacity);
     for (int i = 0; i < mCapacity; i++) {
-        mTable[i] = GraphicNode("", HashTableData::position + sf::Vector2f(i % HashTableData::maxSizePerLine * HashTableData::space.x, i / HashTableData::maxSizePerLine * HashTableData::space.y));
+        mTable[i] = GraphicNode("", HashTableVisualizerData::position + sf::Vector2f(i % HashTableVisualizerData::maxSizePerLine * HashTableVisualizerData::space.x, i / HashTableVisualizerData::maxSizePerLine * HashTableVisualizerData::space.y));
     }
 
     for (int i = 0; i < mSize; i++) {
-        int key = std::stoi(Randomizer::integerInRange(HashTableData::minValue, HashTableData::maxValue));
+        int key = std::stoi(Randomizer::integerInRange(HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue));
         int hashkey = key % mCapacity;
         while (mTable[hashkey].getValue() != "") {
             hashkey = (hashkey + 1) % mCapacity;
@@ -53,7 +53,7 @@ void HashTable::create(int capacity, int size) {
     drawCode();
 }
 
-void HashTable::search(int key) {
+void HashTableVisualizer::search(int key) {
     mCode.update({
         "i = v mod c, k = 0",
         "while k < c and a[i] != EMPTY:",
@@ -87,7 +87,7 @@ void HashTable::search(int key) {
             drawCodeChangeLine(4, 1);
         }
 
-        if (!(count < mCapacity && mTable[hashkey].getValue() != HashTableData::emptyValue)) {
+        if (!(count < mCapacity && mTable[hashkey].getValue() != HashTableVisualizerData::emptyValue)) {
             break;
         }
 
@@ -192,7 +192,7 @@ void HashTable::search(int key) {
     drawCodeFadeOut(5);
 }
 
-void HashTable::insert(int key) {
+void HashTableVisualizer::insert(int key) {
     mCode.update({
         "i = v mod c",
         "while a[i] != EMPTY and a[i] != DELETED:",
@@ -220,7 +220,7 @@ void HashTable::insert(int key) {
             drawCodeChangeLine(2, 1);
         }
 
-        if (!(mTable[hashkey].getValue() != HashTableData::emptyValue && mTable[hashkey].getValue() != HashTableData::deletedValue)) {
+        if (!(mTable[hashkey].getValue() != HashTableVisualizerData::emptyValue && mTable[hashkey].getValue() != HashTableVisualizerData::deletedValue)) {
             break;
         }
 
@@ -271,7 +271,7 @@ void HashTable::insert(int key) {
     drawCodeFadeOut(3);
 }
 
-void HashTable::erase(int key) {
+void HashTableVisualizer::erase(int key) {
     mCode.update({
         "i = v mod c, k = 0",
         "while k < c and a[i] != EMPTY:",
@@ -304,7 +304,7 @@ void HashTable::erase(int key) {
             drawCodeChangeLine(4, 1);
         }
 
-        if (!(count < mCapacity && mTable[hashkey].getValue() != HashTableData::emptyValue)) {
+        if (!(count < mCapacity && mTable[hashkey].getValue() != HashTableVisualizerData::emptyValue)) {
             break;
         }
 
@@ -333,7 +333,7 @@ void HashTable::erase(int key) {
                 draw(getNodes(hashkey + 1, firstHashkey - 1), Shape::square, Type::hollow,Color::node,Color::nodeText);
                 draw(getNodes(firstHashkey, mCapacity - 1), Shape::square, Type::hollow,Color::nodeFocus1,Color::nodeTextFocus2);
             }
-            drawChangeValue({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1, { mTable[hashkey].getValue() }, { HashTableData::deletedValue });
+            drawChangeValue({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1, { mTable[hashkey].getValue() }, { HashTableVisualizerData::deletedValue });
             drawAllLabels();
             drawCodeChangeLine(2, 3);
             mSize--;
@@ -376,7 +376,7 @@ void HashTable::erase(int key) {
         }
         drawFadeOut({ &mTable[hashkey] }, Shape::square, Type::filled,Color::nodeFocus1,Color::nodeTextFocus1);
         drawAllLabels();
-        if (mTable[hashkey].getValue() == HashTableData::emptyValue) {
+        if (mTable[hashkey].getValue() == HashTableVisualizerData::emptyValue) {
             drawCodeFadeOut(1);
         } else {
             drawCodeFadeOut(3);
@@ -384,46 +384,46 @@ void HashTable::erase(int key) {
     }
 }
 
-void HashTable::run() { 
+void HashTableVisualizer::run() { 
     std::function <bool()> conditionNone = []() { return true; };
     std::function <bool()> conditionSizeNotEqualCapacity = [&]() { return mSize < mCapacity; };
 
     mOption.addOption("Create");
     mOption.addSuboption("Empty", conditionNone);
     mOption.addSuboptionInputBox("c",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableData::minCapacity, HashTableData::maxCapacity),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableData::minCapacity, HashTableData::maxCapacity)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minCapacity, HashTableVisualizerData::maxCapacity),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minCapacity, HashTableVisualizerData::maxCapacity)
     );
 
     mOption.addSuboption("Random", conditionNone);
     mOption.addSuboptionInputBox("c",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableData::minCapacity, HashTableData::maxCapacity),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableData::minCapacity, HashTableData::maxCapacity)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minCapacity, HashTableVisualizerData::maxCapacity),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minCapacity, HashTableVisualizerData::maxCapacity)
     );
     mOption.addSuboptionInputBox("n",
-        std::bind(static_cast<std::string(*)(std::string, std::string, std::function<int()>, std::function<int()>)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, [&]() { return HashTableData::minSize; }, [&]() { return std::stoi(mOption.getValue(0, 1, 0)); }),
-        std::bind(static_cast<std::string(*)(std::function<int()>, std::function<int()>)>(Randomizer::integerInRange), [&]() { return HashTableData::minSize; }, [&]() { return std::stoi(mOption.getValue(0, 1, 0)); })
+        std::bind(static_cast<std::string(*)(std::string, std::string, std::function<int()>, std::function<int()>)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, [&]() { return HashTableVisualizerData::minSize; }, [&]() { return std::stoi(mOption.getValue(0, 1, 0)); }),
+        std::bind(static_cast<std::string(*)(std::function<int()>, std::function<int()>)>(Randomizer::integerInRange), [&]() { return HashTableVisualizerData::minSize; }, [&]() { return std::stoi(mOption.getValue(0, 1, 0)); })
     );
 
     mOption.addOption("Search");
     mOption.addSuboption("", conditionNone);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableData::minValue, HashTableData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableData::minValue, HashTableData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue)
     );
 
     mOption.addOption("Insert");
     mOption.addSuboption("", conditionSizeNotEqualCapacity);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableData::minValue, HashTableData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableData::minValue, HashTableData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue)
     );
 
     mOption.addOption("Erase");
     mOption.addSuboption("", conditionNone);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableData::minValue, HashTableData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableData::minValue, HashTableData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue)
     );
 
     mOption.processOption();

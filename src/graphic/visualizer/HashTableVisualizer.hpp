@@ -1,9 +1,9 @@
-#ifndef HASH_TABLE_HPP
-#define HASH_TABLE_HPP
+#ifndef HASH_TABLE_VISUALIZER_HPP
+#define HASH_TABLE_VISUALIZER_HPP
 
 #include "Visualizer.hpp"
 
-namespace HashTableData {
+namespace HashTableVisualizerData {
     const int minCapacity = 1;
     const int maxCapacity = 50;
     const int minSize = 1;
@@ -19,10 +19,10 @@ namespace HashTableData {
     const std::string deletedValue = "X";
 }
 
-class HashTable : private Visualizer {
+class HashTableVisualizer : private Visualizer {
 public:
-    HashTable();
-    HashTable(sf::RenderWindow* window, AssetsHolder* assets);
+    HashTableVisualizer();
+    HashTableVisualizer(sf::RenderWindow* window, AssetsHolder* assets);
 
     void run();
 
@@ -41,4 +41,4 @@ private:
     void erase(int key);
 };
 
-#endif // HASH_TABLE_HPP
+#endif // HASH_TABLE_VISUALIZER_HPP

@@ -1,9 +1,9 @@
-#ifndef BINARY_HEAP_HPP
-#define BINARY_HEAP_HPP
+#ifndef BINARY_HEAP_VISUALIZER_HPP
+#define BINARY_HEAP_VISUALIZER_HPP
 
 #include "BinaryTreeVisualizer.hpp"
 
-namespace BinaryHeapData {
+namespace BinaryHeapVisualizerData {
     const int minSize = 1;
     const int maxSize = 31;
     const int minValue = 1;
@@ -15,15 +15,15 @@ namespace BinaryHeapData {
     };
 }
 
-class BinaryHeap : private BinaryTreeVisualizer {
+class BinaryHeapVisualizer : private BinaryTreeVisualizer {
 public:
-    BinaryHeap();
-    BinaryHeap(sf::RenderWindow* window, AssetsHolder* assets);
+    BinaryHeapVisualizer();
+    BinaryHeapVisualizer(sf::RenderWindow* window, AssetsHolder* assets);
 
     void run();
 
 private:
-    BinaryHeapData::HeapType mHeapType;
+    BinaryHeapVisualizerData::HeapType mHeapType;
 
     std::vector<Node*> mNodes;
     Node* mErasedNode;
@@ -45,4 +45,4 @@ private:
     void erase(int index);
 };
 
-#endif // BINARY_HEAP_HPP
+#endif // BINARY_HEAP_VISUALIZER_HPP

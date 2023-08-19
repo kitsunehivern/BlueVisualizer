@@ -1,13 +1,13 @@
-#include "AVLTree.hpp"
+#include "AVLTreeVisualizer.hpp"
 
-AVLTree::AVLTree() {
+AVLTreeVisualizer::AVLTreeVisualizer() {
 }
 
-AVLTree::AVLTree(sf::RenderWindow* window, AssetsHolder* assets) : BinaryTreeVisualizer(window, assets) {
+AVLTreeVisualizer::AVLTreeVisualizer(sf::RenderWindow* window, AssetsHolder* assets) : BinaryTreeVisualizer(window, assets) {
     mErasedNode = nullptr;
 }
 
-int AVLTree::getBalanceFactor(Node* node) {
+int AVLTreeVisualizer::getBalanceFactor(Node* node) {
     if (node == nullptr) {
         return 0;
     }
@@ -15,7 +15,7 @@ int AVLTree::getBalanceFactor(Node* node) {
     return height(node->left) - height(node->right);
 }
 
-BinaryTree<GraphicNode>::Node* AVLTree::leftRotate(Node* node) {
+BinaryTree<GraphicNode>::Node* AVLTreeVisualizer::leftRotate(Node* node) {
     Node* newRoot = node->right;
     node->right = newRoot->left;
     newRoot->left = node;
@@ -23,7 +23,7 @@ BinaryTree<GraphicNode>::Node* AVLTree::leftRotate(Node* node) {
     return newRoot;
 }
 
-BinaryTree<GraphicNode>::Node* AVLTree::rightRotate(Node* node) {
+BinaryTree<GraphicNode>::Node* AVLTreeVisualizer::rightRotate(Node* node) {
     Node* newRoot = node->left;
     node->left = newRoot->right;
     newRoot->right = node;
@@ -31,18 +31,18 @@ BinaryTree<GraphicNode>::Node* AVLTree::rightRotate(Node* node) {
     return newRoot;
 }
 
-void AVLTree::freeMemory() {
+void AVLTreeVisualizer::freeMemory() {
     if (mErasedNode) {
         delete mErasedNode;
         mErasedNode = nullptr;
     }
 }
 
-void AVLTree::create(int size) {
+void AVLTreeVisualizer::create(int size) {
     clear();
     std::set<int> tempValues;
     while ((int)tempValues.size() < size) {
-        tempValues.insert(Randomizer::random(AVLTreeData::minValue, AVLTreeData::maxValue));
+        tempValues.insert(Randomizer::random(AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue));
     }
 
     std::vector<int> values(tempValues.begin(), tempValues.end());
@@ -108,7 +108,7 @@ void AVLTree::create(int size) {
     drawCode();
 }
 
-void AVLTree::search(int value) {
+void AVLTreeVisualizer::search(int value) {
     mCode.update({
         "if node == nullptr: return NOT_FOUND",
         "if value == node.value: return FOUND",
@@ -257,7 +257,7 @@ void AVLTree::search(int value) {
     drawCodeFadeOut(lastCase);
 }
 
-void AVLTree::insert(int value) {
+void AVLTreeVisualizer::insert(int value) {
     mCode.update({
         "insert v",
         "check balance factor of node and its children",
@@ -852,7 +852,7 @@ void AVLTree::insert(int value) {
     }
 }
 
-void AVLTree::erase(int value) {
+void AVLTreeVisualizer::erase(int value) {
     mCode.update({
         "erase v",
         "check balance factor of node and its children",
@@ -1613,38 +1613,38 @@ void AVLTree::erase(int value) {
     }
 }
 
-void AVLTree::run() { 
+void AVLTreeVisualizer::run() { 
     std::function<bool()> conditionNone = [&]() { return true; };
-    std::function<bool()> conditionTreeNotLarge = [&]() { return size() < AVLTreeData::maxSize; };
+    std::function<bool()> conditionTreeNotLarge = [&]() { return size() < AVLTreeVisualizerData::maxSize; };
     std::function<bool()> conditionTreeNotEmpty = [&]() { return size() > 0; };
 
     mOption.addOption("Create");
     mOption.addSuboption("Empty", conditionNone);
     mOption.addSuboption("Random", conditionNone);
     mOption.addSuboptionInputBox("n",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeData::minSize, AVLTreeData::maxSize),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeData::minSize, AVLTreeData::maxSize)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minSize, AVLTreeVisualizerData::maxSize),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minSize, AVLTreeVisualizerData::maxSize)
     );
 
     mOption.addOption("Search");
     mOption.addSuboption("", conditionNone);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeData::minValue, AVLTreeData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeData::minValue, AVLTreeData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue)
     );
 
     mOption.addOption("Insert");
     mOption.addSuboption("", conditionTreeNotLarge);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeData::minValue, AVLTreeData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeData::minValue, AVLTreeData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue)
     );
 
     mOption.addOption("Erase");
     mOption.addSuboption("", conditionTreeNotEmpty);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeData::minValue, AVLTreeData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeData::minValue, AVLTreeData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue)
     );
 
     mOption.processOption();

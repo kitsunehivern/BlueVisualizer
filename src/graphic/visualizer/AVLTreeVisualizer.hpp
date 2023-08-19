@@ -1,19 +1,19 @@
-#ifndef AVL_TREE_HPP
-#define AVL_TREE_HPP
+#ifndef AVL_TREE_VISUALIZER_HPP
+#define AVL_TREE_VISUALIZER_HPP
 
 #include "BinaryTreeVisualizer.hpp"
 
-namespace AVLTreeData {
+namespace AVLTreeVisualizerData {
     const int minSize = 1;
     const int maxSize = 31;
     const int minValue = 0;
     const int maxValue = 99;
 }
 
-class AVLTree : private BinaryTreeVisualizer {
+class AVLTreeVisualizer : private BinaryTreeVisualizer {
 public:
-    AVLTree();
-    AVLTree(sf::RenderWindow* window, AssetsHolder* assets);
+    AVLTreeVisualizer();
+    AVLTreeVisualizer(sf::RenderWindow* window, AssetsHolder* assets);
 
     void run();
 
@@ -32,4 +32,4 @@ private:
     void erase(int value);
 };
 
-#endif // AVL_TREE_HPP
+#endif // AVL_TREE_VISUALIZER_HPP

@@ -1,26 +1,26 @@
-#include "BinaryHeap.hpp"
+#include "BinaryHeapVisualizer.hpp"
 
-BinaryHeap::BinaryHeap() : BinaryTreeVisualizer() {
+BinaryHeapVisualizer::BinaryHeapVisualizer() : BinaryTreeVisualizer() {
 }
 
-BinaryHeap::BinaryHeap(sf::RenderWindow* window, AssetsHolder* assets) : BinaryTreeVisualizer(window, assets) {
-    mHeapType = BinaryHeapData::MaxHeap;
+BinaryHeapVisualizer::BinaryHeapVisualizer(sf::RenderWindow* window, AssetsHolder* assets) : BinaryTreeVisualizer(window, assets) {
+    mHeapType = BinaryHeapVisualizerData::MaxHeap;
     mErasedNode = nullptr;
 }
 
-bool BinaryHeap::compare(int value1, int value2) {
+bool BinaryHeapVisualizer::compare(int value1, int value2) {
     if (value1 == value2) {
         return false;
     }
     
-    if (mHeapType == BinaryHeapData::HeapType::MaxHeap) {
+    if (mHeapType == BinaryHeapVisualizerData::HeapType::MaxHeap) {
         return value1 > value2;
     } else {
         return value1 < value2;
     }
 }
 
-void BinaryHeap::setBinaryTree() {
+void BinaryHeapVisualizer::setBinaryTree() {
     if (mNodes.empty()) {
         mRoot = nullptr;
         return;
@@ -38,7 +38,7 @@ void BinaryHeap::setBinaryTree() {
     }
 }
 
-void BinaryHeap::drawAllLabel(Node* node, int index) {
+void BinaryHeapVisualizer::drawAllLabel(Node* node, int index) {
     if (node == nullptr) {
         return;
     }
@@ -49,7 +49,7 @@ void BinaryHeap::drawAllLabel(Node* node, int index) {
     drawAllLabel(node->right, 2 * index + 2);
 }
 
-void BinaryHeap::drawAllLabelFadeIn(Node* node, int index) {
+void BinaryHeapVisualizer::drawAllLabelFadeIn(Node* node, int index) {
     if (node == nullptr) {
         return;
     }
@@ -60,7 +60,7 @@ void BinaryHeap::drawAllLabelFadeIn(Node* node, int index) {
     drawAllLabelFadeIn(node->right, 2 * index + 2); 
 }
 
-void BinaryHeap::drawAllLabelFixed(Node* node, int index) {
+void BinaryHeapVisualizer::drawAllLabelFixed(Node* node, int index) {
     if (node == nullptr) {
         return;
     }
@@ -71,21 +71,21 @@ void BinaryHeap::drawAllLabelFixed(Node* node, int index) {
     drawAllLabelFixed(node->right, 2 * index + 2);
 }
 
-void BinaryHeap::freeMemory() {
+void BinaryHeapVisualizer::freeMemory() {
     if (mErasedNode != nullptr) {
         delete mErasedNode;
         mErasedNode = nullptr;
     }
 }
 
-void BinaryHeap::create(int size) {
+void BinaryHeapVisualizer::create(int size) {
     while (!mNodes.empty()) {
         delete mNodes.back();
         mNodes.pop_back();
     }
     
     for (int i = 0; i < size; i++) {
-        int value = Randomizer::random(BinaryHeapData::minValue, BinaryHeapData::maxValue);
+        int value = Randomizer::random(BinaryHeapVisualizerData::minValue, BinaryHeapVisualizerData::maxValue);
         mNodes.push_back(new Node(GraphicNode(std::to_string(value))));
         for (int i = (int)mNodes.size() - 1; i > 0; i = (i - 1) / 2) {
             if (compare(std::stoi(mNodes[i]->value.getValue()), std::stoi(mNodes[(i - 1) / 2]->value.getValue()))) {
@@ -108,7 +108,7 @@ void BinaryHeap::create(int size) {
     drawCode();
 }
 
-void BinaryHeap::getTop() {
+void BinaryHeapVisualizer::getTop() {
     mCode.update({
         "return a[0] // which is " + mNodes.front()->value.getValue(),
     });
@@ -128,7 +128,7 @@ void BinaryHeap::getTop() {
     drawCodeFadeOut(0);
 }
 
-void BinaryHeap::getSize() {
+void BinaryHeapVisualizer::getSize() {
     mCode.update({
         "return a.size() // which is " + std::to_string(size()),
     });
@@ -146,8 +146,8 @@ void BinaryHeap::getSize() {
     drawCodeFadeOut(0);
 }
 
-void BinaryHeap::insert(int value) {
-    if (mHeapType == BinaryHeapData::HeapType::MaxHeap) {
+void BinaryHeapVisualizer::insert(int value) {
+    if (mHeapType == BinaryHeapVisualizerData::HeapType::MaxHeap) {
         mCode.update({
             "a.append(v)",
             "i = len(a) - 1",
@@ -378,8 +378,8 @@ void BinaryHeap::insert(int value) {
     drawCodeFadeOut(2);
 }
 
-void BinaryHeap::eraseTop() {
-    if (mHeapType == BinaryHeapData::HeapType::MaxHeap) {
+void BinaryHeapVisualizer::eraseTop() {
+    if (mHeapType == BinaryHeapVisualizerData::HeapType::MaxHeap) {
         mCode.update({
             "swap(a[0], a.top()), a.pop(), i = 0",
             "while a[i] > a[maxchild(i)]:",
@@ -621,7 +621,7 @@ void BinaryHeap::eraseTop() {
             drawCodeChangeLine(2, 1);
         }
 
-        if (maxChild.second == -1 || compare(std::stoi(pathNode.back()->value.getValue()), maxChild.first)) {
+        if (maxChild.second == -1 || !compare(maxChild.first, std::stoi(pathNode.back()->value.getValue()))) {
             break;
         }
 
@@ -735,7 +735,7 @@ void BinaryHeap::eraseTop() {
     drawCodeFadeOut(1);
 }
 
-void BinaryHeap::erase(int index) {
+void BinaryHeapVisualizer::erase(int index) {
     mCode.update({
         "a[i] = a[0] + 1, shiftTop(i)",
         "eraseTop()"
@@ -794,7 +794,7 @@ void BinaryHeap::erase(int index) {
     drawAllLabel(mRoot, 0);
     drawCodeFadeIn(0);
 
-    int newNodeValue = std::stoi(mNodes.front()->value.getValue()) + (mHeapType == BinaryHeapData::HeapType::MaxHeap ? 1 : -1);
+    int newNodeValue = std::stoi(mNodes.front()->value.getValue()) + (mHeapType == BinaryHeapVisualizerData::HeapType::MaxHeap ? 1 : -1);
 
     addNewStep();
     for (int i = 0; i < (int)pathNode.size() - 1; i++) {
@@ -1112,7 +1112,7 @@ void BinaryHeap::erase(int index) {
         drawAllLabel(mRoot, 0);
         drawCodeChangeLine(1, 1);
 
-        if (maxChild.second == -1 || compare(std::stoi(pathNode.back()->value.getValue()), maxChild.first)) {
+        if (maxChild.second == -1 || !compare(maxChild.first, std::stoi(pathNode.back()->value.getValue()))) {
             break;
         }
 
@@ -1226,17 +1226,17 @@ void BinaryHeap::erase(int index) {
     drawCodeFadeOut(1);
 }
 
-void BinaryHeap::run() {
+void BinaryHeapVisualizer::run() {
     std::function<bool()> conditionNone = [&]() { return true; };
-    std::function<bool()> conditionTreeNotLarge = [&]() { return mNodes.size() < BinaryHeapData::maxSize; };
+    std::function<bool()> conditionTreeNotLarge = [&]() { return mNodes.size() < BinaryHeapVisualizerData::maxSize; };
     std::function<bool()> conditionTreeNotEmpty = [&]() { return mNodes.size() > 0; };
 
     mOption.addOption("Create");
     mOption.addSuboption("Empty", conditionNone);
     mOption.addSuboption("Random", conditionNone);
     mOption.addSuboptionInputBox("n",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, BinaryHeapData::minSize, BinaryHeapData::maxSize),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), BinaryHeapData::minSize, BinaryHeapData::maxSize)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, BinaryHeapVisualizerData::minSize, BinaryHeapVisualizerData::maxSize),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), BinaryHeapVisualizerData::minSize, BinaryHeapVisualizerData::maxSize)
     );
 
     mOption.addOption("Get");
@@ -1246,8 +1246,8 @@ void BinaryHeap::run() {
     mOption.addOption("Insert");
     mOption.addSuboption("", conditionTreeNotLarge);
     mOption.addSuboptionInputBox("v",
-        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, BinaryHeapData::minValue, BinaryHeapData::maxValue),
-        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), BinaryHeapData::minValue, BinaryHeapData::maxValue)
+        std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, BinaryHeapVisualizerData::minValue, BinaryHeapVisualizerData::maxValue),
+        std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), BinaryHeapVisualizerData::minValue, BinaryHeapVisualizerData::maxValue)
     );
 
     mOption.addOption("Erase");
