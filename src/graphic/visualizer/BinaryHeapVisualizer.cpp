@@ -4,7 +4,6 @@ BinaryHeapVisualizer::BinaryHeapVisualizer() : BinaryTreeVisualizer() {
 }
 
 BinaryHeapVisualizer::BinaryHeapVisualizer(sf::RenderWindow* window, AssetsHolder* assets) : BinaryTreeVisualizer(window, assets) {
-    mHeapType = BinaryHeapVisualizerData::MaxHeap;
     mErasedNode = nullptr;
 }
 
@@ -76,6 +75,11 @@ void BinaryHeapVisualizer::freeMemory() {
         delete mErasedNode;
         mErasedNode = nullptr;
     }
+}
+
+void BinaryHeapVisualizer::type(BinaryHeapVisualizerData::HeapType heapType) {
+    mHeapType = heapType;
+    create(BinaryHeapVisualizerData::defaultSize);   
 }
 
 void BinaryHeapVisualizer::create(int size) {
@@ -1231,6 +1235,10 @@ void BinaryHeapVisualizer::run() {
     std::function<bool()> conditionTreeNotLarge = [&]() { return mNodes.size() < BinaryHeapVisualizerData::maxSize; };
     std::function<bool()> conditionTreeNotEmpty = [&]() { return mNodes.size() > 0; };
 
+    mOption.addOption("Type");
+    mOption.addSuboption("Max", conditionNone);
+    mOption.addSuboption("Min", conditionNone);
+
     mOption.addOption("Create");
     mOption.addSuboption("Empty", conditionNone);
     mOption.addSuboption("Random", conditionNone);
@@ -1261,7 +1269,7 @@ void BinaryHeapVisualizer::run() {
     mOption.processOption();
 
     clearAllSteps();
-    create(15);
+    type(BinaryHeapVisualizerData::HeapType::MaxHeap);
 
     while (mWindow->isOpen()) {
         updateState();
@@ -1283,7 +1291,20 @@ void BinaryHeapVisualizer::run() {
                 std::vector<std::string> values = mOption.getValues();
 
                 switch (option.first) {
-                case 0: // Create
+                case 0: // Type
+                    switch (option.second) {
+                    case 0: // Max
+                        type(BinaryHeapVisualizerData::HeapType::MaxHeap);
+                        break;
+
+                    case 1: // Min
+                        type(BinaryHeapVisualizerData::HeapType::MinHeap);
+                        break;
+                    }
+
+                    break;
+
+                case 1: // Create
                     switch (option.second) {
                     case 0: // Empty
                         create(0);
@@ -1296,7 +1317,7 @@ void BinaryHeapVisualizer::run() {
                     
                     break;
 
-                case 1: // Get
+                case 2: // Get
                     switch (option.second) {
                     case 0: // Top
                         getTop();
@@ -1309,7 +1330,7 @@ void BinaryHeapVisualizer::run() {
 
                     break;
 
-                case 2: // Insert
+                case 3: // Insert
                     switch (option.second) {
                     case 0:
                         insert(std::stoi(values[0]));
@@ -1318,7 +1339,7 @@ void BinaryHeapVisualizer::run() {
 
                     break;
 
-                case 3: // Erase
+                case 4: // Erase
                     switch (option.second) {
                     case 0: // Top
                         eraseTop();

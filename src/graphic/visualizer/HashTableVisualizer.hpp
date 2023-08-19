@@ -6,8 +6,10 @@
 namespace HashTableVisualizerData {
     const int minCapacity = 1;
     const int maxCapacity = 50;
+    const int defaultCapacity = 30;
     const int minSize = 1;
-    const int maxSize = 30;
+    const int maxSize = 50;
+    const int defaultSize = 15;
     const int maxSizePerLine = 10;
     const int minValue = 0;
     const int maxValue = 99;

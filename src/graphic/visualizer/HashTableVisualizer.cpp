@@ -429,7 +429,7 @@ void HashTableVisualizer::run() {
     mOption.processOption();
 
     clearAllSteps();
-    create(20, 10);
+    create(HashTableVisualizerData::defaultCapacity, HashTableVisualizerData::defaultSize);
 
     while (mWindow->isOpen()) {
         updateState();

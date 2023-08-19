@@ -6,6 +6,7 @@
 namespace BinaryHeapVisualizerData {
     const int minSize = 1;
     const int maxSize = 31;
+    const int defaultSize = 15;
     const int minValue = 1;
     const int maxValue = 98;
 
@@ -37,6 +38,7 @@ private:
 
     void freeMemory();
 
+    void type(BinaryHeapVisualizerData::HeapType heapType);
     void create(int size);
     void getSize();
     void getTop();

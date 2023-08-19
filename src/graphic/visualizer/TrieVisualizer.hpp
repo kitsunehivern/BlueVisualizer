@@ -8,6 +8,7 @@ namespace TrieVisualizerData {
     const int maxLength = 5;
     const int minSize = 1;
     const int maxSize = 15;
+    const int defaultSize = 7;
 
     const float treePositionY = 100.f;
     const sf::Vector2f space = sf::Vector2f(50.f, 80.f);

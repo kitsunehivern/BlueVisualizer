@@ -742,7 +742,7 @@ void TrieVisualizer::run() {
     mOption.processOption();
 
     clearAllSteps();
-    create(5);
+    create(TrieVisualizerData::defaultSize);
 
     while (mWindow->isOpen()) {
         updateState();

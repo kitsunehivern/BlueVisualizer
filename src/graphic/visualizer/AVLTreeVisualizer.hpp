@@ -6,6 +6,7 @@
 namespace AVLTreeVisualizerData {
     const int minSize = 1;
     const int maxSize = 31;
+    const int defaultSize = 15;
     const int minValue = 0;
     const int maxValue = 99;
 }

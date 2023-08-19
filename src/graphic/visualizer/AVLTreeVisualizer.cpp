@@ -1650,7 +1650,7 @@ void AVLTreeVisualizer::run() {
     mOption.processOption();
 
     clearAllSteps();
-    create(15);
+    create(AVLTreeVisualizerData::defaultSize);
 
     while (mWindow->isOpen()) {
         updateState();
