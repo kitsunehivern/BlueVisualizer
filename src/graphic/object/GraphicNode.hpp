@@ -6,6 +6,7 @@
 
 namespace GraphicNodeData {
     const sf::Vector2f nodeSize = sf::Vector2f(50.f, 50.f);
+    const float edgeThickness = 5.f;
     const float characterSize = 25.f;
 
     enum Shape {

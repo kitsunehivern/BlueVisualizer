@@ -1,6 +1,7 @@
 #include "AssetsHolder.hpp"
 
 AssetsHolder::AssetsHolder() {
+    mTheme = AssetsData::Theme::dark;
 }
 
 AssetsHolder::~AssetsHolder() {
@@ -12,9 +13,35 @@ AssetsHolder::~AssetsHolder() {
         delete pair.second;
     }
 
-    for (auto& pair : mLightColorMap) {
+    for (auto& pair : mColorMap) {
         delete pair.second;
     }
+}
+
+void AssetsHolder::switchTheme() {
+    if (mTheme == AssetsData::Theme::dark) {
+        mTheme = AssetsData::Theme::light;
+        for (auto pair : mLightColorMap) {
+            if (!mColorMap.count(pair.first)) {
+                mColorMap[pair.first] = new sf::Color(pair.second);
+            } else {
+                *mColorMap[pair.first] = pair.second;
+            }
+        }
+    } else {
+        mTheme = AssetsData::Theme::dark;
+        for (auto pair : mDarkColorMap) {
+            if (!mColorMap.count(pair.first)) {
+                mColorMap[pair.first] = new sf::Color(pair.second);
+            } else {
+                *mColorMap[pair.first] = pair.second;
+            }
+        }
+    }
+}
+
+AssetsData::Theme AssetsHolder::getTheme() const {
+    return mTheme;
 }
 
 void AssetsHolder::load(AssetsData::Image name, const std::string& filename) {
@@ -52,14 +79,18 @@ const sf::Font* AssetsHolder::get(AssetsData::Font name) const {
     return mFontMap.at(name);
 }
 
-void AssetsHolder::set(AssetsData::Color name, sf::Color color) {
-    mLightColorMap[name] = new sf::Color(color);
+void AssetsHolder::setLight(AssetsData::Color name, sf::Color color) {
+    mLightColorMap[name] = color;
+}
+
+void AssetsHolder::setDark(AssetsData::Color name, sf::Color color) {
+    mDarkColorMap[name] = color;
 }
 
 sf::Color* AssetsHolder::get(AssetsData::Color name) {
-    return mLightColorMap[name];
+    return mColorMap[name];
 }
 
 const sf::Color* AssetsHolder::get(AssetsData::Color name) const {
-    return mLightColorMap.at(name);
+    return mColorMap.at(name);
 }

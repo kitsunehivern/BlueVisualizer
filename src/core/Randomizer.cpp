@@ -53,3 +53,7 @@ std::string Randomizer::stringOfLowercaseLetters(int size) {
 std::string Randomizer::stringOfLowercaseLetters(int minSize, int maxSize) {
     return Randomizer::stringOfLowercaseLetters(Randomizer::random(minSize, maxSize));
 }
+
+float Randomizer::randomFloat(float min, float max) {
+    return std::uniform_real_distribution<float>(min, max)(Randomizer::rng);
+}

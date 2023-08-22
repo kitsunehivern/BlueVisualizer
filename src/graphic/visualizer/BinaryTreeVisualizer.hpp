@@ -5,7 +5,7 @@
 #include "../../core/BinaryTree.hpp"
 
 namespace BinaryTreeVisualizerData {
-    const float treePositionY = 100.f;
+    const float treePositionY = 60.f;
     const sf::Vector2f space = sf::Vector2f(50.f, 80.f);
 }
 

@@ -10,6 +10,8 @@ namespace GraphicEdgeData {
 
     const float thickness = 5.f;
     const float length = 50.f;
+
+    const float weightDistance = 20.f;
 };
 
 struct GraphicEdge {
@@ -24,6 +26,8 @@ public:
     void drawChangeNode(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* oldNode2, GraphicNode* newNode2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
     void drawSlideOutChangeNode(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* oldNode2, GraphicNode* newNode2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
     void drawFixed(sf::RenderWindow* window, GraphicNode node1, GraphicNode node2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+
+    void drawWeight(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* color, sf::Font* font, std::string weight, float ratioTime, bool fakeDraw);
 
 private:
 };

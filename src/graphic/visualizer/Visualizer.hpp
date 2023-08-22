@@ -9,6 +9,7 @@
 #include "../component/CodeBox.hpp"
 #include "../object/GraphicNode.hpp"
 #include "../object/GraphicEdge.hpp"
+#include "../object/GraphicFreeEdge.hpp"
 #include "../object/GraphicLabel.hpp"
 
 namespace ControlBoxData {
@@ -42,6 +43,10 @@ namespace ControlBoxData {
 
 namespace VisualizerData {
     const int FPS = 120;
+
+    const sf::FloatRect visualizeBoxRect = sf::FloatRect(10.f, 10.f, 1580.f, 580.f);
+    const sf::Vector2f visualizeBoxCenter = sf::Vector2f(visualizeBoxRect.left + visualizeBoxRect.width / 2, visualizeBoxRect.top + visualizeBoxRect.height / 2);
+    const sf::FloatRect themeButtonRect = sf::FloatRect(1540.f, 20.f, 40.f, 40.f);
 }
 
 class Visualizer {
@@ -75,6 +80,8 @@ protected:
     void drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
     void drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
 
+    void drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
+
     void drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
     void drawLabelFadeIn(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
     void drawLabelFadeOut(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
@@ -95,6 +102,9 @@ protected:
     AssetsHolder* mAssets;
     OptionBox mOption;
     CodeBox mCode;
+    
+private:
+    Button mThemeButton;
     
     Button mFrontButton;
     Button mPrevButton;

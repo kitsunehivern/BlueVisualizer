@@ -9,9 +9,9 @@ SFML_INCLUDE = -IC:/SFML/include
 SFML_LIB = -LC:/SFML/lib -lsfml-graphics-s-d -lsfml-window-s-d -lsfml-system-s-d -lgdi32 -lwinmm -lopengl32 -lfreetype -lcomdlg32
 
 # Directories
-SRC_DIR = D:/BlueSimulator/src
-OBJ_DIR = D:/BlueSimulator/obj
-TARGET = BlueSimulator
+SRC_DIR = D:/BlueVisualizer/src
+OBJ_DIR = D:/BlueVisualizer/obj
+TARGET = BlueVisualizer
 
 # List of source files (add more as needed)
 SOURCES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp) $(wildcard $(SRC_DIR)/**/**/*.cpp)

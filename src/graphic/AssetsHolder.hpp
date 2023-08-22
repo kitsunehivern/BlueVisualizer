@@ -5,6 +5,9 @@
 
 namespace AssetsData {
     enum Image {
+        lightBackground,
+        darkBackground,
+
         hollowCircle,
         filledCircle,
         hollowSquare,
@@ -16,7 +19,11 @@ namespace AssetsData {
         fileBox,
         randomIcon,
         optionTable,
+        optionPrevButton,
+        optionNextButton,
         suboptionTable,
+        suboptionPrevButton,
+        suboptionNextButton,
         inputTable,
         confirmBox,
         controlBox,
@@ -27,6 +34,8 @@ namespace AssetsData {
         codeBar,
         speedButton,
         speed,
+        visualizeBox,
+        themeButton,
     };
 
     enum Font {
@@ -60,6 +69,11 @@ namespace AssetsData {
 
         label,
     };
+
+    enum Theme {
+        light,
+        dark,
+    };
 }
 
 class AssetsHolder {
@@ -75,14 +89,20 @@ public:
     sf::Font* get(AssetsData::Font name);
     const sf::Font* get(AssetsData::Font name) const;
 
-    void set(AssetsData::Color name, sf::Color color);
+    void setLight(AssetsData::Color name, sf::Color color);
+    void setDark(AssetsData::Color name, sf::Color color);
     sf::Color* get(AssetsData::Color name);
     const sf::Color* get(AssetsData::Color name) const;
 
+    void switchTheme();
+    AssetsData::Theme getTheme() const;
+
 private:
+    AssetsData::Theme mTheme;
     std::map<AssetsData::Image, sf::Texture*> mImageMap;
     std::map<AssetsData::Font, sf::Font*> mFontMap;
-    std::map<AssetsData::Color, sf::Color*> mLightColorMap;
+    std::map<AssetsData::Color, sf::Color> mLightColorMap, mDarkColorMap;
+    std::map<AssetsData::Color, sf::Color*> mColorMap;
 };
 
-#endif // TextureHolder_HPP
+#endif // ASSETS_HOLDER_HPP

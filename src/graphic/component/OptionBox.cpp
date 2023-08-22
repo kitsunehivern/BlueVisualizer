@@ -6,6 +6,10 @@ OptionBox::OptionBox() {
 OptionBox::OptionBox(AssetsHolder* assets) {
     mAssets = assets;
     mOptionIndex = 0;
+    mOptionPrevButton = Button(mAssets, AssetsData::Image::optionPrevButton, OptionBoxData::Option::tablePosition + OptionBoxData::Option::prevButtonRect.getPosition(), ButtonData::ColorSet::set1);
+    mOptionNextButton = Button(mAssets, AssetsData::Image::optionNextButton, OptionBoxData::Option::tablePosition + OptionBoxData::Option::nextButtonRect.getPosition(), ButtonData::ColorSet::set1);
+    mSuboptionPrevButton = Button(mAssets, AssetsData::Image::suboptionPrevButton, OptionBoxData::Suboption::tablePosition + OptionBoxData::Suboption::prevButtonRect.getPosition(), ButtonData::ColorSet::set1);
+    mSuboptionNextButton = Button(mAssets, AssetsData::Image::suboptionNextButton, OptionBoxData::Suboption::tablePosition + OptionBoxData::Suboption::nextButtonRect.getPosition(), ButtonData::ColorSet::set1);
     mConfirmButton = Button(mAssets, AssetsData::Image::confirmBox, OptionBoxData::Input::tablePosition + OptionBoxData::Input::confirmBoxPosition,  ButtonData::ColorSet::set2);
 }
 
@@ -89,6 +93,38 @@ void OptionBox::updateState(sf::RenderWindow* window) {
         }
     }
 
+    if (mOptionIndex == 0) {
+        mOptionPrevButton.setDisabled(true);
+    } else {
+        mOptionPrevButton.setDisabled(false);
+    }
+
+    mOptionPrevButton.updateState(window);
+
+    if (mOptionIndex == (int)mOptionList.size() - 1) {
+        mOptionNextButton.setDisabled(true);
+    } else {
+        mOptionNextButton.setDisabled(false);
+    }
+
+    mOptionNextButton.updateState(window);
+
+    if (mSuboptionIndex[mOptionIndex] == 0) {
+        mSuboptionPrevButton.setDisabled(true);
+    } else {
+        mSuboptionPrevButton.setDisabled(false);
+    }
+
+    mSuboptionPrevButton.updateState(window);
+
+    if (mSuboptionIndex[mOptionIndex] == (int)mSuboptionList[mOptionIndex].size() - 1) {
+        mSuboptionNextButton.setDisabled(true);
+    } else {
+        mSuboptionNextButton.setDisabled(false);
+    }
+
+    mSuboptionNextButton.updateState(window);
+
     if (!mError.empty()) {
         mConfirmButton.setInvalid(true);
     } else {
@@ -104,19 +140,17 @@ bool OptionBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
         mInputBoxList[mOptionIndex][mSuboptionIndex[mOptionIndex]][i].handleEvent(window, event);
     }
 
-    if (event.type == sf::Event::MouseButtonReleased) {
-        if (event.mouseButton.button == sf::Mouse::Left) {
-            if (sfhelper::isMouseOver(window, OptionBoxData::Option::tablePosition + OptionBoxData::Option::prevButtonRect.getPosition(), OptionBoxData::Option::prevButtonRect.getSize())) {
-                mOptionIndex = std::max(mOptionIndex - 1, 0);
-            } else if (sfhelper::isMouseOver(window, OptionBoxData::Option::tablePosition + OptionBoxData::Option::nextButtonRect.getPosition(), OptionBoxData::Option::nextButtonRect.getSize())) {
-                mOptionIndex = std::min(mOptionIndex + 1, (int)mOptionList.size() - 1);
-            } else if (sfhelper::isMouseOver(window, OptionBoxData::Suboption::tablePosition + OptionBoxData::Suboption::prevButtonRect.getPosition(), OptionBoxData::Suboption::prevButtonRect.getSize())) {
-                mSuboptionIndex[mOptionIndex] = std::max(mSuboptionIndex[mOptionIndex] - 1, 0);
-            } else if (sfhelper::isMouseOver(window, OptionBoxData::Suboption::tablePosition + OptionBoxData::Suboption::nextButtonRect.getPosition(), OptionBoxData::Suboption::nextButtonRect.getSize())) {
-                mSuboptionIndex[mOptionIndex] = std::min(mSuboptionIndex[mOptionIndex] + 1, (int)mSuboptionList[mOptionIndex].size() - 1);
-            }
-        }
-    } else if (event.type == sf::Event::KeyPressed) {
+    if (mOptionPrevButton.handleEvent(window, event)) {
+        mOptionIndex = std::max(mOptionIndex - 1, 0);
+    } else if (mOptionNextButton.handleEvent(window, event)) {
+        mOptionIndex = std::min(mOptionIndex + 1, (int)mOptionList.size() - 1);
+    } else if (mSuboptionPrevButton.handleEvent(window, event)) {
+        mSuboptionIndex[mOptionIndex] = std::max(mSuboptionIndex[mOptionIndex] - 1, 0);
+    } else if (mSuboptionNextButton.handleEvent(window, event)) {
+        mSuboptionIndex[mOptionIndex] = std::min(mSuboptionIndex[mOptionIndex] + 1, (int)mSuboptionList[mOptionIndex].size() - 1);
+    }
+
+    if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Enter) {
             if (mConfirmButton.getState() == ButtonData::State::normal || mConfirmButton.getState() == ButtonData::State::focused) {
                 return true;
@@ -137,6 +171,8 @@ void OptionBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if (mOptionIndex > 0) {
         optionPrevText.setString(mOptionList[mOptionIndex - 1]);
     }
+
+    target.draw(mOptionPrevButton, states);
 
     optionPrevText.setFillColor(*mAssets->get(AssetsData::Color::boxText));
     optionPrevText.setOrigin(sfhelper::getCenterPosition(optionPrevText.getLocalBounds()));
@@ -159,10 +195,14 @@ void OptionBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     optionNextText.setPosition(OptionBoxData::Option::tablePosition + sfhelper::getCenterPosition(OptionBoxData::Option::nextRect));
     target.draw(optionNextText, states);
 
+    target.draw(mOptionNextButton, states);
+
     sf::Sprite suboptionTableSprite(*mAssets->get(AssetsData::Image::suboptionTable));
     suboptionTableSprite.setColor(*mAssets->get(AssetsData::Color::boxComponent));
     suboptionTableSprite.setPosition(OptionBoxData::Suboption::tablePosition);
     target.draw(suboptionTableSprite, states);
+
+    target.draw(mSuboptionPrevButton, states);
 
     sf::Text suboptionPrevText("", *mAssets->get(AssetsData::Font::consolasBold), OptionBoxData::characterSize);
     if (mSuboptionIndex[mOptionIndex] > 0) {
@@ -189,6 +229,8 @@ void OptionBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     suboptionNextText.setOrigin(sfhelper::getCenterPosition(suboptionNextText.getLocalBounds()));
     suboptionNextText.setPosition(OptionBoxData::Suboption::tablePosition + sfhelper::getCenterPosition(OptionBoxData::Suboption::nextRect));
     target.draw(suboptionNextText, states);
+
+    target.draw(mSuboptionNextButton, states);
 
     sf::Sprite inputTableSprite(*mAssets->get(AssetsData::Image::inputTable));
     inputTableSprite.setColor(*mAssets->get(AssetsData::Color::boxComponent));

@@ -446,8 +446,6 @@ void AVLTreeVisualizer::insert(int value) {
                 }
                 drawAllEdge(path[i]->right);
             }
-
-            drawCode();
         }
 
         draw({ &current->value }, Shape::circle, Type::hollow, Color::node, Color::nodeText);

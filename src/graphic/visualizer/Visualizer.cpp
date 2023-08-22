@@ -8,6 +8,8 @@ Visualizer::Visualizer(sf::RenderWindow* window, AssetsHolder* assets) {
     mAssets = assets;
     mOption = OptionBox(mAssets);
 
+	mThemeButton = Button(assets, AssetsData::Image::themeButton, VisualizerData::themeButtonRect.getPosition(), ButtonData::ColorSet::set1);
+
     mFrontButton = Button(assets, AssetsData::Image::controlButtons, ControlBoxData::controlBoxPosition + ControlBoxData::frontButtonRect.getPosition(), ButtonData::ColorSet::set1);
     mFrontButton.setImageRect(ControlBoxData::frontButtonTextureRect);
 
@@ -272,6 +274,14 @@ void Visualizer::drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>
 	}
 }
 
+void Visualizer::drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color) {
+	assert(pnodes.size() == weights.size());
+	for (int i = 0; i < (int)pnodes.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeight, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), weights[i], std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
 void Visualizer::drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, AssetsData::Color labelColor) {
 	assert(nodes.size() == names.size());
 	for (int i = 0; i < (int)nodes.size(); i++) {
@@ -330,6 +340,8 @@ void Visualizer::drawCodeChangeLine(int oldFocusLine, int newFocusLine) {
 
 void Visualizer::updateState() {
     mOption.updateState(mWindow);
+
+	mThemeButton.updateState(mWindow);
 
     mFrontButton.updateState(mWindow);
     mPrevButton.updateState(mWindow);
@@ -452,7 +464,9 @@ bool Visualizer::handleEvent(sf::Event event) {
             mStatus = CONTINUE;
             mDirection = FORWARD;
         }
-    }
+    } else if (mThemeButton.handleEvent(mWindow, event)) {
+		mAssets->switchTheme();
+	}
 	
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
@@ -527,6 +541,15 @@ bool Visualizer::handleEvent(sf::Event event) {
 }
 
 void Visualizer::draw() {
+	sf::Sprite backgroundSprite;
+	if (mAssets->getTheme() == AssetsData::Theme::light) {
+		backgroundSprite.setTexture(*mAssets->get(AssetsData::Image::lightBackground));
+	} else {
+		backgroundSprite.setTexture(*mAssets->get(AssetsData::Image::darkBackground));
+	}
+	backgroundSprite.setPosition(sf::Vector2f(0, 0));
+	mWindow->draw(backgroundSprite);
+
     mWindow->draw(mOption);
 
     sf::Sprite controlBoxSprite(*mAssets->get(AssetsData::Image::controlBox));
@@ -558,6 +581,13 @@ void Visualizer::draw() {
 	}
 
 	mWindow->draw(mSpeedButton);
+
+	sf::Sprite VisualizeBoxSprite(*mAssets->get(AssetsData::Image::visualizeBox));
+	VisualizeBoxSprite.setColor(*mAssets->get(AssetsData::Color::boxComponent));
+	VisualizeBoxSprite.setPosition(VisualizerData::visualizeBoxRect.getPosition());
+	mWindow->draw(VisualizeBoxSprite);
+
+	mWindow->draw(mThemeButton);
 
 	for (auto draw : mDrawFunctions[mCurrentStep]) {
 		draw(mCurrentFrame / (float)VisualizerData::FPS, false);

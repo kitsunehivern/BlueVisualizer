@@ -21,6 +21,8 @@ std::string listOfIntegerInRange(int size, int* min, int* max);
 std::string stringOfLowercaseLetters(int size);
 std::string stringOfLowercaseLetters(int minSize, int maxSize);
 
+float randomFloat(float min, float max);
+
 }
 
 #endif // RANOMIZER_HPP
