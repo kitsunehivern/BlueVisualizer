@@ -81,6 +81,9 @@ protected:
     void drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
 
     void drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
+    void drawEdgeWeightFadeOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
+    void drawEdgeWeightSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
+    void drawEdgeWeightChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color oldColor, Color newColor);
 
     void drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
     void drawLabelFadeIn(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);

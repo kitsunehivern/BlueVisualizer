@@ -31,6 +31,7 @@ public:
     void setValue(std::string value);
 
     sf::Vector2f getPosition();
+    sf::Vector2f getCenter();
     void setPosition(sf::Vector2f position);
 
     void draw(sf::RenderWindow* window, sf::Texture* nodeTexture, sf::Color* nodeColor, sf::Font* valueFont, sf::Color* valueColor, float ratioTime, bool fakeDraw);

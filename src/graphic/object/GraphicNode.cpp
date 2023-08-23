@@ -20,6 +20,10 @@ sf::Vector2f GraphicNode::getPosition() {
     return mPosition;
 }
 
+sf::Vector2f GraphicNode::getCenter() {
+    return sfhelper::getCenterPosition(sf::FloatRect(mPosition, GraphicNodeData::nodeSize));
+}
+
 void GraphicNode::setPosition(sf::Vector2f position) {
     mPosition = position;
 }

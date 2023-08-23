@@ -27,7 +27,10 @@ public:
     void drawSlideOutChangeNode(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* oldNode2, GraphicNode* newNode2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
     void drawFixed(sf::RenderWindow* window, GraphicNode node1, GraphicNode node2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
 
-    void drawWeight(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* color, sf::Font* font, std::string weight, float ratioTime, bool fakeDraw);
+    void drawWeight(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* edgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
+    void drawWeightFadeOut(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* edgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
+    void drawWeightSlideIn(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* edgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
+    void drawWeightChangeColor(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* oldEdgeColor, sf::Color* newEdgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
 
 private:
 };

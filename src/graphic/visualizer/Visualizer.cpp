@@ -278,7 +278,31 @@ void Visualizer::drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*
 	assert(pnodes.size() == weights.size());
 	for (int i = 0; i < (int)pnodes.size(); i++) {
 		GraphicEdge edge;
-		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeight, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), weights[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeight, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeWeightFadeOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color) {
+	assert(pnodes.size() == weights.size());
+	for (int i = 0; i < (int)pnodes.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightFadeOut, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeWeightSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color) {
+	assert(pnodes.size() == weights.size());
+	for (int i = 0; i < (int)pnodes.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightSlideIn, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeWeightChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color oldColor, Color newColor) {
+	assert(pnodes.size() == weights.size());
+	for (int i = 0; i < (int)pnodes.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightChangeColor, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 

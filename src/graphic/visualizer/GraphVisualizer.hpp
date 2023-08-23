@@ -10,7 +10,7 @@ namespace GraphVisualizerData {
     const int defaultEdge = 10;
 
     const float springConstant = 0.05f;
-    const float idealLength = 200.0f;
+    const float idealLength = 150.0f;
 }
 
 class GraphVisualizer : private Visualizer {
@@ -27,6 +27,7 @@ private:
     std::pair<int, sf::Vector2f> mSelectedNode;
 
     sf::Vector2f springForce(sf::Vector2f fixedPosition, sf::Vector2f movingPosition, float idealLength);
+    sf::Vector2f rubberbandForce(sf::Vector2f fixedPosition, sf::Vector2f movingPosition);
 
     void updateGraphState();
     void handleGraphEvent(sf::Event event);
@@ -35,9 +36,9 @@ private:
     void drawAllEdge();
 
     void create(int numNode, int numEdge);
-    void findCC();
-    void findMST();
-    void findShortestPath();
+    void BFS();
+    void Krukal();
+    void Dijkstra(int s);
 };
 
 #endif // GRAPH_VISULIZER_HPP
