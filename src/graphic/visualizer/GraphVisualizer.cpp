@@ -170,6 +170,40 @@ void GraphVisualizer::create(int numNode, int numEdge) {
     drawCode();
 }
 
+void GraphVisualizer::createFromAdjacencyMatrix(std::string input) {
+    mNodes.clear();
+    mAdjacencyMatrix.clear();
+
+    std::stringstream ss(input);
+    std::string tmp;
+    ss >> tmp;
+    int numNode = std::stoi(tmp);
+    for (int i = 0; i < numNode; ++i) {
+        sf::Vector2f randomPosition = sf::Vector2f(
+            Randomizer::randomFloat(VisualizerData::visualizeBoxRect.getPosition().x, VisualizerData::visualizeBoxRect.getPosition().x + VisualizerData::visualizeBoxRect.getSize().x - GraphicNodeData::nodeSize.x),
+            Randomizer::randomFloat(VisualizerData::visualizeBoxRect.getPosition().y, VisualizerData::visualizeBoxRect.getPosition().y + VisualizerData::visualizeBoxRect.getSize().y - GraphicNodeData::nodeSize.y)
+        );
+
+        mNodes.push_back(GraphicNode(std::to_string(i), randomPosition));
+    }
+
+    mAdjacencyMatrix.assign(numNode, std::vector<int>(numNode, 0));
+    for (int i = 0; i < numNode; ++i) {
+        for (int j = 0; j < numNode; ++j) {
+            ss >> tmp;
+            mAdjacencyMatrix[i][j] = std::stoi(tmp);
+        }
+    }
+
+    mCode.update({});
+
+    addNewStep();
+
+    drawAllNode();
+    drawAllEdge();
+    drawCode();
+}
+
 void GraphVisualizer::BFS() {
     mCode.update({
         "for s from 0 to n - 1: if !CC[s]:",
@@ -439,7 +473,7 @@ void GraphVisualizer::Krukal() {
                     if (usedEdge[i][j] == 1) {
                         drawEdgeWeight({ std::make_pair(&mNodes[i], &mNodes[j]) }, { std::to_string(mAdjacencyMatrix[i][j]) }, Color::edgeFocus);
                     } else if (usedEdge[i][j] == 2) {
-                        
+
                     } else {
                         if (i == u && j == v) {
                             if (isSameSet(u, v)) {
@@ -686,6 +720,56 @@ void GraphVisualizer::run() {
         return std::min(numNode * (numNode - 1) / 2, 2 * numNode);
     };
 
+    std::function<std::string(std::string, std::string)> adjacencyMatrixValidator = [&](std::string value, std::string name) -> std::string {
+        name.clear();
+        
+        std::stringstream ss(value);
+        std::vector<std::string> tokens;
+        for (std::string token; ss >> token; ) {
+            tokens.push_back(token);
+        }
+
+        if (tokens.empty()) {
+            return "Matrix must not be empty";
+        }
+
+        std::string error = Validator::isIntegerInRange(tokens[0], "n", GraphVisualizerData::minNode, GraphVisualizerData::maxNode);
+        if (error != "") {
+            return error;
+        }
+
+        int numNode = std::stoi(tokens[0]);
+        if ((int)tokens.size() != numNode * numNode + 1) {
+            return "Matrix must have " + std::to_string(numNode * numNode) + " elements";
+        }
+
+        std::vector<std::vector<int>> adjacencyMatrix(numNode, std::vector<int>(numNode, 0));
+        for (int i = 1; i < (int)tokens.size(); ++i) {
+            error = Validator::isIntegerInRange(tokens[i], "w", 0, GraphVisualizerData::maxWeight);
+            if (error != "") {
+                return error;
+            }
+
+            adjacencyMatrix[(i - 1) / numNode][(i - 1) % numNode] = std::stoi(tokens[i]);
+        }
+
+        for (int i = 0; i < numNode; i++) {
+            if (adjacencyMatrix[i][i] != 0) {
+                return "Matrix must have 0 on the main diagonal";
+            }
+        }
+
+        for (int i = 0; i < numNode; ++i) {
+            for (int j = 0; j < numNode; ++j) {
+                if (adjacencyMatrix[i][j] != adjacencyMatrix[j][i]) {
+                    return "Matrix must be symmetric";
+                }
+            }
+        }
+
+        return "";
+    };
+
     mOption.addOption("Create");
     mOption.addSuboption("Random", conditionNone);
     mOption.addSuboptionInputBox("n",
@@ -696,6 +780,12 @@ void GraphVisualizer::run() {
         std::bind(static_cast<std::string(*)(std::string, std::string, std::function<int()>, std::function<int()>)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, [&]() { return 0; }, [&]() { return getNumEdgeLimit(std::stoi(mOption.getValue(0, 0, 0))); }),
         std::bind(static_cast<std::string(*)(std::function<int()>, std::function<int()>)>(Randomizer::integerInRange), [&]() { return 0; }, [&]() { return getNumEdgeLimit(std::stoi(mOption.getValue(0, 0, 0))); })
     );
+
+    mOption.addSuboption("Matrix", conditionNone);
+    mOption.addSuboptionEditorBox(adjacencyMatrixValidator);
+
+    mOption.addSuboption("File", conditionNone);
+    mOption.addSuboptionFileBox(adjacencyMatrixValidator);
 
     mOption.addOption("Find CC");
     mOption.addSuboption("BFS", conditionNone);
@@ -740,7 +830,16 @@ void GraphVisualizer::run() {
                     case 0: // Random
                         create(stoi(values[0]), stoi(values[1]));
                         break;
+
+                    case 1: // Matrix
+                        createFromAdjacencyMatrix(values[0]);
+                        break;
+
+                    case 2: // File
+                        createFromAdjacencyMatrix(values[0]);
+                        break;
                     }
+
 
                     break;
 

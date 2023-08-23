@@ -25,6 +25,7 @@ InputBox::InputBox(InputBoxData::InputType type, AssetsHolder* assets, sf::Vecto
     mIsInputBoxSelected = false;
 
     mIsFileBoxFocused = false;
+    mIsFileChosen = false;
 }
 
 void InputBox::setPosition(sf::Vector2f position) {
@@ -48,7 +49,17 @@ bool InputBox::isInputBoxSelected() const {
 }
 
 std::string InputBox::getError() const {
-    return mValidator(mValue, mName);
+    if (mType == InputBoxData::InputType::keyboard) {
+        return mValidator(mValue, mName);
+    } else if (mType == InputBoxData::InputType::file) {
+        if (!mIsFileChosen) {
+            return "Please browse a file";
+        } else {
+            return mValidator(mValue, "");
+        }
+    } else {
+        return mValidator(mValue, "");
+    }
 }
 
 std::string InputBox::getValue() const {
@@ -71,11 +82,25 @@ void InputBox::updateState(sf::RenderWindow* window) {
         if (mSelectedClock.getElapsedTime().asSeconds() > 1.f) {
             mSelectedClock.restart();
         }
-    } else { // file
+    } else { // file, text editor
         if (sfhelper::isMouseOver(window, mPosition, sf::Vector2f(InputBoxData::fileBoxWidth, InputBoxData::fileBoxHeight))) {
             mIsFileBoxFocused = true;
         } else {
             mIsFileBoxFocused = false;
+        }
+
+        if (mIsFileChosen) {
+            std::ifstream file(mFileBoxPath);
+            if (file.is_open()) {
+                mValue.clear();
+                for (std::string line; std::getline(file, line); ) {
+                    mValue += line + "\n";
+                }
+            } else {
+                mIsFileChosen = false;
+            }
+
+            file.close();
         }
     }
 }
@@ -124,30 +149,47 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                 }
             }
         }
-    } else { // file
+    } else { // file, text editor
         if (event.type == sf::Event::MouseButtonReleased) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 if (sfhelper::isMouseOver(window, mPosition, sf::Vector2f(InputBoxData::fileBoxWidth, InputBoxData::fileBoxHeight))) {
-                    OPENFILENAME ofn;
-                    ZeroMemory(&ofn, sizeof(ofn));
-                    ofn.lStructSize = sizeof(ofn);
-                    ofn.hwndOwner = hwnd;
-                    ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0";
-                    ofn.lpstrFile = szFileName;
-                    ofn.nMaxFile = MAX_PATH;
-                    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-                    ofn.lpstrDefExt = L"txt";
+                    if (mType == InputBoxData::InputType::file) {
+                        OPENFILENAME ofn;
+                        ZeroMemory(&ofn, sizeof(ofn));
+                        ofn.lStructSize = sizeof(ofn);
+                        ofn.hwndOwner = hwnd;
+                        ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0";
+                        ofn.lpstrFile = szFileName;
+                        ofn.nMaxFile = MAX_PATH;
+                        ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+                        ofn.lpstrDefExt = L"txt";
 
-                    if (GetOpenFileName(&ofn) == TRUE) {
-                        std::ifstream fin(ofn.lpstrFile);
-                        std::string line, text;
-                        while (std::getline(fin, line)) {
-                            text += line;
-                        }
+                        if (GetOpenFileName(&ofn) == TRUE) {
+                            std::wstring filePath(ofn.lpstrFile);
+                            std::size_t lastSlashPos = filePath.find_last_of('\\');
+                            std::wstring wfileName = filePath.substr(lastSlashPos + 1);
+                            std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+                            std::string fileNameUtf8 = converter.to_bytes(wfileName);
+                            mName = fileNameUtf8;
 
-                        for (auto character : text) {
-                            insertCharacter(character);
+                            std::wstring filePath2(ofn.lpstrFile);
+                            std::wstring_convert<std::codecvt_utf8<wchar_t>> converter2;
+                            mFileBoxPath = converter2.to_bytes(filePath2);
+
+                            mIsFileChosen = true;
                         }
+                    } else {
+                        std::ofstream fout("assets/data/matrix.txt");
+                        fout << mValue;
+                        fout.close();
+                        system("notepad assets/data/matrix.txt");
+                        std::ifstream fin("assets/data/matrix.txt");
+                        mValue.clear();
+                        for (std::string line; std::getline(fin, line); ) {
+                            mValue += line + "\n";
+                        }
+                        fin.close();
+                        system("del assets\\data\\matrix.txt");
                     }
                 }
             }
@@ -232,7 +274,7 @@ void InputBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		insertionPoint.setOrigin(0, insertionPoint.getLocalBounds().top + insertionPoint.getLocalBounds().height / 2);
 		insertionPoint.setPosition(inputBoxText.getGlobalBounds().left + inputBoxText.getGlobalBounds().width + 2, mPosition.y + InputBoxData::inputBoxHeight / 2);
         target.draw(insertionPoint, states);
-    } else { // file
+    } else { // file, text editor
         sf::Sprite fileBoxSprite(*mAssets->get(AssetsData::Image::fileBox));
         if (mIsFileBoxFocused) {
             fileBoxSprite.setColor(*mAssets->get(AssetsData::Color::boxFocus));
@@ -243,7 +285,7 @@ void InputBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         fileBoxSprite.setPosition(mPosition);
         target.draw(fileBoxSprite, states);
 
-        sf::Text fileBoxText("Load from file", *mAssets->get(AssetsData::Font::consolasBold), InputBoxData::characterSize);
+        sf::Text fileBoxText(mType == InputBoxData::InputType::file ? (mIsFileChosen ? mName : "Browse") : "Open editor", *mAssets->get(AssetsData::Font::consolasBold), InputBoxData::characterSize);
         if (mIsFileBoxFocused) {
             fileBoxText.setFillColor(*mAssets->get(AssetsData::Color::boxTextFocus));
         } else {

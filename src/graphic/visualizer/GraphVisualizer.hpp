@@ -6,6 +6,8 @@
 namespace GraphVisualizerData {
     const int minNode = 1;
     const int maxNode = 20;
+    const int minWeight = 1;
+    const int maxWeight = 100;
     const int defaultNode = 10;
     const int defaultEdge = 10;
 
@@ -36,6 +38,7 @@ private:
     void drawAllEdge();
 
     void create(int numNode, int numEdge);
+    void createFromAdjacencyMatrix(std::string input);
     void BFS();
     void Krukal();
     void Dijkstra(int s);

@@ -17,7 +17,8 @@ namespace InputBoxData {
 
     enum InputType {
         keyboard,
-        file
+        file,
+        editor,
     };
 
     namespace CharacterSet {
@@ -61,6 +62,8 @@ private:
     sf::Clock mSelectedClock;
 
     bool mIsFileBoxFocused;
+    bool mIsFileChosen;
+    std::string mFileBoxPath;
 
     void insertCharacter(char character);
     void deleteCharacter();
