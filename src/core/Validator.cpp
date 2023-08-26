@@ -61,7 +61,7 @@ std::string Validator::isListOfInteger(std::string list, std::string name) {
         return name + " is not a list of integer";
     }
 
-    for (auto &character : list) {
+    for (auto& character : list) {
         if (!(character == '-' || (character >= '0' && character <= '9'))) {
             character = ' ';
         }
@@ -79,39 +79,82 @@ std::string Validator::isListOfInteger(std::string list, std::string name) {
     return "";
 }
 
-std::string Validator::isListOfIntegerInRange(std::string list, std::string name, int min, int max) {
-    std::string error = isListOfInteger(list, name);
-    if (!error.empty()) {
-        return error;
+std::string Validator::isListOfIntegerInRange(std::string list, std::string name, int minSize, int maxSize, int minValue, int maxValue) {
+    std::string error;
+
+    for (auto& character : list) {
+        if (!(character == '-' || (character >= '0' && character <= '9'))) {
+            character = ' ';
+        }
     }
 
     std::stringstream stream(list);
     std::string number;
     bool notEmpty = false;
+    int counter = 0;
     for (int i = 0; stream >> number; i++) {
-        error = isIntegerInRange(number, name + "[" + std::to_string(i) + "]", min, max);
+        error = isIntegerInRange(number, name + "[" + std::to_string(i) + "]", minValue, maxValue);
         if (!error.empty()) {
             return error;
         }
 
         notEmpty = true;
+        counter++;
     }
 
     if (!notEmpty) {
         return name + " is not a list of integer";
     }
 
+    if (counter < minSize || counter > maxSize) {
+        return "Size of " + name + " is out of range [" + std::to_string(minSize) + ", " + std::to_string(maxSize) + "]";
+    }
+
     return "";
 }
 
-std::string Validator::isStringWithLowercaseLetters(std::string str, std::string name, int minSize, int maxSize) {
+std::string Validator::isStringWithLowercaseLetters(std::string str, std::string name, int minLength, int maxLength) {
     for (auto& letter : str) {
         if (letter < 'a' || letter > 'z') {
             return name + " is not a string with lowercase letters";
         }
     }
 
-    if ((int)str.size() < minSize || (int)str.size() > maxSize) {
+    if ((int)str.size() < minLength || (int)str.size() > maxLength) {
+        return "Length of " + name + " is out of range [" + std::to_string(minLength) + ", " + std::to_string(maxLength) + "]";
+    }
+
+    return "";
+}
+
+std::string Validator::isListOfStringWithLowercaseLetters(std::string list, std::string name, int minSize, int maxSize, int minLength, int maxLength) {
+    std::string error;
+    
+    for (auto& character : list) {
+        if (!(character >= 'a' && character <= 'z')) {
+            character = ' ';
+        }
+    }
+
+    std::stringstream stream(list);
+    std::string str;
+    bool notEmpty = false;
+    int counter = 0;
+    for (int i = 0; stream >> str; i++) {
+        error = isStringWithLowercaseLetters(str, name + "[" + std::to_string(i) + "]", minLength, maxLength);
+        if (!error.empty()) {
+            return error;
+        }
+
+        notEmpty = true;
+        counter++;
+    }
+
+    if (!notEmpty) {
+        return name + " is not a list of string";
+    }
+
+    if (counter < minSize || counter > maxSize) {
         return "Size of " + name + " is out of range [" + std::to_string(minSize) + ", " + std::to_string(maxSize) + "]";
     }
 

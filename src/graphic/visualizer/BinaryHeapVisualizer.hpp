@@ -40,6 +40,7 @@ private:
 
     void type(BinaryHeapVisualizerData::HeapType heapType);
     void create(int size);
+    void createFromList(std::string input);
     void getSize();
     void getTop();
     void eraseTop();

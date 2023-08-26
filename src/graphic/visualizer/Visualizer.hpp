@@ -9,7 +9,6 @@
 #include "../component/CodeBox.hpp"
 #include "../object/GraphicNode.hpp"
 #include "../object/GraphicEdge.hpp"
-#include "../object/GraphicFreeEdge.hpp"
 #include "../object/GraphicLabel.hpp"
 
 namespace ControlBoxData {
@@ -46,7 +45,14 @@ namespace VisualizerData {
 
     const sf::FloatRect visualizeBoxRect = sf::FloatRect(10.f, 10.f, 1580.f, 580.f);
     const sf::Vector2f visualizeBoxCenter = sf::Vector2f(visualizeBoxRect.left + visualizeBoxRect.width / 2, visualizeBoxRect.top + visualizeBoxRect.height / 2);
+    const sf::FloatRect quitButtonRect = sf::FloatRect(20.f, 20.f, 40.f, 40.f);
     const sf::FloatRect themeButtonRect = sf::FloatRect(1540.f, 20.f, 40.f, 40.f);
+
+    enum Event {
+        none,
+        quit,
+        confirm,
+    };
 }
 
 class Visualizer {
@@ -71,19 +77,26 @@ protected:
     void drawChangeColor(std::vector<GraphicNode*> nodes, Shape shape, Type type, Color oldNodeColor, Color newNodeColor, Color oldValueColor, Color newValueColor);
     void drawChangeValueColor(GraphicNode* node, Shape shape, Type type, Color oldNodeColor, Color newNodeColor, Color oldValueColor, Color newValueColor, std::string oldValues, std::string newValues);
 
-    void drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
-    void drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
-    void drawEdgeSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
-    void drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
-    void drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color oldColor, Color newColor);
-    void drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
-    void drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color);
-    void drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color);
+    void drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color);
+    void drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color);
+    void drawEdgeSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color);
+    void drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color);
+    void drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color oldColor, Color newColor);
+    void drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> nodes, Color color);
+    void drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> nodes, Color color);
+    void drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color);
 
-    void drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
-    void drawEdgeWeightFadeOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
-    void drawEdgeWeightSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color);
-    void drawEdgeWeightChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color oldColor, Color newColor);
+    void drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color color);
+    void drawEdgeWeightFadeOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color color);
+    void drawEdgeWeightSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color color);
+    void drawEdgeWeightChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color oldColor, Color newColor);
+    
+    void drawEdgeFree(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color);
+    void drawEdgeFreeFadeIn(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color);
+    void drawEdgeFreeSlideIn(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color);
+    void drawEdgeFreeSlideOut(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color);
+    void drawEdgeFreeChangeColor(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color oldColor, Color newColor);
+    void drawEdgeFreeChangePosition(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color);
 
     void drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
     void drawLabelFadeIn(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
@@ -97,7 +110,7 @@ protected:
     void drawCodeChangeLine(int oldFocusLine, int newFocusLine);
 
     void updateState();
-    bool handleEvent(sf::Event event);
+    VisualizerData::Event handleEvent(sf::Event event);
     void draw();
 
 protected:
@@ -107,6 +120,7 @@ protected:
     CodeBox mCode;
     
 private:
+    Button mQuitButton;
     Button mThemeButton;
     
     Button mFrontButton;

@@ -5,12 +5,12 @@
 
 namespace TrieVisualizerData {
     const int minLength = 1;
-    const int maxLength = 5;
+    const int maxLength = 6;
     const int minSize = 1;
     const int maxSize = 15;
     const int defaultSize = 7;
 
-    const float treePositionY = 100.f;
+    const float treePositionY = 60.f;
     const sf::Vector2f space = sf::Vector2f(50.f, 80.f);
 }
 
@@ -50,6 +50,7 @@ private:
     void drawAllEdgeExceptChild(Node* node, char childLetter);
 
     void create(int number);
+    void createFromList(std::string input);
     void search(std::string str);
     void insert(std::string str);
     void erase(std::string str);

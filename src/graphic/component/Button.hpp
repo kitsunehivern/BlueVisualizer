@@ -52,6 +52,13 @@ namespace ButtonData {
             std::make_pair(AssetsData::Color::none, AssetsData::Color::none),
             std::make_pair(AssetsData::Color::none, AssetsData::Color::none)
         );
+
+        const ButtonColor set4(
+            std::make_pair(AssetsData::Color::boxBackground, AssetsData::Color::boxText),
+            std::make_pair(AssetsData::Color::boxComponent, AssetsData::Color::boxText),
+            std::make_pair(AssetsData::Color::none, AssetsData::Color::none),
+            std::make_pair(AssetsData::Color::none, AssetsData::Color::none)
+        );
     }
 } 
 

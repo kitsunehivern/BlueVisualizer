@@ -112,6 +112,47 @@ void BinaryHeapVisualizer::create(int size) {
     drawCode();
 }
 
+void BinaryHeapVisualizer::createFromList(std::string input) {
+    for (auto& character : input) {
+        if (!(character == '-' || (character >= '0' && character <= '9'))) {
+            character = ' ';
+        }
+    }
+
+    std::stringstream ss(input);
+    std::vector<int> values;
+    for (std::string token; ss >> token; ) {
+        values.push_back(std::stoi(token));
+    }
+
+    while (!mNodes.empty()) {
+        delete mNodes.back();
+        mNodes.pop_back();
+    }
+
+    for (auto value : values) {
+        mNodes.push_back(new Node(GraphicNode(std::to_string(value))));
+        for (int i = (int)mNodes.size() - 1; i > 0; i = (i - 1) / 2) {
+            if (compare(std::stoi(mNodes[i]->value.getValue()), std::stoi(mNodes[(i - 1) / 2]->value.getValue()))) {
+                std::swap(mNodes[i], mNodes[(i - 1) / 2]);
+            } else {
+                break;
+            }
+        }
+    }
+
+    mCode.update({});
+
+    setBinaryTree();
+    setPositions();
+
+    addNewStep();
+    drawAllNodeFadeIn(mRoot);
+    drawAllEdgeFadeIn(mRoot);
+    drawAllLabelFadeIn(mRoot, 0);
+    drawCode();
+}
+
 void BinaryHeapVisualizer::getTop() {
     mCode.update({
         "return a[0] // which is " + mNodes.front()->value.getValue(),
@@ -1247,12 +1288,16 @@ void BinaryHeapVisualizer::run() {
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), BinaryHeapVisualizerData::minSize, BinaryHeapVisualizerData::maxSize)
     );
 
+    mOption.addSuboption("File", conditionNone);
+    mOption.addSuboptionFileBox("v", std::bind(Validator::isListOfIntegerInRange, std::placeholders::_1, std::placeholders::_2, BinaryHeapVisualizerData::minSize, BinaryHeapVisualizerData::maxSize, BinaryHeapVisualizerData::minValue, BinaryHeapVisualizerData::maxValue));
+
+
     mOption.addOption("Get");
     mOption.addSuboption("Top", conditionTreeNotEmpty);
     mOption.addSuboption("Size", conditionNone);
 
     mOption.addOption("Insert");
-    mOption.addSuboption("", conditionTreeNotLarge);
+    mOption.addSuboption("Value", conditionTreeNotLarge);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, BinaryHeapVisualizerData::minValue, BinaryHeapVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), BinaryHeapVisualizerData::minValue, BinaryHeapVisualizerData::maxValue)
@@ -1281,7 +1326,13 @@ void BinaryHeapVisualizer::run() {
                 mWindow->close();
             }
 
-            if (handleEvent(event)) {
+            VisualizerData::Event action = handleEvent(event);
+            if (action == VisualizerData::Event::quit) {
+                freeMemory();
+                return;
+            }
+
+            if (action == VisualizerData::Event::confirm) {
                 abortAllSteps();
                 clearAllSteps();
 
@@ -1312,6 +1363,10 @@ void BinaryHeapVisualizer::run() {
 
                     case 1: // Random
                         create(std::stoi(values[0]));
+                        break;
+
+                    case 2: // File
+                        createFromList(values[0]);
                         break;
                     }
                     

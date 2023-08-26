@@ -52,7 +52,7 @@ public:
     void addOption(const std::string& option);
     void addSuboption(const std::string& suboption, std::function<bool()> condition);
     void addSuboptionInputBox(std::string name, std::function<std::string(std::string, std::string)> validator, std::function<std::string()> randomizer);
-    void addSuboptionFileBox(std::function<std::string(std::string, std::string)> validator);
+    void addSuboptionFileBox(std::string name, std::function<std::string(std::string, std::string)> validator);
     void addSuboptionEditorBox(std::function<std::string(std::string, std::string)> validator);
     void processOption(); // please call this when finish adding options and suboptions
 

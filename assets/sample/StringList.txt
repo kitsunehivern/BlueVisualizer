@@ -1,0 +1,1 @@
+a, aba, bac, cba, aaba, abcc, bcac

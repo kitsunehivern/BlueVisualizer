@@ -63,6 +63,7 @@ private:
 
     bool mIsFileBoxFocused;
     bool mIsFileChosen;
+    std::string mFileBoxName;
     std::string mFileBoxPath;
 
     void insertCharacter(char character);

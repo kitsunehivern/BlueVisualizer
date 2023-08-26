@@ -8,6 +8,7 @@ Visualizer::Visualizer(sf::RenderWindow* window, AssetsHolder* assets) {
     mAssets = assets;
     mOption = OptionBox(mAssets);
 
+	mQuitButton = Button(assets, AssetsData::Image::quitButton, VisualizerData::quitButtonRect.getPosition(), ButtonData::ColorSet::set1);
 	mThemeButton = Button(assets, AssetsData::Image::themeButton, VisualizerData::themeButtonRect.getPosition(), ButtonData::ColorSet::set1);
 
     mFrontButton = Button(assets, AssetsData::Image::controlButtons, ControlBoxData::controlBoxPosition + ControlBoxData::frontButtonRect.getPosition(), ButtonData::ColorSet::set1);
@@ -218,91 +219,134 @@ void Visualizer::drawChangeValueColor(GraphicNode* node, Shape shape, Type type,
 	mDrawFunctions.back().push_back(std::bind(&GraphicNode::drawChangeValueColor, node, mWindow, getNodeTexture(shape, type), mAssets->get(oldNodeColor), mAssets->get(newNodeColor), mAssets->get(AssetsData::Font::consolasBold), mAssets->get(oldValueColor), mAssets->get(newValueColor), oldValues, newValues, std::placeholders::_1, std::placeholders::_2));
 }
 
-void Visualizer::drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdge(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::draw, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeFadeIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFadeIn, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawSlideIn, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeSlideOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawSlideOut, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color oldColor, Color newColor) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color oldColor, Color newColor) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawChangeColor, &edge, mWindow, pnode.first, pnode.second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawChangeNode, &edge, mWindow, pnode.first, pnode.second.first, pnode.second.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeSlideOutChangeNode(std::vector<std::pair<GraphicNode*, std::pair<GraphicNode*, GraphicNode*>>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawSlideOutChangeNode, &edge, mWindow, pnode.first, pnode.second.first, pnode.second.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, Color color) {
-	for (auto pnode : pnodes) {
+void Visualizer::drawEdgeFixed(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, Color color) {
+	for (auto pnode : nodes) {
 		GraphicEdge edge;
 		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFixed, &edge, mWindow, *pnode.first, *pnode.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color) {
-	assert(pnodes.size() == weights.size());
-	for (int i = 0; i < (int)pnodes.size(); i++) {
+void Visualizer::drawEdgeWeight(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color color) {
+	assert(nodes.size() == weights.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
 		GraphicEdge edge;
-		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeight, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeight, &edge, mWindow, nodes[i].first, nodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeWeightFadeOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color) {
-	assert(pnodes.size() == weights.size());
-	for (int i = 0; i < (int)pnodes.size(); i++) {
+void Visualizer::drawEdgeWeightFadeOut(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color color) {
+	assert(nodes.size() == weights.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
 		GraphicEdge edge;
-		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightFadeOut, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightFadeOut, &edge, mWindow, nodes[i].first, nodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeWeightSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color color) {
-	assert(pnodes.size() == weights.size());
-	for (int i = 0; i < (int)pnodes.size(); i++) {
+void Visualizer::drawEdgeWeightSlideIn(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color color) {
+	assert(nodes.size() == weights.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
 		GraphicEdge edge;
-		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightSlideIn, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightSlideIn, &edge, mWindow, nodes[i].first, nodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
-void Visualizer::drawEdgeWeightChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> pnodes, std::vector<std::string> weights, Color oldColor, Color newColor) {
-	assert(pnodes.size() == weights.size());
-	for (int i = 0; i < (int)pnodes.size(); i++) {
+void Visualizer::drawEdgeWeightChangeColor(std::vector<std::pair<GraphicNode*, GraphicNode*>> nodes, std::vector<std::string> weights, Color oldColor, Color newColor) {
+	assert(nodes.size() == weights.size());
+	for (int i = 0; i < (int)nodes.size(); i++) {
 		GraphicEdge edge;
-		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightChangeColor, &edge, mWindow, pnodes[i].first, pnodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawWeightChangeColor, &edge, mWindow, nodes[i].first, nodes[i].second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), mAssets->get(AssetsData::consolasBold), mAssets->get(AssetsData::nodeText), weights[i], std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFree(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color) {
+	for (auto position : positions) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFree, &edge, mWindow, position.first, position.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeFadeIn(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color) {
+	for (auto position : positions) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeFadeIn, &edge, mWindow, position.first, position.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeSlideIn(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color) {
+	for (auto position : positions) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeSlideIn, &edge, mWindow, position.first, position.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeSlideOut(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color) {
+	for (auto position : positions) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeSlideOut, &edge, mWindow, position.first, position.second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeChangeColor(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color oldColor, Color newColor) {
+	for (auto position : positions) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeChangeColor, &edge, mWindow, position.first, position.second, mAssets->get(AssetsData::stick), mAssets->get(oldColor), mAssets->get(newColor), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeChangePosition(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color) {
+	assert(oldPositions.size() == newPositions.size());
+	for (int i = 0; i < (int)oldPositions.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeChangePosition, &edge, mWindow, oldPositions[i].first, oldPositions[i].second, newPositions[i].first, newPositions[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
@@ -365,6 +409,7 @@ void Visualizer::drawCodeChangeLine(int oldFocusLine, int newFocusLine) {
 void Visualizer::updateState() {
     mOption.updateState(mWindow);
 
+	mQuitButton.updateState(mWindow);
 	mThemeButton.updateState(mWindow);
 
     mFrontButton.updateState(mWindow);
@@ -464,7 +509,7 @@ void Visualizer::updateState() {
 	mSpeedButton.updateState(mWindow);
 }
 
-bool Visualizer::handleEvent(sf::Event event) {
+VisualizerData::Event Visualizer::handleEvent(sf::Event event) {
     if (mFrontButton.handleEvent(mWindow, event)) {
         goToBeginning();
     } else if (mPrevButton.handleEvent(mWindow, event)) {
@@ -488,7 +533,9 @@ bool Visualizer::handleEvent(sf::Event event) {
             mStatus = CONTINUE;
             mDirection = FORWARD;
         }
-    } else if (mThemeButton.handleEvent(mWindow, event)) {
+    } else if (mQuitButton.handleEvent(mWindow, event)) { 
+		return VisualizerData::Event::quit;
+	} else if (mThemeButton.handleEvent(mWindow, event)) {
 		mAssets->switchTheme();
 	}
 	
@@ -561,7 +608,11 @@ bool Visualizer::handleEvent(sf::Event event) {
 		}
 	}
 
-	return mOption.handleEvent(mWindow, event);
+	if (mOption.handleEvent(mWindow, event)) {
+		return VisualizerData::Event::confirm;
+	}
+
+	return VisualizerData::Event::none;
 }
 
 void Visualizer::draw() {
@@ -611,6 +662,7 @@ void Visualizer::draw() {
 	VisualizeBoxSprite.setPosition(VisualizerData::visualizeBoxRect.getPosition());
 	mWindow->draw(VisualizeBoxSprite);
 
+	mWindow->draw(mQuitButton);
 	mWindow->draw(mThemeButton);
 
 	for (auto draw : mDrawFunctions[mCurrentStep]) {

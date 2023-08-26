@@ -33,8 +33,8 @@ void OptionBox::addSuboptionInputBox(std::string name, std::function<std::string
     mInputBoxList.back().back().back().setRandomizer(randomizer);
 }
 
-void OptionBox::addSuboptionFileBox(std::function<std::string(std::string, std::string)> validator) {
-    mInputBoxList.back().back().push_back(InputBox(InputBoxData::InputType::file, mAssets, sf::Vector2f(0.f, 0.f), ""));
+void OptionBox::addSuboptionFileBox(std::string name, std::function<std::string(std::string, std::string)> validator) {
+    mInputBoxList.back().back().push_back(InputBox(InputBoxData::InputType::file, mAssets, sf::Vector2f(0.f, 0.f), name));
     mInputBoxList.back().back().back().setValidator(validator);
 }
 

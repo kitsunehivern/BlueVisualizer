@@ -26,6 +26,8 @@ InputBox::InputBox(InputBoxData::InputType type, AssetsHolder* assets, sf::Vecto
 
     mIsFileBoxFocused = false;
     mIsFileChosen = false;
+    mFileBoxName = "";
+    mFileBoxPath = "";
 }
 
 void InputBox::setPosition(sf::Vector2f position) {
@@ -55,10 +57,10 @@ std::string InputBox::getError() const {
         if (!mIsFileChosen) {
             return "Please browse a file";
         } else {
-            return mValidator(mValue, "");
+            return mValidator(mValue, mName);
         }
     } else {
-        return mValidator(mValue, "");
+        return mValidator(mValue, mName);
     }
 }
 
@@ -162,6 +164,7 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                         ofn.lpstrFile = szFileName;
                         ofn.nMaxFile = MAX_PATH;
                         ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+                        ofn.lpstrInitialDir = L"assets\\sample\\";
                         ofn.lpstrDefExt = L"txt";
 
                         if (GetOpenFileName(&ofn) == TRUE) {
@@ -170,12 +173,12 @@ void InputBox::handleEvent(sf::RenderWindow* window, sf::Event event) {
                             std::wstring wfileName = filePath.substr(lastSlashPos + 1);
                             std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
                             std::string fileNameUtf8 = converter.to_bytes(wfileName);
-                            mName = fileNameUtf8;
+                            mFileBoxName = fileNameUtf8;
 
                             std::wstring filePath2(ofn.lpstrFile);
                             std::wstring_convert<std::codecvt_utf8<wchar_t>> converter2;
                             mFileBoxPath = converter2.to_bytes(filePath2);
-
+    
                             mIsFileChosen = true;
                         }
                     } else {
@@ -285,7 +288,7 @@ void InputBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         fileBoxSprite.setPosition(mPosition);
         target.draw(fileBoxSprite, states);
 
-        sf::Text fileBoxText(mType == InputBoxData::InputType::file ? (mIsFileChosen ? mName : "Browse") : "Open editor", *mAssets->get(AssetsData::Font::consolasBold), InputBoxData::characterSize);
+        sf::Text fileBoxText(mType == InputBoxData::InputType::file ? (mIsFileChosen ? mFileBoxName : "Browse") : "Open editor", *mAssets->get(AssetsData::Font::consolasBold), InputBoxData::characterSize);
         if (mIsFileBoxFocused) {
             fileBoxText.setFillColor(*mAssets->get(AssetsData::Color::boxTextFocus));
         } else {

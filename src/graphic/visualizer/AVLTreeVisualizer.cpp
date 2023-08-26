@@ -108,6 +108,91 @@ void AVLTreeVisualizer::create(int size) {
     drawCode();
 }
 
+void AVLTreeVisualizer::createFromList(std::string input) {
+    for (auto& character : input) {
+        if (!(character == '-' || (character >= '0' && character <= '9'))) {
+            character = ' ';
+        }
+    }
+
+    std::stringstream ss(input);
+    std::vector<int> values;
+    for (std::string token; ss >> token; ) {
+        values.push_back(std::stoi(token));
+    }
+
+    clear();
+    for (int value : values) {
+        std::vector<Node*> path;
+        Node* current = mRoot;
+        bool exist = false;
+        while (current != nullptr) {
+            path.push_back(current);
+
+            if (value == std::stoi(current->value.getValue())) {
+                exist = true;
+                break;
+            }
+
+            if (value < std::stoi(current->value.getValue())) {
+                current = current->left;
+            } else {
+                current = current->right;
+            }
+        }
+
+        if (exist) {
+            continue;
+        }
+
+        if (path.empty()) {
+            mRoot = new Node(GraphicNode(std::to_string(value), GraphicNodeData::initialPosition));
+        } else if (value < std::stoi(path.back()->value.getValue())) {
+            path.back()->left = new Node(GraphicNode(std::to_string(value), GraphicNodeData::initialPosition));
+        } else {
+            path.back()->right = new Node(GraphicNode(std::to_string(value), GraphicNodeData::initialPosition));
+        }
+
+        while (!path.empty()) {
+            Node* current = path.back();
+            path.pop_back();
+
+            int balanceFactor = getBalanceFactor(current);
+            if (balanceFactor < -1) {
+                if (value > std::stoi(current->right->value.getValue())) {
+                    current = leftRotate(current);
+                } else {
+                    current->right = rightRotate(current->right);
+                    current = leftRotate(current);
+                }
+            } else if (balanceFactor > 1) {
+                if (value < std::stoi(current->left->value.getValue())) {
+                    current = rightRotate(current);
+                } else {
+                    current->left = leftRotate(current->left);
+                    current = rightRotate(current);
+                }
+            }
+
+            if (path.empty()) {
+                mRoot = current;
+            } else if (value < std::stoi(path.back()->value.getValue())) {
+                path.back()->left = current;
+            } else {
+                path.back()->right = current;
+            }
+        }
+    }
+
+    setPositions();
+
+    mCode.update({});
+    addNewStep();
+    drawAllNodeFadeIn(mRoot);
+    drawAllEdgeFadeIn(mRoot);
+    drawCode();
+}
+
 void AVLTreeVisualizer::search(int value) {
     mCode.update({
         "if node == nullptr: return NOT_FOUND",
@@ -1624,22 +1709,25 @@ void AVLTreeVisualizer::run() {
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minSize, AVLTreeVisualizerData::maxSize)
     );
 
+    mOption.addSuboption("File", conditionNone);
+    mOption.addSuboptionFileBox("v", std::bind(Validator::isListOfIntegerInRange, std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minSize, AVLTreeVisualizerData::maxSize, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue));
+
     mOption.addOption("Search");
-    mOption.addSuboption("", conditionNone);
+    mOption.addSuboption("Value", conditionNone);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue)
     );
 
     mOption.addOption("Insert");
-    mOption.addSuboption("", conditionTreeNotLarge);
+    mOption.addSuboption("Value", conditionTreeNotLarge);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue)
     );
 
     mOption.addOption("Erase");
-    mOption.addSuboption("", conditionTreeNotEmpty);
+    mOption.addSuboption("Value", conditionTreeNotEmpty);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), AVLTreeVisualizerData::minValue, AVLTreeVisualizerData::maxValue)
@@ -1660,7 +1748,13 @@ void AVLTreeVisualizer::run() {
                 mWindow->close();
             }
 
-            if (handleEvent(event)) {
+            VisualizerData::Event action = handleEvent(event);
+            if (action == VisualizerData::Event::quit) {
+                freeMemory();
+                return;
+            }
+
+            if (action == VisualizerData::Event::confirm) {
                 abortAllSteps();
                 clearAllSteps();
 
@@ -1678,6 +1772,10 @@ void AVLTreeVisualizer::run() {
 
                     case 1: // Random
                         create(std::stoi(values[0]));
+                        break;
+
+                    case 2: // File
+                        createFromList(values[0]);
                         break;
                     }
                     

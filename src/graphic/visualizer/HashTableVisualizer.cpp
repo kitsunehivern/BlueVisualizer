@@ -53,6 +53,43 @@ void HashTableVisualizer::create(int capacity, int size) {
     drawCode();
 }
 
+void HashTableVisualizer::createFromList(std::string input) {
+    for (auto& character : input) {
+        if (!(character == '-' || (character >= '0' && character <= '9'))) {
+            character = ' ';
+        }
+    }
+    
+    std::stringstream ss(input);
+    std::vector<int> keys;
+    for (std::string token; ss >> token; ) {
+        keys.push_back(std::stoi(token));
+    }
+
+    mCapacity = keys.size();
+    mSize = keys.size();
+    mTable.resize(mCapacity);
+    for (int i = 0; i < mCapacity; i++) {
+        mTable[i] = GraphicNode("", HashTableVisualizerData::position + sf::Vector2f(i % HashTableVisualizerData::maxSizePerLine * HashTableVisualizerData::space.x, i / HashTableVisualizerData::maxSizePerLine * HashTableVisualizerData::space.y));
+    }
+
+    for (auto key : keys) {
+        int hashkey = key % mCapacity;
+        while (mTable[hashkey].getValue() != "") {
+            hashkey = (hashkey + 1) % mCapacity;
+        }
+
+        mTable[hashkey].setValue(std::to_string(key));
+    }
+
+    mCode.update({});
+
+    addNewStep();
+    drawFadeIn(getNodes(0, mCapacity - 1), Shape::square, Type::hollow,Color::node,Color::nodeText);
+    drawAllLabelsFadeIn();
+    drawCode();
+}
+
 void HashTableVisualizer::search(int key) {
     mCode.update({
         "i = v mod c, k = 0",
@@ -405,22 +442,25 @@ void HashTableVisualizer::run() {
         std::bind(static_cast<std::string(*)(std::function<int()>, std::function<int()>)>(Randomizer::integerInRange), [&]() { return HashTableVisualizerData::minSize; }, [&]() { return std::stoi(mOption.getValue(0, 1, 0)); })
     );
 
+    mOption.addSuboption("File", conditionNone);
+    mOption.addSuboptionFileBox("v", std::bind(Validator::isListOfIntegerInRange, std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minSize, HashTableVisualizerData::maxSize, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue));
+
     mOption.addOption("Search");
-    mOption.addSuboption("", conditionNone);
+    mOption.addSuboption("Value", conditionNone);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue)
     );
 
     mOption.addOption("Insert");
-    mOption.addSuboption("", conditionSizeNotEqualCapacity);
+    mOption.addSuboption("Value", conditionSizeNotEqualCapacity);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue)
     );
 
     mOption.addOption("Erase");
-    mOption.addSuboption("", conditionNone);
+    mOption.addSuboption("Value", conditionNone);
     mOption.addSuboptionInputBox("v",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isIntegerInRange), std::placeholders::_1, std::placeholders::_2, HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), HashTableVisualizerData::minValue, HashTableVisualizerData::maxValue)
@@ -440,7 +480,12 @@ void HashTableVisualizer::run() {
                 mWindow->close();
             }
 
-            if (handleEvent(event)) {
+            VisualizerData::Event action = handleEvent(event);
+            if (action == VisualizerData::Event::quit) {
+                return;
+            }
+
+            if (action == VisualizerData::Event::confirm) {
                 abortAllSteps();
                 clearAllSteps();
 
@@ -457,13 +502,17 @@ void HashTableVisualizer::run() {
                     case 1: // Random
                         create(std::stoi(values[0]), std::stoi(values[1]));
                         break;
+
+                    case 2: // File
+                        createFromList(values[0]);
+                        break;
                     }
 
                     break;
 
                 case 1: // Search
                     switch (option.second) {
-                    case 0:
+                    case 0: // Value
                         search(std::stoi(values[0]));
                         break;
                     }
@@ -472,7 +521,7 @@ void HashTableVisualizer::run() {
 
                 case 2: // Insert
                     switch (option.second) {
-                    case 0:
+                    case 0: // Value
                         insert(std::stoi(values[0]));
                         break;
                     }
@@ -481,7 +530,7 @@ void HashTableVisualizer::run() {
 
                 case 3: // Erase
                     switch (option.second) {
-                    case 0:
+                    case 0: // Value
                         erase(std::stoi(values[0]));
                         break;
                     }

@@ -14,7 +14,7 @@ namespace HashTableVisualizerData {
     const int minValue = 0;
     const int maxValue = 99;
 
-    const sf::Vector2f position = sf::Vector2f(325.f, 80.f);
+    const sf::Vector2f position = sf::Vector2f(325.f, 50.f);
     const sf::Vector2f space = sf::Vector2f(100.f, 100.f);
 
     const std::string emptyValue = "";
@@ -38,6 +38,7 @@ private:
     void drawAllLabelsFadeIn();
 
     void create(int capcity, int size);
+    void createFromList(std::string input);
     void search(int key);
     void insert(int key);
     void erase(int key);

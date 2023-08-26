@@ -270,6 +270,45 @@ void TrieVisualizer::create(int number) {
     drawCode();
 }
 
+void TrieVisualizer::createFromList(std::string input) {
+    for (auto& character : input) {
+        if (!(character >= 'a' && character <= 'z')) {
+            character = ' ';
+        }
+    }
+
+    std::stringstream ss(input);
+    std::vector<std::string> strs;
+    for (std::string token; ss >> token; ) {
+        strs.push_back(token);
+    }
+
+    deleteTree();
+
+    mRoot = new Node(GraphicNode(""));
+    for (std::string str : strs) {
+        Node* current = mRoot;
+        for (char letter : str) {
+            if (!current->children.count(letter)) {
+                current->children[letter] = new Node(GraphicNode(std::string(1, letter)));
+            }
+
+            current = current->children[letter];
+        }
+
+        current->marked = true;
+    }
+
+    mCode.update({});
+
+    setPositions();
+
+    addNewStep();
+    drawAllEdgeFadeIn(mRoot);
+    drawAllNodeFadeIn(mRoot);
+    drawCode();
+}
+
 void TrieVisualizer::search(std::string str) {
     mCode.update({
         "Node cur = root",
@@ -718,22 +757,25 @@ void TrieVisualizer::run() {
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::integerInRange), TrieVisualizerData::minSize, TrieVisualizerData::maxSize)
     );
 
+    mOption.addSuboption("File", conditionNone);
+    mOption.addSuboptionFileBox("s", std::bind(Validator::isListOfStringWithLowercaseLetters, std::placeholders::_1, std::placeholders::_2, TrieVisualizerData::minSize, TrieVisualizerData::maxSize, TrieVisualizerData::minLength, TrieVisualizerData::maxLength));
+
     mOption.addOption("Search");
-    mOption.addSuboption("", conditionNone);
+    mOption.addSuboption("String", conditionNone);
     mOption.addSuboptionInputBox("s",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isStringWithLowercaseLetters), std::placeholders::_1, std::placeholders::_2, TrieVisualizerData::minLength, TrieVisualizerData::maxLength),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::stringOfLowercaseLetters), TrieVisualizerData::minLength, TrieVisualizerData::maxLength)
     );
 
     mOption.addOption("Insert");
-    mOption.addSuboption("", conditionNone);
+    mOption.addSuboption("String", conditionNone);
     mOption.addSuboptionInputBox("s",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isStringWithLowercaseLetters), std::placeholders::_1, std::placeholders::_2, TrieVisualizerData::minLength, TrieVisualizerData::maxLength),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::stringOfLowercaseLetters), TrieVisualizerData::minLength, TrieVisualizerData::maxLength)
     );
 
     mOption.addOption("Erase");
-    mOption.addSuboption("", conditionNone);
+    mOption.addSuboption("String", conditionNone);
     mOption.addSuboptionInputBox("s",
         std::bind(static_cast<std::string(*)(std::string, std::string, int, int)>(Validator::isStringWithLowercaseLetters), std::placeholders::_1, std::placeholders::_2, TrieVisualizerData::minLength, TrieVisualizerData::maxLength),
         std::bind(static_cast<std::string(*)(int, int)>(Randomizer::stringOfLowercaseLetters), TrieVisualizerData::minLength, TrieVisualizerData::maxLength)
@@ -754,7 +796,13 @@ void TrieVisualizer::run() {
                 mWindow->close();
             }
 
-            if (handleEvent(event)) {
+            VisualizerData::Event action = handleEvent(event);
+            if (action == VisualizerData::Event::quit) {
+                freeMemory();
+                return;
+            }
+
+            if (action == VisualizerData::Event::confirm) {
                 abortAllSteps();
                 clearAllSteps();
 
@@ -772,6 +820,10 @@ void TrieVisualizer::run() {
 
                     case 1: // Random
                         create(std::stoi(values[0]));
+                        break;
+
+                    case 2: // File
+                        createFromList(values[0]);
                         break;
                     }
                     

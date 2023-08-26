@@ -31,6 +31,13 @@ public:
     void drawWeightFadeOut(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* edgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
     void drawWeightSlideIn(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* edgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
     void drawWeightChangeColor(sf::RenderWindow* window, GraphicNode* node1, GraphicNode* node2, sf::Texture* texture, sf::Color* oldEdgeColor, sf::Color* newEdgeColor, sf::Font* font, sf::Color* weightColor, std::string weight, float ratioTime, bool fakeDraw);
+    
+    void drawFree(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+    void drawFreeFadeIn(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+    void drawFreeSlideIn(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+    void drawFreeSlideOut(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+    void drawFreeChangeColor(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* oldColor, sf::Color* newColor, float ratioTime, bool fakeDraw);
+    void drawFreeChangePosition(sf::RenderWindow* window, sf::Vector2f oldPosition1, sf::Vector2f newPosition1, sf::Vector2f oldPosition2, sf::Vector2f newPosition2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
 
 private:
 };

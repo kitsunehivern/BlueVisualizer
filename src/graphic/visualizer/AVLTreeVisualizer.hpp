@@ -28,6 +28,7 @@ private:
     void freeMemory();
 
     void create(int size);
+    void createFromList(std::string input);
     void search(int value);
     void insert(int value);
     void erase(int value);

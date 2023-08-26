@@ -1,10 +1,6 @@
 #include "Global.hpp"
 #include "graphic/AssetsHolder.hpp"
-#include "graphic/visualizer/HashTableVisualizer.hpp"
-#include "graphic/visualizer/AVLTreeVisualizer.hpp"
-#include "graphic/visualizer/BinaryHeapVisualizer.hpp"
-#include "graphic/visualizer/TrieVisualizer.hpp"
-#include "graphic/visualizer/GraphVisualizer.hpp"
+#include "graphic/Menu.hpp"
 
 int main() {
     sf::ContextSettings settings;
@@ -15,8 +11,10 @@ int main() {
 
     AssetsHolder assets;
     std::string imageDir = "assets/image/";
-    assets.load(AssetsData::Image::lightBackground, imageDir + "background/LightBackground.png");
-    assets.load(AssetsData::Image::darkBackground, imageDir + "background/DarkBackground.png");
+    assets.load(AssetsData::Image::lightBackground, imageDir + "theme/LightBackground.png");
+    assets.load(AssetsData::Image::darkBackground, imageDir + "theme/DarkBackground.png");
+    assets.load(AssetsData::Image::lightLogo, imageDir + "theme/LightLogo.png");
+    assets.load(AssetsData::Image::darkLogo, imageDir + "theme/DarkLogo.png");
 
     assets.load(AssetsData::Image::hollowCircle, imageDir + "object/HollowCircle.png");
     assets.load(AssetsData::Image::filledCircle, imageDir + "object/FilledCircle.png");
@@ -45,7 +43,9 @@ int main() {
     assets.load(AssetsData::Image::speedButton, imageDir + "component/SpeedButton.png");
     assets.load(AssetsData::Image::speed, imageDir + "component/Speed.png");
     assets.load(AssetsData::Image::visualizeBox, imageDir + "component/VisualizeBox.png");
+    assets.load(AssetsData::Image::quitButton, imageDir + "component/QuitButton.png");
     assets.load(AssetsData::Image::themeButton, imageDir + "component/ThemeButton.png");
+    assets.load(AssetsData::Image::titleBox, imageDir + "component/TitleBox.png");
 
     assets.load(AssetsData::Font::consolasBold, "assets/font/consolas_bold.ttf");
 
@@ -65,6 +65,7 @@ int main() {
     assets.setLight(AssetsData::Color::edge, sf::Color(0, 0, 0, 255));
     assets.setLight(AssetsData::Color::edgeFocus, sf::Color(255, 140, 40, 255));
 
+    assets.setLight(AssetsData::Color::boxBackground, sf::Color(160, 225, 250, 150));
     assets.setLight(AssetsData::Color::boxComponent, sf::Color(240, 245, 245, 150));
     assets.setLight(AssetsData::Color::box, sf::Color(105, 210, 255, 255));
     assets.setLight(AssetsData::Color::boxFocus, sf::Color(45, 125, 185, 255));
@@ -92,6 +93,7 @@ int main() {
     assets.setDark(AssetsData::Color::edge, sf::Color(255, 255, 255, 255));
     assets.setDark(AssetsData::Color::edgeFocus, sf::Color(255, 145, 55, 255));
 
+    assets.setDark(AssetsData::Color::boxBackground, sf::Color(60, 125, 195, 150));
     assets.setDark(AssetsData::Color::boxComponent, sf::Color(40, 70, 115, 150));
     assets.setDark(AssetsData::Color::box, sf::Color(45, 125, 185, 255));
     assets.setDark(AssetsData::Color::boxFocus, sf::Color(105, 210, 255, 255));
@@ -105,20 +107,8 @@ int main() {
 
     assets.switchTheme();
 
-    // HashTableVisualizer HT(&window, &assets);
-    // HT.run();
-
-    // AVLTreeVisualizer AVL(&window, &assets);
-    // AVL.run();
-
-    // BinaryHeapVisualizer BH(&window, &assets);
-    // BH.run();
-
-    // TrieVisualizer trie(&window, &assets);
-    // trie.run();
-
-    GraphVisualizer graph(&window, &assets);
-    graph.run();
+    Menu menu(&window, &assets);
+    menu.run();
 
     return EXIT_SUCCESS;
 }

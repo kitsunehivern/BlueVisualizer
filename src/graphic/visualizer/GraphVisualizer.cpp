@@ -516,6 +516,27 @@ void GraphVisualizer::Krukal() {
             unionSet(u, v);
         }
     }
+
+    addNewStep();
+    for (int i = 0; i < (int)mNodes.size(); i++) {
+        if (usedNode[i] == 0) {
+            draw({ &mNodes[i] }, Shape::circle, Type::hollow, Color::node, Color::nodeText);
+        } else {
+            drawChangeColor({ &mNodes[i] }, Shape::circle, Type::hollow, Color::nodeFocus1, Color::node, Color::nodeTextFocus2, Color::nodeText);
+        }
+    }
+
+    for (int i = 0; i < (int)mNodes.size() - 1; ++i) {
+        for (int j = i + 1; j < (int)mNodes.size(); ++j) {
+            if (mAdjacencyMatrix[i][j] > 0) {
+                if (usedEdge[i][j] == 1) {
+                    drawEdgeWeightChangeColor({ std::make_pair(&mNodes[i], &mNodes[j]) }, { std::to_string(mAdjacencyMatrix[i][j]) }, Color::edgeFocus, Color::edge);
+                }
+            }
+        }
+    }
+
+    drawCodeFadeOut(lastCodeLine);
 }
 
 void GraphVisualizer::Dijkstra(int s) {
@@ -785,7 +806,7 @@ void GraphVisualizer::run() {
     mOption.addSuboptionEditorBox(adjacencyMatrixValidator);
 
     mOption.addSuboption("File", conditionNone);
-    mOption.addSuboptionFileBox(adjacencyMatrixValidator);
+    mOption.addSuboptionFileBox("", adjacencyMatrixValidator);
 
     mOption.addOption("Find CC");
     mOption.addSuboption("BFS", conditionNone);
@@ -817,7 +838,12 @@ void GraphVisualizer::run() {
 
             handleGraphEvent(event);
 
-            if (handleEvent(event)) {
+            VisualizerData::Event action = handleEvent(event);
+            if (action == VisualizerData::Event::quit) {
+                return;
+            }
+
+            if (action == VisualizerData::Event::confirm) {
                 abortAllSteps();
                 clearAllSteps();
 

@@ -7,6 +7,8 @@ namespace AssetsData {
     enum Image {
         lightBackground,
         darkBackground,
+        lightLogo,
+        darkLogo,
 
         hollowCircle,
         filledCircle,
@@ -35,7 +37,9 @@ namespace AssetsData {
         speedButton,
         speed,
         visualizeBox,
+        quitButton,
         themeButton,
+        titleBox,
     };
 
     enum Font {
@@ -58,6 +62,7 @@ namespace AssetsData {
         edge,
         edgeFocus,
 
+        boxBackground,
         boxComponent,
         box,
         boxFocus,
