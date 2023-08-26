@@ -189,6 +189,11 @@ void OptionBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     optionPrevText.setPosition(OptionBoxData::Option::tablePosition + sfhelper::getCenterPosition(OptionBoxData::Option::prevRect));
     target.draw(optionPrevText, states);
 
+    sf::RectangleShape optionCurrRect(OptionBoxData::Option::currRect.getSize());
+    optionCurrRect.setFillColor(*mAssets->get(AssetsData::Color::boxBackground));
+    optionCurrRect.setPosition(OptionBoxData::Option::tablePosition + OptionBoxData::Option::currRect.getPosition());
+    target.draw(optionCurrRect, states);
+
     sf::Text optionCurrText(mOptionList[mOptionIndex], *mAssets->get(AssetsData::Font::consolasBold), OptionBoxData::characterSize);
     optionCurrText.setFillColor(*mAssets->get(AssetsData::Color::boxText));
     optionCurrText.setOrigin(sfhelper::getCenterPosition(optionCurrText.getLocalBounds()));
@@ -223,6 +228,11 @@ void OptionBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     suboptionPrevText.setOrigin(sfhelper::getCenterPosition(suboptionPrevText.getLocalBounds()));
     suboptionPrevText.setPosition(OptionBoxData::Suboption::tablePosition + sfhelper::getCenterPosition(OptionBoxData::Suboption::prevRect));
     target.draw(suboptionPrevText, states);
+
+    sf::RectangleShape suboptionCurrRect(OptionBoxData::Suboption::currRect.getSize());
+    suboptionCurrRect.setFillColor(*mAssets->get(AssetsData::Color::boxBackground));
+    suboptionCurrRect.setPosition(OptionBoxData::Suboption::tablePosition + OptionBoxData::Suboption::currRect.getPosition());
+    target.draw(suboptionCurrRect, states);
 
     sf::Text suboptionCurrText(mSuboptionList[mOptionIndex][mSuboptionIndex[mOptionIndex]], *mAssets->get(AssetsData::Font::consolasBold), OptionBoxData::characterSize);
     suboptionCurrText.setFillColor(*mAssets->get(AssetsData::Color::boxText));

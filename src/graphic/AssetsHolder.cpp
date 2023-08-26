@@ -1,7 +1,17 @@
 #include "AssetsHolder.hpp"
 
 AssetsHolder::AssetsHolder() {
-    mTheme = AssetsData::Theme::dark;
+    std::ifstream fin;
+	fin.open("assets/data/theme.dat", std::ios::binary);
+	if (!fin.is_open()) {
+		mTheme = AssetsData::Theme::light;
+	} else {
+		bool value;
+		fin.read((char*)&value, 1);
+
+		mTheme = !value ? AssetsData::Theme::light : AssetsData::Theme::dark;
+	}
+	fin.close();
 }
 
 AssetsHolder::~AssetsHolder() {
@@ -16,6 +26,12 @@ AssetsHolder::~AssetsHolder() {
     for (auto& pair : mColorMap) {
         delete pair.second;
     }
+
+    int theme = mTheme == AssetsData::Theme::light ? 0 : 1;
+	std::ofstream fout;
+	fout.open("assets/data/theme.dat", std::ios::binary);
+	fout.write((char*)&theme, 1);
+	fout.close();
 }
 
 void AssetsHolder::switchTheme() {

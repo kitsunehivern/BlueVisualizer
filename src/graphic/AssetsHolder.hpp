@@ -38,12 +38,14 @@ namespace AssetsData {
         speed,
         visualizeBox,
         quitButton,
+        themeBox,
         themeButton,
         titleBox,
     };
 
     enum Font {
         consolasBold,
+        hyperspaceItalicBold,
     };
 
     enum Color {

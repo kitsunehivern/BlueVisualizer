@@ -20,6 +20,7 @@ private:
     sf::RenderWindow* mWindow;
     AssetsHolder* mAssets;
 
+    Button mThemeButton;
     Button mHashTableButton;
     Button mAVLTreeButton;
     Button mBinaryHeapButton;

@@ -38,6 +38,8 @@ public:
     void drawFreeSlideOut(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
     void drawFreeChangeColor(sf::RenderWindow* window, sf::Vector2f position1, sf::Vector2f position2, sf::Texture* texture, sf::Color* oldColor, sf::Color* newColor, float ratioTime, bool fakeDraw);
     void drawFreeChangePosition(sf::RenderWindow* window, sf::Vector2f oldPosition1, sf::Vector2f newPosition1, sf::Vector2f oldPosition2, sf::Vector2f newPosition2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+    void drawFreeChangePositionSlideIn(sf::RenderWindow* window, sf::Vector2f oldPosition1, sf::Vector2f newPosition1, sf::Vector2f oldPosition2, sf::Vector2f newPosition2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
+    void drawFreeChangePositionSlideOut(sf::RenderWindow* window, sf::Vector2f oldPosition1, sf::Vector2f newPosition1, sf::Vector2f oldPosition2, sf::Vector2f newPosition2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw);
 
 private:
 };

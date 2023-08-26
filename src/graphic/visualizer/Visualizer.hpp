@@ -63,6 +63,7 @@ protected:
 
     Visualizer();
     Visualizer(sf::RenderWindow* window, AssetsHolder* assets);
+    ~Visualizer();
 
     void addNewStep();
     void abortAllSteps();
@@ -97,6 +98,8 @@ protected:
     void drawEdgeFreeSlideOut(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color color);
     void drawEdgeFreeChangeColor(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> positions, Color oldColor, Color newColor);
     void drawEdgeFreeChangePosition(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color);
+    void drawEdgeFreeChangePositionSlideIn(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color);
+    void drawEdgeFreeChangePositionSlideOut(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color);
 
     void drawLabel(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);
     void drawLabelFadeIn(std::vector<GraphicNode*> nodes, std::vector<std::string> names, Color color);

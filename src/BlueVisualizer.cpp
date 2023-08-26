@@ -44,10 +44,12 @@ int main() {
     assets.load(AssetsData::Image::speed, imageDir + "component/Speed.png");
     assets.load(AssetsData::Image::visualizeBox, imageDir + "component/VisualizeBox.png");
     assets.load(AssetsData::Image::quitButton, imageDir + "component/QuitButton.png");
+    assets.load(AssetsData::Image::themeBox, imageDir + "component/ThemeBox.png");
     assets.load(AssetsData::Image::themeButton, imageDir + "component/ThemeButton.png");
     assets.load(AssetsData::Image::titleBox, imageDir + "component/TitleBox.png");
 
     assets.load(AssetsData::Font::consolasBold, "assets/font/consolas_bold.ttf");
+    assets.load(AssetsData::Font::hyperspaceItalicBold, "assets/font/hyperspace_race_expanded_heavy_italic.ttf");
 
     // Light theme colors
     assets.setLight(AssetsData::Color::none, sf::Color(0, 0, 0, 0));
@@ -71,7 +73,7 @@ int main() {
     assets.setLight(AssetsData::Color::boxFocus, sf::Color(45, 125, 185, 255));
     assets.setLight(AssetsData::Color::boxActive, sf::Color(70, 255, 140, 255));
     assets.setLight(AssetsData::Color::boxInvalid, sf::Color(255, 150, 150, 255));
-    assets.setLight(AssetsData::Color::boxDisabled, sf::Color(180, 180, 180, 255));
+    assets.setLight(AssetsData::Color::boxDisabled, sf::Color(200, 200, 200, 200));
     assets.setLight(AssetsData::Color::boxText, sf::Color(0, 0, 0, 255));
     assets.setLight(AssetsData::Color::boxTextFocus, sf::Color(255, 255, 255, 255));
 
@@ -99,12 +101,13 @@ int main() {
     assets.setDark(AssetsData::Color::boxFocus, sf::Color(105, 210, 255, 255));
     assets.setDark(AssetsData::Color::boxActive, sf::Color(45, 225, 120, 255));
     assets.setDark(AssetsData::Color::boxInvalid, sf::Color(230,  65,  80, 255));
-    assets.setDark(AssetsData::Color::boxDisabled, sf::Color(130, 130, 130, 255));
+    assets.setDark(AssetsData::Color::boxDisabled, sf::Color(200, 200, 200, 200));
     assets.setDark(AssetsData::Color::boxText, sf::Color(255, 255, 255, 255));
     assets.setDark(AssetsData::Color::boxTextFocus, sf::Color(0, 0, 0, 255));
 
     assets.setDark(AssetsData::Color::label, sf::Color(255, 255, 255, 255));
 
+    assets.switchTheme();
     assets.switchTheme();
 
     Menu menu(&window, &assets);

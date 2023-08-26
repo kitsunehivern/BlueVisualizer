@@ -43,14 +43,18 @@ private:
     void setPositions();
 
     void drawReformat();
+    void drawEdgeChangePosition(Node* node, int childIndex, Color color);
+    void drawEdgeChangePositionSlideIn(Node* node, int childIndex, Color color);
     void drawAllNode(Node* node);
     void drawAllEdge(Node* node);
     void drawAllNodeFadeIn(Node* node);
     void drawAllEdgeFadeIn(Node* node);
+    void drawAllNodeExceptRoot(Node* node);
     void drawAllEdgeChangePosition(Node* node);
 
     void create(int size);
     void createFromList(std::string input);
+    void search(int value);
     void insert(int value);
 };
 

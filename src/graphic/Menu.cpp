@@ -4,21 +4,23 @@ Menu::Menu(sf::RenderWindow* window, AssetsHolder* assets) {
     mWindow = window;
     mAssets = assets;
 
-    mHashTableButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(200.f, 300.f), ButtonData::ColorSet::set4);
+    mThemeButton = Button(assets, AssetsData::Image::themeButton, VisualizerData::themeButtonRect.getPosition(), ButtonData::ColorSet::set1);
+    mHashTableButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(100.f, 300.f), ButtonData::ColorSet::set4);
     mHashTableButton.setTextInside("Hash Table");
-    mAVLTreeButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(650.f, 300.f), ButtonData::ColorSet::set4);
+    mAVLTreeButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(600.f, 300.f), ButtonData::ColorSet::set4);
     mAVLTreeButton.setTextInside("AVL Tree");
     mBinaryHeapButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(1100.f, 300.f), ButtonData::ColorSet::set4);
     mBinaryHeapButton.setTextInside("Binary Heap");
-    mTrieButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(200.f, 600.f), ButtonData::ColorSet::set4);
+    mTrieButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(100.f, 600.f), ButtonData::ColorSet::set4);
     mTrieButton.setTextInside("Trie");
-    mBTreeButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(650.f, 600.f), ButtonData::ColorSet::set4);
+    mBTreeButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(600.f, 600.f), ButtonData::ColorSet::set4);
     mBTreeButton.setTextInside("2-3-4 Tree");
     mGraphButton = Button(mAssets, AssetsData::Image::titleBox, sf::Vector2f(1100.f, 600.f), ButtonData::ColorSet::set4);
     mGraphButton.setTextInside("Graph");
 }
 
 void Menu::updateState() {
+    mThemeButton.updateState(mWindow);
     mBinaryHeapButton.updateState(mWindow);
     mHashTableButton.updateState(mWindow);
     mAVLTreeButton.updateState(mWindow);
@@ -28,6 +30,11 @@ void Menu::updateState() {
 }
 
 void Menu::handleEvent(sf::Event event) {
+    if (mThemeButton.handleEvent(mWindow, event)) {
+        mAssets->switchTheme();
+        return;
+    }
+
     if (mHashTableButton.handleEvent(mWindow, event)) {
         HashTableVisualizer visualizer(mWindow, mAssets);
         visualizer.run();
@@ -79,6 +86,17 @@ void Menu::draw() {
 	mWindow->draw(backgroundSprite);
     mWindow->draw(logoSprite);
 
+    sf::Text title("Dinh Cao Minh Quan - 22125078", *mAssets->get(AssetsData::Font::hyperspaceItalicBold), 30);
+    title.setFillColor(*mAssets->get(AssetsData::Color::nodeText));
+    title.setOrigin(sfhelper::getCenterPosition(title.getLocalBounds()).x, 0.f);
+    title.setPosition(sf::Vector2f(800, 210));
+    mWindow->draw(title);
+
+    sf::Sprite themeBoxSprite(*mAssets->get(AssetsData::Image::themeBox));
+    themeBoxSprite.setColor(*mAssets->get(AssetsData::Color::boxComponent));
+    themeBoxSprite.setPosition(VisualizerData::themeButtonRect.getPosition() - sf::Vector2f(10.f, 10.f));
+    mWindow->draw(themeBoxSprite);
+    mWindow->draw(mThemeButton);
     mWindow->draw(mHashTableButton);
     mWindow->draw(mAVLTreeButton);
     mWindow->draw(mBinaryHeapButton);

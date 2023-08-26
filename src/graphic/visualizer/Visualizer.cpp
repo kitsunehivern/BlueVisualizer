@@ -26,12 +26,49 @@ Visualizer::Visualizer(sf::RenderWindow* window, AssetsHolder* assets) {
     mStatusButton = Button(assets, AssetsData::Image::statusButtons, ControlBoxData::controlBoxPosition + ControlBoxData::statusButtonRect.getPosition(), ButtonData::ColorSet::set1);
 	mStatusButton.setImageRect(ControlBoxData::pausedButtonTextureRect);
 
-    mSpeed = X2;
 	mSpeedButton = Button(assets, AssetsData::Image::speedButton, ControlBoxData::controlBoxPosition + ControlBoxData::speedButtonRect.getPosition(), ButtonData::ColorSet::set3);
 	mSpeedButton.setImageInside(AssetsData::Image::speed);
-	mSpeedButton.setImageInsideRect(ControlBoxData::speedX2TextureRect);
+
+	std::ifstream fin;
+	fin.open("assets/data/speed.dat", std::ios::binary);
+	if (!fin.is_open()) {
+		mSpeed = X2;
+	} else {
+		int value;
+		fin.read((char*)&value, 4);
+
+		switch (value) {
+		case 1:
+			mSpeed = X1;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX1TextureRect);
+			break;
+
+		default:
+			mSpeed = X2;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX2TextureRect);
+			break;
+
+		case 4:
+			mSpeed = X4;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX4TextureRect);
+			break;
+
+		case 8:
+			mSpeed = X8;
+			mSpeedButton.setImageInsideRect(ControlBoxData::speedX8TextureRect);
+			break;
+		}
+	}
+	fin.close();
 
 	mIsVideoBarHolding = false;
+}
+
+Visualizer::~Visualizer() {
+	std::ofstream fout;
+	fout.open("assets/data/speed.dat", std::ios::binary);
+	fout.write((char*)&mSpeed, 4);
+	fout.close();
 }
 
 void Visualizer::addNewStep() {
@@ -346,7 +383,23 @@ void Visualizer::drawEdgeFreeChangePosition(std::vector<std::pair<sf::Vector2f, 
 	assert(oldPositions.size() == newPositions.size());
 	for (int i = 0; i < (int)oldPositions.size(); i++) {
 		GraphicEdge edge;
-		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeChangePosition, &edge, mWindow, oldPositions[i].first, oldPositions[i].second, newPositions[i].first, newPositions[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeChangePosition, &edge, mWindow, oldPositions[i].first, newPositions[i].first, oldPositions[i].second, newPositions[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeChangePositionSlideIn(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color) {
+	assert(oldPositions.size() == newPositions.size());
+	for (int i = 0; i < (int)oldPositions.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeChangePositionSlideIn, &edge, mWindow, oldPositions[i].first, newPositions[i].first, oldPositions[i].second, newPositions[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
+	}
+}
+
+void Visualizer::drawEdgeFreeChangePositionSlideOut(std::vector<std::pair<sf::Vector2f, sf::Vector2f>> oldPositions, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> newPositions, Color color) {
+	assert(oldPositions.size() == newPositions.size());
+	for (int i = 0; i < (int)oldPositions.size(); i++) {
+		GraphicEdge edge;
+		mDrawFunctions.back().push_back(std::bind(&GraphicEdge::drawFreeChangePositionSlideOut, &edge, mWindow, oldPositions[i].first, newPositions[i].first, oldPositions[i].second, newPositions[i].second, mAssets->get(AssetsData::stick), mAssets->get(color), std::placeholders::_1, std::placeholders::_2));
 	}
 }
 
@@ -605,6 +658,38 @@ VisualizerData::Event Visualizer::handleEvent(sf::Event event) {
 		} else {
 			mSpeed = X1;
 			mSpeedButton.setImageInsideRect(ControlBoxData::speedX1TextureRect);
+		}
+	}
+
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Up) {
+			if (mSpeed == X1) {
+				mSpeed = X2;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX2TextureRect);
+			} else if (mSpeed == X2) {
+				mSpeed = X4;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX4TextureRect);
+			} else if (mSpeed == X4) {
+				mSpeed = X8;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX8TextureRect);
+			} else {
+				mSpeed = X1;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX1TextureRect);
+			}
+		} else if (event.key.code == sf::Keyboard::Down) {
+			if (mSpeed == X1) {
+				mSpeed = X8;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX8TextureRect);
+			} else if (mSpeed == X2) {
+				mSpeed = X1;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX1TextureRect);
+			} else if (mSpeed == X4) {
+				mSpeed = X2;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX2TextureRect);
+			} else {
+				mSpeed = X4;
+				mSpeedButton.setImageInsideRect(ControlBoxData::speedX4TextureRect);
+			}
 		}
 	}
 

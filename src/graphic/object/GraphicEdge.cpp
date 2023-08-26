@@ -468,3 +468,32 @@ void GraphicEdge::drawFreeChangePosition(sf::RenderWindow* window, sf::Vector2f 
 
     window->draw(sprite);
 }
+
+void GraphicEdge::drawFreeChangePositionSlideIn(sf::RenderWindow* window, sf::Vector2f oldPosition1, sf::Vector2f newPosition1, sf::Vector2f oldPosition2, sf::Vector2f newPosition2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw) {
+    if (fakeDraw) {
+        return;
+    }
+
+    sf::Vector2f curPosition1 = oldPosition1 + (newPosition1 - oldPosition1) * Animation::Bezier(ratioTime);
+    sf::Vector2f curPosition2 = oldPosition2 + (newPosition2 - oldPosition2) * Animation::Bezier(ratioTime);
+
+    float length = sfhelper::getDistance(curPosition1, curPosition2) * Animation::Bezier(ratioTime);
+    float angle = atan2(curPosition2.y - curPosition1.y, curPosition2.x - curPosition1.x);
+
+    sf::Sprite sprite(*texture);
+    sprite.setScale(length / GraphicEdgeData::length, 1.f);
+    sprite.setOrigin(0.f, GraphicEdgeData::thickness / 2.f);
+    sprite.setPosition(oldPosition1 + (newPosition1 - oldPosition1) * ratioTime);
+    sprite.setRotation(angle * 180.f / GraphicEdgeData::PI);
+    sprite.setColor(*color);
+
+    window->draw(sprite);
+}
+
+void GraphicEdge::drawFreeChangePositionSlideOut(sf::RenderWindow* window, sf::Vector2f oldPosition1, sf::Vector2f newPosition1, sf::Vector2f oldPosition2, sf::Vector2f newPosition2, sf::Texture* texture, sf::Color* color, float ratioTime, bool fakeDraw) {
+    if (fakeDraw) {
+        return;
+    }
+
+    drawFreeChangePositionSlideIn(window, oldPosition1, newPosition1, oldPosition2, newPosition2, texture, color, 1.f - ratioTime, fakeDraw);
+}
